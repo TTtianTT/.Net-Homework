@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HW2._3
+namespace Homework2._3
 {
     class Program
     {
@@ -14,13 +14,13 @@ namespace HW2._3
             genericList.Add(9);
             genericList.Add(3);
             int sum = 0;
-            int min = Int32.MinValue;
-            int max = Int32.MaxValue;
+            int min = Int32.MaxValue;
+            int max = Int32.MinValue;
 
             genericList.ForEach(item => Console.WriteLine(item));
-            genericList.ForEach(item => sum +=item);
-            genericList.ForEach(item =>{if(item>max) max=item;});
-            genericList.ForEach(item =>{if(item<min) min=item;});
+            genericList.ForEach(item => sum += item);
+            genericList.ForEach(item => { if (item > max) max = item; });
+            genericList.ForEach(item => { if (item < min) min = item; });
             Console.WriteLine($"sum={sum},min={min},max={max}");
 
         }
@@ -65,10 +65,10 @@ namespace HW2._3
                 tail = n;
             }
         }
-        public void ForEach( Action<T> action)
+        public void ForEach(Action<T> action)
         {
             Node<T> n = head;
-            while(n != null)
+            while (n != null)
             {
                 action(n.Data);
                 n = n.Next;
