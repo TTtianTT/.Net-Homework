@@ -1,0 +1,7 @@
+D:\TTtianTT\.Net-Homework\HW2\HW2.4\bin\Debug\HW2.4.exe.config
+D:\TTtianTT\.Net-Homework\HW2\HW2.4\bin\Debug\HW2.4.exe
+D:\TTtianTT\.Net-Homework\HW2\HW2.4\bin\Debug\HW2.4.pdb
+D:\TTtianTT\.Net-Homework\HW2\HW2.4\obj\Debug\HW2.4.csprojAssemblyReference.cache
+D:\TTtianTT\.Net-Homework\HW2\HW2.4\obj\Debug\HW2.4.csproj.CoreCompileInputs.cache
+D:\TTtianTT\.Net-Homework\HW2\HW2.4\obj\Debug\HW2.4.exe
+D:\TTtianTT\.Net-Homework\HW2\HW2.4\obj\Debug\HW2.4.pdb
