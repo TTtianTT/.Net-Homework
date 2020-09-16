@@ -1,7 +1,0 @@
-D:\TTtianTT\.Net-Homework\HW2\HW2\bin\Debug\HW2.exe.config
-D:\TTtianTT\.Net-Homework\HW2\HW2\bin\Debug\HW2.exe
-D:\TTtianTT\.Net-Homework\HW2\HW2\bin\Debug\HW2.pdb
-D:\TTtianTT\.Net-Homework\HW2\HW2\obj\Debug\HW2.csprojAssemblyReference.cache
-D:\TTtianTT\.Net-Homework\HW2\HW2\obj\Debug\HW2.csproj.CoreCompileInputs.cache
-D:\TTtianTT\.Net-Homework\HW2\HW2\obj\Debug\HW2.exe
-D:\TTtianTT\.Net-Homework\HW2\HW2\obj\Debug\HW2.pdb
