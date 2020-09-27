@@ -1,0 +1,7 @@
+E:\C#Code\OrderManagement\OrderManagement\bin\Debug\OrderManagement.exe.config
+E:\C#Code\OrderManagement\OrderManagement\bin\Debug\OrderManagement.exe
+E:\C#Code\OrderManagement\OrderManagement\bin\Debug\OrderManagement.pdb
+E:\C#Code\OrderManagement\OrderManagement\obj\Debug\OrderManagement.csprojAssemblyReference.cache
+E:\C#Code\OrderManagement\OrderManagement\obj\Debug\OrderManagement.csproj.CoreCompileInputs.cache
+E:\C#Code\OrderManagement\OrderManagement\obj\Debug\OrderManagement.exe
+E:\C#Code\OrderManagement\OrderManagement\obj\Debug\OrderManagement.pdb
