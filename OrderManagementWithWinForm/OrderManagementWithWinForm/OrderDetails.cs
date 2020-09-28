@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderManagement
+namespace OrderManagementWithWinForm
 {
     public class OrderDetails
     {
@@ -12,7 +12,7 @@ namespace OrderManagement
         public int goodsAmount { set; get; }
         public int goodsTotal { set; get; }
 
-        public OrderDetails(Goods goods,int amount)
+        public OrderDetails(Goods goods, int amount)
         {
             this.goods = goods;
             this.goodsAmount = amount;
@@ -21,7 +21,7 @@ namespace OrderManagement
         public override string ToString()
         {
             //return "商品编号"+goods.goodsID+"商品数量："+goodsAmount+"商品总价："+goodsTotal;
-            return goods.ToString() + "商品数量：" + goodsAmount + "商品总价：" + goodsTotal+"\n";
+            return goods.ToString() + " 商品数量：" + goodsAmount + " 商品总价：" + goodsTotal + "\n";
         }
         public override bool Equals(object obj)
         {

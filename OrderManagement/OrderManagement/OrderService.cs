@@ -9,61 +9,74 @@ namespace OrderManagement
 {
     public class OrderService
     {
-        //public List<Order> olist = new List<Order>();
-        public static List<Order> olist = new List<Order>();
+        private List<Order> orderlist;
+        public OrderService()
+        {
+            orderlist = new List<Order>();
+        }
+        public List<Order> QueryAll()
+        {
+            return orderlist;
+        }
 
-        public static void AddOrder()
+        public void AddOrder(Order order)//向orderList中增加一个订单
         {
-            Customer cs = new Customer("s"); ;
-            Order od = new Order(0,cs);//构造ID为0的空订单
-            olist.Add(od);
-        }
-        public static void RemoveOrder(int ID) 
-        {
-            try
+            if(orderlist.Contains(order))
             {
-                foreach(Order od in olist)
-                {
-                    if (od.orderID == ID){ olist.Remove(od); }
-                }
+                throw new ApplicationException("这个订单已存在！");
             }
-            catch
-            {
-                Console.WriteLine("Error" );
-            }
+            orderlist.Add(order);
         }
-        public static void UpdateOrder(Order order)
+        public void RemoveOrder(int ID) //删除指定ID的订单
         {
-            if (olist.Contains(order))
+            var query = orderlist.Where(odr => odr.orderID == ID);
+            if(query == null)
+            {
+                throw new ApplicationException("不存在相应ID的订单，删除失败");
+            }
+            orderlist.RemoveAll(odrr => odrr.orderID == ID);
+        }
+        public void UpdateOrder(Order order)//更新订单列表
+        {
+            if (orderlist.Contains(order))
             {
                 throw new Exception($"orderlist already exists this");
             }
-            olist.Add(order);
+            orderlist.Add(order);
         }
-        public static List<Order> SelectedByID(int id)
+        public List<Order> SelectedByID(int id)
         {
-            var query = from od in olist where od.orderID == id select od;
+            var query = from od in orderlist where od.orderID == id select od;
             List<Order> ol = query.ToList();
             return ol;
         }
-        public static List<Order> SelectedByCustomer(string name)
+        public List<Order> SelectedByCustomer(string name)
         {
-            var query = from od in olist where od.customer.customerName == name select od;
+            var query = from od in orderlist where od.customer.customerName == name select od;
             List<Order> ol = query.ToList();
             return ol;
         }
-        public static List<Order> SelectedByPrice(int price)
+        public List<Order> SelectedByPrice(int price)
         {
-            var query = from od in olist where od.total == price select od;
+            var query = from od in orderlist where od.total == price select od;
             List<Order> ol = query.ToList();
             return ol;
         }
-        public static void Export()
+        public List<Order> SelectedByGoodsName(string goodsName)
+        {
+            var query = orderlist.Where(
+                odr => odr.orderList.Exists(
+                    detail => detail.goods.goodsName == goodsName
+                ));
+            List<Order> ol = query.ToList();
+            return ol;
+        }
+        public void Export()
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Order>));
             using (FileStream fs = new FileStream("s.xml", FileMode.Create))
             {
-                xmlSerializer.Serialize(fs, OrderService.olist);
+                xmlSerializer.Serialize(fs, this.orderlist);
             }
         }
         public static List<Order> Import()

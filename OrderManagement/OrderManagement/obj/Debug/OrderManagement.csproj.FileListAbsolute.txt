@@ -5,3 +5,10 @@ E:\C#Code\OrderManagement\OrderManagement\obj\Debug\OrderManagement.csprojAssemb
 E:\C#Code\OrderManagement\OrderManagement\obj\Debug\OrderManagement.csproj.CoreCompileInputs.cache
 E:\C#Code\OrderManagement\OrderManagement\obj\Debug\OrderManagement.exe
 E:\C#Code\OrderManagement\OrderManagement\obj\Debug\OrderManagement.pdb
+D:\TTtianTT\.Net-Homework\OrderManagement\OrderManagement\bin\Debug\OrderManagement.exe.config
+D:\TTtianTT\.Net-Homework\OrderManagement\OrderManagement\bin\Debug\OrderManagement.exe
+D:\TTtianTT\.Net-Homework\OrderManagement\OrderManagement\bin\Debug\OrderManagement.pdb
+D:\TTtianTT\.Net-Homework\OrderManagement\OrderManagement\obj\Debug\OrderManagement.csprojAssemblyReference.cache
+D:\TTtianTT\.Net-Homework\OrderManagement\OrderManagement\obj\Debug\OrderManagement.csproj.CoreCompileInputs.cache
+D:\TTtianTT\.Net-Homework\OrderManagement\OrderManagement\obj\Debug\OrderManagement.exe
+D:\TTtianTT\.Net-Homework\OrderManagement\OrderManagement\obj\Debug\OrderManagement.pdb

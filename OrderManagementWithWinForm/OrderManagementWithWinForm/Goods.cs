@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderManagement
+namespace OrderManagementWithWinForm
 {
     public class Goods
     {
         public int goodsID { get; }
         public string goodsName { get; }
         public int goodsPrice { get; }
-        public Goods (int goodsID,string goodsName,int goodsPrice)
+        public Goods(int goodsID, string goodsName, int goodsPrice)
         {
             this.goodsID = goodsID;
             this.goodsName = goodsName;
@@ -19,7 +19,7 @@ namespace OrderManagement
         }
         public override string ToString()
         {
-            return "货物编码："+goodsID+"货物名字："+goodsName+"货物价格："+goodsPrice;
+            return "货物编码：" + goodsID + " 货物名字：" + goodsName + " 货物价格:" + goodsPrice;
         }
     }
 }
