@@ -21,7 +21,7 @@ namespace OrderManagementWithWinForm
         public override string ToString()
         {
             //return "商品编号"+goods.goodsID+"商品数量："+goodsAmount+"商品总价："+goodsTotal;
-            return goods.ToString() + " 商品数量：" + goodsAmount + " 商品总价：" + goodsTotal + "\n";
+            return goods.ToString() + "商品数量：" + goodsAmount + "商品总价：" + goodsTotal + "\n";
         }
         public override bool Equals(object obj)
         {

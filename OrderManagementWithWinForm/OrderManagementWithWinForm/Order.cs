@@ -62,5 +62,13 @@ namespace OrderManagementWithWinForm
             }
             throw new NotImplementedException();
         }
+        public void AddDetails(OrderDetails orderDetails)
+        {
+            if (this.orderList.Contains(orderDetails))
+            {
+                throw new Exception($"orderDetail of the goods ({orderDetails.goods.goodsName}) exists in order {orderID}");
+            }
+            orderList.Add(orderDetails);
+        }
     }
 }

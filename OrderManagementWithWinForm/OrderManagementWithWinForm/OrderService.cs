@@ -1,153 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using System.IO;
+
 namespace OrderManagementWithWinForm
 {
     public class OrderService
     {
-
-        public List<Order> orderList;
-        /// <summary>
-        /// constructor
-        /// </summary>
+        public List<Order> orderlist;
         public OrderService()
         {
-            orderList = new List<Order>();
+            orderlist = new List<Order>();
         }
-
-        /// <summary>
-        /// add new order
-        /// </summary>
-        /// <param name="order">the order to be added</param>
-        public void AddOrder(Order order)
-        {
-            if (orderList.Contains(order))
-            {
-                throw new ApplicationException($"the orderList contains an order with ID {order.orderID} !");
-            }
-            orderList.Add(order);
-        }
-
-        /// <summary>
-        /// update the order
-        /// </summary>
-        /// <param name="order">the order to be updated</param>
-        public void Update(Order order)
-        {
-            RemoveOrder(order.orderID);
-            orderList.Add(order);
-        }
-
-        /// <summary>
-        /// query by orderId
-        /// </summary>
-        /// <param name="orderId">id of the order to find</param>
-        /// <returns>List<Order></returns> 
-        public Order GetById(int orderId)
-        {
-            return orderList.FirstOrDefault(o => o.orderID == orderId);
-        }
-
-        /// <summary>
-        /// remove order
-        /// </summary>
-        /// <param name="orderId">id of the order which will be removed</param> 
-        public void RemoveOrder(int orderId)
-        {
-            orderList.RemoveAll(o => o.orderID == orderId);
-        }
-
-        /// <summary>
-        /// query all orders
-        /// </summary>
-        /// <returns>List<Order>:all the orders</returns> 
         public List<Order> QueryAll()
         {
-            return orderList;
+            return orderlist;
         }
 
-
-        /// <summary>
-        /// query by goodsName
-        /// </summary>
-        /// <param name="goodsName">the name of goods in order's orderDetail</param>
-        /// <returns></returns> 
-        public List<Order> QueryByGoodsName(string goodsName)
+        public void AddOrder(Order order)//向orderList中增加一个订单
         {
-            var query = orderList.Where(
-              o => o.orderList.Exists(
-                d => d.goods.goodsName == goodsName));
-            return query.ToList();
-        }
-
-        /// <summary>
-        /// query orders whose totalAmount >= totalAmount
-        /// </summary>
-        /// <param name="totalAmount">the minimum totalAmount</param>
-        /// <returns></returns> 
-        public List<Order> QueryByTotalAmount(float totalAmount)
-        {
-            var query = orderList.Where(o => o.total >= totalAmount);
-            return query.ToList();
-        }
-
-        /// <summary>
-        /// query by customerName
-        /// </summary>
-        /// <param name="customerName">customer name</param>
-        /// <returns></returns> 
-        public List<Order> QueryByCustomerName(string customerName)
-        {
-            var query = orderList
-                .Where(o => o.customer.customerName == customerName);
-            return query.ToList();
-        }
-
-        public void Sort(Comparison<Order> comparison)
-        {
-            orderList.Sort(comparison);
-        }
-
-        /// <summary>
-        /// Exprot the orders to an xml file.
-        /// </summary>
-        public void Export(String fileName)
-        {
-            if (Path.GetExtension(fileName) != ".xml")
-                throw new ArgumentException("the exported file must be a xml file!");
-            XmlSerializer xs = new XmlSerializer(typeof(List<Order>));
-            using (FileStream fs = new FileStream(fileName, FileMode.Create))
+            if (orderlist.Contains(order))
             {
-                xs.Serialize(fs, this.orderList);
+                throw new ApplicationException("这个订单已存在！");
+            }
+            orderlist.Add(order);
+        }
+        public void RemoveOrder(int ID) //删除指定ID的订单
+        {
+            var query = orderlist.Where(odr => odr.orderID == ID);
+            if (query == null)
+            {
+                throw new ApplicationException("不存在相应ID的订单，删除失败");
+            }
+            orderlist.RemoveAll(odrr => odrr.orderID == ID);
+        }
+        public void UpdateOrder(Order order)//更新订单列表
+        {
+            if (orderlist.Contains(order))
+            {
+                throw new Exception($"orderlist already exists this");
+            }
+            orderlist.Add(order);
+        }
+        public List<Order> SelectedByID(int id)
+        {
+            var query = from od in orderlist where od.orderID == id select od;
+            List<Order> ol = query.ToList();
+            return ol;
+        }
+        public List<Order> SelectedByCustomer(string name)
+        {
+            var query = from od in orderlist where od.customer.customerName == name select od;
+            List<Order> ol = query.ToList();
+            return ol;
+        }
+        public List<Order> SelectedByPrice(int price)
+        {
+            var query = from od in orderlist where od.total == price select od;
+            List<Order> ol = query.ToList();
+            return ol;
+        }
+        public List<Order> SelectedByGoodsName(string goodsName)
+        {
+            var query = orderlist.Where(
+                odr => odr.orderList.Exists(
+                    detail => detail.goods.goodsName == goodsName
+                ));
+            List<Order> ol = query.ToList();
+            return ol;
+        }
+        public void Export()
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Order>));
+            using (FileStream fs = new FileStream("s.xml", FileMode.Create))
+            {
+                xmlSerializer.Serialize(fs, this.orderlist);
             }
         }
-
-        /// <summary>
-        /// import from an xml file
-        /// </summary>
-        public List<Order> Import(string path)
+        public static List<Order> Import()
         {
-            if (Path.GetExtension(path) != ".xml")
-                throw new ArgumentException($"{path} isn't a xml file!");
-            XmlSerializer xs = new XmlSerializer(typeof(List<Order>));
-            List<Order> result = new List<Order>();
-            try
+            using (FileStream fs = new FileStream("s.xml", FileMode.Open))
             {
-                using (FileStream fs = new FileStream(path, FileMode.Open))
-                {
-                    return (List<Order>)xs.Deserialize(fs);
-                }
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Order>));
+                List<Order> olist = (List<Order>)xmlSerializer.Deserialize(fs);
+                return olist;
             }
-            catch (Exception e)
-            {
-                throw new ApplicationException("import error:" + e.Message);
-            }
-
         }
-
     }
 }

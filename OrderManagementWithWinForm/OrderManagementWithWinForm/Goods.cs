@@ -19,7 +19,7 @@ namespace OrderManagementWithWinForm
         }
         public override string ToString()
         {
-            return "货物编码：" + goodsID + " 货物名字：" + goodsName + " 货物价格:" + goodsPrice;
+            return "货物编码：" + goodsID + "货物名字：" + goodsName + "货物价格：" + goodsPrice;
         }
     }
 }

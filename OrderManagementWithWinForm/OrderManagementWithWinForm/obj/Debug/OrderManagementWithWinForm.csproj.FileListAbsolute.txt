@@ -3,6 +3,7 @@ D:\TTtianTT\.Net-Homework\OrderManagementWithWinForm\OrderManagementWithWinForm\
 D:\TTtianTT\.Net-Homework\OrderManagementWithWinForm\OrderManagementWithWinForm\bin\Debug\OrderManagementWithWinForm.pdb
 D:\TTtianTT\.Net-Homework\OrderManagementWithWinForm\OrderManagementWithWinForm\obj\Debug\OrderManagementWithWinForm.csprojAssemblyReference.cache
 D:\TTtianTT\.Net-Homework\OrderManagementWithWinForm\OrderManagementWithWinForm\obj\Debug\OrderManagementWithWinForm.Form1.resources
+D:\TTtianTT\.Net-Homework\OrderManagementWithWinForm\OrderManagementWithWinForm\obj\Debug\OrderManagementWithWinForm.Form2.resources
 D:\TTtianTT\.Net-Homework\OrderManagementWithWinForm\OrderManagementWithWinForm\obj\Debug\OrderManagementWithWinForm.Properties.Resources.resources
 D:\TTtianTT\.Net-Homework\OrderManagementWithWinForm\OrderManagementWithWinForm\obj\Debug\OrderManagementWithWinForm.csproj.GenerateResource.cache
 D:\TTtianTT\.Net-Homework\OrderManagementWithWinForm\OrderManagementWithWinForm\obj\Debug\OrderManagementWithWinForm.csproj.CoreCompileInputs.cache
