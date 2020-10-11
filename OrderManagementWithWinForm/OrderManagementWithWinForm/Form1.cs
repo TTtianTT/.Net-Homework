@@ -59,7 +59,11 @@ namespace OrderManagementWithWinForm
         {
 
         }
-
+        private void QueryAll()
+        {
+            bindingSource1.DataSource = orderService.orderlist;
+            bindingSource1.ResetBindings(false);
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             if (textBox1.Text == null)
@@ -86,6 +90,11 @@ namespace OrderManagementWithWinForm
 
             Form2 form2 = new Form2(orderService);
             form2.ShowDialog();
+        }
+
+        private void bindingSource1_CurrentChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

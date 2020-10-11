@@ -32,15 +32,15 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.alarmText = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.orderIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.totalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -83,6 +83,11 @@
             this.Column2.ReadOnly = true;
             this.Column2.Width = 125;
             // 
+            // bindingSource1
+            // 
+            this.bindingSource1.DataSource = typeof(OrderManagementWithWinForm.Order);
+            this.bindingSource1.CurrentChanged += new System.EventHandler(this.bindingSource1_CurrentChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -117,6 +122,16 @@
             this.alarmText.Size = new System.Drawing.Size(0, 15);
             this.alarmText.TabIndex = 4;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(700, 22);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(137, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "删除/修改订单";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // orderIDDataGridViewTextBoxColumn
             // 
             this.orderIDDataGridViewTextBoxColumn.DataPropertyName = "orderID";
@@ -144,25 +159,11 @@
             this.customerDataGridViewTextBoxColumn.ReadOnly = true;
             this.customerDataGridViewTextBoxColumn.Width = 125;
             // 
-            // bindingSource1
-            // 
-            this.bindingSource1.DataSource = typeof(OrderManagementWithWinForm.Order);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(700, 22);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(137, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "删除/修改订单";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1166, 472);
+            this.ClientSize = new System.Drawing.Size(1169, 447);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.alarmText);
             this.Controls.Add(this.button1);
@@ -188,11 +189,11 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.Label alarmText;
+        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderIDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn customerDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Label alarmText;
-        private System.Windows.Forms.Button button2;
     }
 }
 
