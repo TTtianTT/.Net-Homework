@@ -1,0 +1,638 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="在本篇文章中，我将添加一个新的查询页面（SearchIndex），可以按书籍的种类或名称来进行查询。这个新页面的网址是/Book/ SearchIndex。该页面中用一个下拉框来显示种类，用一文本框让" />
+    <meta property="og:description" content="在本篇文章中，我将添加一个新的查询页面（SearchIndex），可以按书籍的种类或名称来进行查询。这个新页面的网址是/Book/ SearchIndex。该页面中用一个下拉框来显示种类，用一文本框让" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>学习ASP.NET MVC(七)——我的第一个ASP.NET MVC 查询页面 - DotNet菜园 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=jzhy9Oyg5XODXo8F4hsEOQFzKCPYRKZCYc011rNEfQo" />
+    <link id="MainCss" rel="stylesheet" href="/skins/classicblue/bundle-classicblue.min.css?v=C_xOBodTdu7qViYoEOWb5uyE0XIl-SuwRkgFEwSDOCc" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/classicblue/bundle-classicblue-mobile.min.css?v=arJ4BmwdBcUZrSduKjIvQKPiliQ99OBUW7yasPqJtdY" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chillsrc/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chillsrc/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chillsrc/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 13897;
+        var currentBlogApp = 'chillsrc';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'ClassicBlue';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2014-08-17 08:58';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=fLUEwRea4WeqlJe_CLnNunLQZl_ViJFLgKpcNDuKptI"></script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/chillsrc/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/chillsrc/">DotNet菜园</a>
+</h1>
+<h2>
+专注所以专业,专业所以专注
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/chillsrc/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/DotNet%E8%8F%9C%E5%9B%AD">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/chillsrc/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+276&nbsp; </span>
+<span id="stats_article_count">文章 - 
+32&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+836</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chillsrc/p/3918277.html">
+    <span>学习ASP.NET MVC(七)——我的第一个ASP.NET MVC 查询页面</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+    <div id="cnblogs_post_description" style="display: none">
+        在本篇文章中，我将添加一个新的查询页面（SearchIndex），可以按书籍的种类或名称来进行查询。这个新页面的网址是/Book/ SearchIndex。该页面中用一个下拉框来显示种类，用一文本框让用户输入书籍的名称。当用户在点击“搜索”按钮之后，页面会跳转到一个新的页面，控制器会根据用户提交查询参数，由动作方法（Action Motehd）去解析用户提交的参数值，并使用这些值来查询数据库。
+    </div>
+<div id="cnblogs_post_body" class="blogpost-body">
+    <p class="p0">&nbsp;<span style="color: rgba(0, 0, 255, 1); font-size: 16px"><strong><span class="postTitle2">学习ASP.NET MVC 编程系列目录</span></strong></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_44" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/3695382.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(一)——我的第一个ASP.NET MVC应用程序</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_43" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/3708995.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(二)——我的第一个ASP.NET MVC 控制器</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_42" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/3727487.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(三)——我的第一个ASP.NET MVC 视图</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_41" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/3756888.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(四)——我的第一个ASP.NET MVC 实体对象</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_40" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/3805067.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(五)——我的第一个ASP.NET MVC CURD页面</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_39" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/3871829.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(六)——我的第一个ASP.NET MVC 编辑页面</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_38" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/3918277.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(七)——我的第一个ASP.NET MVC 查询页面</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_37" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/4099407.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(八)——“Code First Migrations ”工具</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_36" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/4131023.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(九)——“Code First Migrations ”工具使用示例</span></a></span> </p>
+<p class="p0"><span class="postTitle2" style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_35" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/6479133.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(十)——排序</span></a></span> </p>
+<p align="left"><span style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a id="CategoryEntryList1_EntryStoryList_ctl00_Entries_TitleUrl_34" class="entrylistItemTitle" href="https://www.cnblogs.com/chillsrc/p/6554697.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET MVC(十一)——分页</span></a></span> </p>
+<p class="p0">&nbsp;</p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在本篇文章中，我将添加一个新的查询页面（<span style="font-family: Times New Roman">SearchIndex</span><span style="font-family: 宋体">），可以按</span>书籍的种类或名称来进行查询。这个新页面的网址是<span style="font-size: 16px">http://localhost:36878</span><span style="font-family: Times New Roman">/Book/&nbsp;SearchIndex</span><span style="font-family: 宋体">。该页面</span>中用一个下拉框来显示种类，用一文本框让用户输入书籍的名称。当用户在点击“查询”按钮之后，页面会被刷新，显示用户的查询结果。控制器会根据用户提交查询参数，由动作方法（Action&nbsp;Motehd）去解析用户提交的参数值，并使用这些值来查询数据库。</span></p>
+<p class="p0"><strong><span style="font-size: 16px">第一步，创建SearchIndex查询页面</span></strong><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 首先，在<span style="font-family: Times New Roman">BookController</span><span style="font-family: 宋体">中添加一个</span><span style="font-family: Times New Roman">SearchIndex</span>动作方法。该方法将返回一个包含<span style="font-family: Times New Roman">HTML</span><span style="font-family: 宋体">表单的视图。代码如下：</span></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">public</span> ActionResult SearchIndex(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> searchString)
+        {
+
+           </span><span style="color: rgba(0, 0, 255, 1)">var</span> books = <span style="color: rgba(0, 0, 255, 1)">from</span> m <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> db.Books
+                        </span><span style="color: rgba(0, 0, 255, 1)">select</span><span style="color: rgba(0, 0, 0, 1)"> m;
+
+           </span><span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">String.IsNullOrEmpty(searchString))
+           {
+
+                books </span>= books.Where(s =&gt;<span style="color: rgba(0, 0, 0, 1)"> s.Name.Contains(searchString));
+
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View(books);
+        }</span></pre>
+</div>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 上面SearchIndex方法代码中的第一行如下面，其作用是创建一个LINQ查询从数据库中筛选相应的书籍数据： </span><span style="font-size: 16px"><br></span></p>
+<div class="cnblogs_code">
+<pre>           <span style="color: rgba(0, 0, 255, 1)">var</span> books = <span style="color: rgba(0, 0, 255, 1)">from</span> m <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> db.Books
+                       </span><span style="color: rgba(0, 0, 255, 1)">select</span> m;</pre>
+</div>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这一句表示查询已经建立，但是尚未对数据存储区中的数据进行筛选。&nbsp;</span><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果“searchString”参数变量中有一个字符串，则这个“books”查询语句将以“searchString”参数变量的值做为查询条件进行筛选相应的书籍数据，如下面的代码： <br></span></p>
+<div class="cnblogs_code">
+<pre>   <span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">String.IsNullOrEmpty(searchString))
+            {
+               books </span>= books.Where(s =&gt;<span style="color: rgba(0, 0, 0, 1)"> s.Name.Contains(searchString));
+
+            }</span></pre>
+</div>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 上面代码中的s&nbsp;=&gt;s.Title<span style="font-family: 宋体">代码是一个L</span><span style="font-family: Times New Roman">ambda</span><span style="font-family: 宋体">表达式。&nbsp;</span>Lambda&nbsp;表达式用在基于方法的&nbsp;LINQ&nbsp;查询中,作为诸如&nbsp;Where&nbsp;和&nbsp;Where&nbsp;等标准查询运算符方法的参数。&nbsp;&nbsp;例如上面的代码中使用的方法。<span style="font-family: Times New Roman">LINQ</span><span style="font-family: 宋体">查询时未执行它们的定义，或者当他们通过调用一个方法</span>进行修改，或在排序时进行修改。相反，查询执行的延迟，这意味着一个表达式的计算被延迟，直到其变量实际上的迭代结束或者可以调用的方法(ToList<span style="font-family: 宋体">方法</span>)被调用。在<span style="font-family: Times New Roman">SearchIndex</span>这个页面中，查询是在<span style="font-family: Times New Roman">SearchIndex</span><span style="font-family: 宋体">视图下执行。</span></span></p>
+<p class="p18"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 接下来，我们来制作一个<span style="font-family: Times New Roman">SearchIndex</span>视图，以将这个查询界面呈现给用户看。在Visual Studio中的<span style="font-size: 16px"><span style="font-family: Times New Roman">BookController</span></span>文件中右键单击里面的SearchIndex<span style="font-family: 宋体">方法，在弹出菜单中单击“添加视图”菜单。在添加视图对话框中，指定你要一个</span>Book对象传递给视图模板作为它的模型类。在支架模板列表中，选择列表，然后单击“添加”。如下图。</span></p>
+<p class="p18"><span style="font-size: 16px">&nbsp;<img style="display: block; margin-left: auto; margin-right: auto" src="https://images0.cnblogs.com/i/10343/201408/172054550612076.png" alt=""></span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;</span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 当单击“添加”按钮，将创建一个Views\Book\&nbsp;SearchIndex.cshtml视图模板。因为你选择了列表中的支架模板列表中，Visual&nbsp;Studio会自动生成（搭建）的视图中的一些默认的标记。基架创建一个HTML表单。它检查Book类和创建的代码来呈现为类的每个属性&lt;label&gt;元素。下面的清单显示生成的创建视图：</span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;</span></p>
+<div class="cnblogs_code">
+<pre>@model IEnumerable<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">MvcApplication1</span><span style="color: rgba(255, 0, 0, 1)">.Models.Book</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+@{
+
+    ViewBag.Title = "书籍查询";
+
+}
+
+</span><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">h2</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>书籍查询<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">h2</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+    @Html.ActionLink("Create New", "Create")
+
+</span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">table</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+    <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">tr</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            @Html.DisplayNameFor(model =&gt; model.Category)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.DisplayNameFor(model =&gt; model.Name)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            @Html.DisplayNameFor(model =&gt; model.Numberofcopies)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            @Html.DisplayNameFor(model =&gt; model.AuthorID)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.DisplayNameFor(model =&gt; model.Price)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+            @Html.DisplayNameFor(model =&gt; model.PublishDate)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">th</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">tr</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)"> 
+
+@foreach (var item in Model) {
+
+    </span><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">tr</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.DisplayFor(modelItem =&gt; item.Category)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.DisplayFor(modelItem =&gt; item.Name)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.DisplayFor(modelItem =&gt; item.Numberofcopies)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.DisplayFor(modelItem =&gt; item.AuthorID)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.DisplayFor(modelItem =&gt; item.Price)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.DisplayFor(modelItem =&gt; item.PublishDate)
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+            @Html.ActionLink("Edit", "Edit", new { id=item.BookID }) |
+
+            @Html.ActionLink("Details", "Details", new { id=item.BookID }) |
+
+            @Html.ActionLink("Delete", "Delete", new { id=item.BookID })
+
+        </span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">td</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+
+    <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">tr</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+}
+</span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">table</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<p>&nbsp;</p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 按F5， 运行该应用程序，并使用浏览器导航到<span style="font-family: Times New Roman">/Book/&nbsp;</span>SearchIndex。在<span style="font-family: Times New Roman">URL</span><span style="font-family: 宋体">后面会追加一个查询字符串，如“</span><span style="font-family: Times New Roman">?searchString=sql</span><span style="font-family: 宋体">”。提交之后，符合条件的书籍数据将显示。如下图。</span></span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;<img style="display: block; margin-left: auto; margin-right: auto" src="https://images0.cnblogs.com/i/10343/201408/172055151081534.png" alt=""></span></p>
+<p class="p0"><br><span style="font-size: 16px">&nbsp;</span><strong><span style="font-size: 16px">第三，修改<span style="font-size: 16px"><span style="font-family: Times New Roman">SearchIndex</span></span>查询方法</span></strong><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我们也可以修改<span style="font-family: Times New Roman">SearchIndex</span><span style="font-family: 宋体">方法的参数，传入一个命名参数“</span><span style="font-family: Times New Roman">ID</span><span style="font-family: 宋体">”，这个“</span><span style="font-family: Times New Roman">ID</span><span style="font-family: 宋体">”参数将匹配在</span><span style="font-family: Times New Roman">Global.asax</span><span style="font-family: 宋体">文件中的缺省路由设置中的</span>{id}<span style="font-family: 宋体">占位符。路由设置如下：&nbsp;</span></span></p>
+<div class="cnblogs_code">
+<pre>{controller}/{action}/{id}</pre>
+</div>
+<p class="p0"><span style="font-size: 16px">原来<span style="font-family: Times New Roman">SearchIndex</span><span style="font-family: 宋体">方法如下所示</span><span style="font-family: Times New Roman">:</span></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">public</span> ActionResult SearchIndex(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> searchString)
+      {
+
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> books = <span style="color: rgba(0, 0, 255, 1)">from</span> m <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> db.Books
+
+                         </span><span style="color: rgba(0, 0, 255, 1)">select</span><span style="color: rgba(0, 0, 0, 1)"> m;
+
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">String.IsNullOrEmpty(searchString))
+
+            {
+
+                books </span>= books.Where(s =&gt;<span style="color: rgba(0, 0, 0, 1)"> s.Name.Contains(searchString));
+
+            }
+
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View(books);
+        }</span></pre>
+</div>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 修改后的SearchIndex方法将如下所示：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">public</span> ActionResult SearchIndex(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> id) 
+{ 
+
+      </span><span style="color: rgba(0, 0, 255, 1)">string</span> searchString =<span style="color: rgba(0, 0, 0, 1)"> id;
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> books = <span style="color: rgba(0, 0, 255, 1)">from</span> m <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> db.Books
+                        </span><span style="color: rgba(0, 0, 255, 1)">select</span><span style="color: rgba(0, 0, 0, 1)"> m;
+
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">String.IsNullOrEmpty(searchString))
+            {
+
+                books </span>= books.Where(s =&gt;<span style="color: rgba(0, 0, 0, 1)"> s.Name.Contains(searchString));
+
+            }
+
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View(books);
+}</span></pre>
+</div>
+<p class="p0">&nbsp;<br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 现在，您可以把查询条件“书籍名称”作为路由数据（URL中的一段字符），而不是作为查询字符串值。如下图。</span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;<img style="display: block; margin-left: auto; margin-right: auto" src="https://images0.cnblogs.com/i/10343/201408/172055284988059.png" alt=""></span></p>
+<p class="p0"><strong><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第三，添加“书籍名称”查询条件</span></strong><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp; 通过上面的学习，我们实现了数据查询功能。但是我们不能希望普通用户也能像我们一样，会在URL中添加查询条件。当需要进行查询时，自己去修改URL中的查询条件内容来进行书籍查询。所以，需要添加一个查询页面，方便普通用户输入相应的查询条件，根据查询条件去查询书籍。</span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 一、改变SearchIndex方法的签名，并通过路由绑定到ID参数上，让SearchIndex方法接受一个名为“searchString”字符串作为参数。代码如下：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">public</span> ActionResult SearchIndex(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> searchString) 
+{           
+
+       </span><span style="color: rgba(0, 0, 255, 1)">var</span> books = <span style="color: rgba(0, 0, 255, 1)">from</span> m <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> db.Books
+
+                         </span><span style="color: rgba(0, 0, 255, 1)">select</span><span style="color: rgba(0, 0, 0, 1)"> m;
+
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">String.IsNullOrEmpty(searchString))
+
+            {
+
+                books </span>= books.Where(s =&gt;<span style="color: rgba(0, 0, 0, 1)"> s.Name.Contains(searchString));
+
+            }
+            </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View(books);
+
+}</span></pre>
+</div>
+<p>&nbsp;</p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 二、打开<span style="font-family: Times New Roman">Views\Book\&nbsp;</span>SearchIndex.cshtml文件，在@Html.ActionLink("Create&nbsp;New",&nbsp;"Create")的位置处，添加一个文本框与一个查询按钮。内容如下：&nbsp; <br></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 0, 1)">@using (Html.BeginForm())
+   {    
+
+         </span><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span> 书籍名称: @Html.TextBox("SearchString")<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">br </span><span style="color: rgba(0, 0, 255, 1)">/&gt;</span>  
+
+         <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">input </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="submit"</span><span style="color: rgba(255, 0, 0, 1)"> value</span><span style="color: rgba(0, 0, 255, 1)">="查询"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)"> 
+
+        }</span></pre>
+</div>
+<p class="p0">&nbsp;<span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 下面的代码显示了<span style="font-family: Times New Roman">Views\Book\&nbsp;</span>SearchIndex.cshtml文件的一部分与增加的筛选标记。&nbsp;</span></p>
+<div class="cnblogs_code">
+<pre>@Model IEnumerable<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">MvcApplication1</span><span style="color: rgba(255, 0, 0, 1)">.Models.Book</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+
+@{
+    ViewBag.Title = "书籍查询";
+}
+
+</span><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">h2</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>书籍查询<span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">h2</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">
+   @using (Html.BeginForm())
+
+   {    
+
+         </span><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span> 书籍名称: @Html.TextBox("SearchString")<span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">br </span><span style="color: rgba(0, 0, 255, 1)">/&gt;</span>  
+
+         <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">input </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="submit"</span><span style="color: rgba(255, 0, 0, 1)"> value</span><span style="color: rgba(0, 0, 255, 1)">="查询"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)"> 
+
+        }</span></pre>
+</div>
+<p class="p0"><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这个<span style="font-family: Times New Roman">Html.BeginForm</span>辅助方法创建了一个<span style="font-family: Times New Roman">&lt;form&gt;</span><span style="font-family: 宋体">标签。当用户通过单击“查询”按钮提交表单时，</span><span style="font-family: Times New Roman">Html.BeginForm</span>辅助方法将会把这个Form<span style="font-family: 宋体">中的内容提交给控制器，同时</span>刷新页面。</span><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 三、按F5<span style="font-family: 宋体">，</span>运行该应用程序，并在“书籍名称”文本框中输入“sql”，然后点击“查询”按钮，进行书籍查询。如下图。 <img style="display: block; margin-left: auto; margin-right: auto" src="https://images0.cnblogs.com/i/10343/201408/172055458893571.png" alt=""></span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 还有不需要重载SearchIndex<span style="font-family: 宋体">的</span>HttpPost<span style="font-family: 宋体">的方法。因为该方法不改变应用程序的状态，只是</span>是用来查询数据。&nbsp;</span><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 你可以象下面一样把<span style="font-family: Times New Roman">[HttpPost]</span><span style="font-family: 宋体">加在</span><span style="font-family: Times New Roman">SearchIndex</span><span style="font-family: 宋体">方法的上面。在添加了</span><span style="font-family: Times New Roman">[HttpPost]</span><span style="font-family: 宋体">之后，浏览器将首先调用匹配</span><span style="font-family: Times New Roman">HttpPost</span><span style="font-family: 宋体">的</span><span style="font-family: Times New Roman">SearchIndex</span><span style="font-family: 宋体">方法。</span><span style="font-family: Times New Roman">HttpPost</span><span style="font-family: 宋体">的</span><span style="font-family: Times New Roman">SearchIndex</span><span style="font-family: 宋体">方法运行结果如下图。</span></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 0, 1)">[HttpPost] 
+
+</span><span style="color: rgba(0, 0, 255, 1)">public</span> <span style="color: rgba(0, 0, 255, 1)">string</span> SearchIndex(FormCollection fc, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> searchString) 
+{ 
+
+    </span><span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">&lt;h3&gt; From [HttpPost]SearchIndex: </span><span style="color: rgba(128, 0, 0, 1)">"</span> + searchString + <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">&lt;/h3&gt;</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">; 
+
+}</span></pre>
+</div>
+<p><img style="display: block; margin-left: auto; margin-right: auto" src="https://images0.cnblogs.com/i/10343/201408/172056096862175.png" alt=""></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 然而，即使添加了SearchIndex的HttpPost版本的方法。假设一下如下场景，你想把某个查询结果发给你的朋友，你又想只发一个特定链接给朋友，让他们可以查询查看相同的一个查询结果。请注意，如果是相同的查询结果，一个为HTTP&nbsp;POST请求，另一个为相同的URL&nbsp;GET请求（例如本地主机：XXXXX&nbsp;/图书/&nbsp;SearchIndex&nbsp;）&nbsp;。则HTTP&nbsp;POST请求在URL本身没有带查询参数的情况下，是无法看到查询结果的。如果只是一个URL，这就意味着你与朋友们永远不能看到相同的查询结果。</span><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 你应该使用以下的解决方案，使用BeginForm的重载方法，指定POST请求应该在URL中添加的相应的查询参数信息&nbsp;，它应该被路由到SearchIndex方法的HTTPGET版本。使用下面的代码替换现有参数的BeginForm方法将：如下图。 <br></span></p>
+<div class="cnblogs_code">
+<pre>   @using (Html.BeginForm("SearchIndex", "book", FormMethod.Get))</pre>
+</div>
+<p class="p0"><span style="font-size: 16px">&nbsp;<img style="display: block; margin-left: auto; margin-right: auto" src="https://images0.cnblogs.com/i/10343/201408/172056262487502.png" alt=""></span><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 现在，当你点击“查询”按钮时，URL中将包含查询条件的字符串。查询请求也将去请求HTTPGET的&nbsp;SearchIndex操作方法，即使你有一个HttpPost的SearchIndex方法。如下图。 <img style="display: block; margin-left: auto; margin-right: auto" src="https://images0.cnblogs.com/i/10343/201408/172056395925311.png" alt=""></span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;</span></p>
+<p class="p0"><strong><span style="font-size: 16px">第三，添加“书籍种类”查询方法</span></strong><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第一步，删除代码中HttpPost版本的SearchIndex方法。&nbsp;</span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第二步，添加新的查询功能。在页面中添加一个“书籍种类”的查询条件，让用户可以通过“书籍种类”查询到相关书籍。用下面的代码替换SearchIndex方法： <br></span></p>
+<div class="cnblogs_code">
+<pre>   <span style="color: rgba(0, 0, 255, 1)">public</span> ActionResult SearchIndex(<span style="color: rgba(0, 0, 255, 1)">string</span> Category, <span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)"> searchString)
+  {
+
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> cateLst = <span style="color: rgba(0, 0, 255, 1)">new</span> List&lt;<span style="color: rgba(0, 0, 255, 1)">string</span>&gt;<span style="color: rgba(0, 0, 0, 1)">();
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> cateQry = <span style="color: rgba(0, 0, 255, 1)">from</span> d <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> db.Books
+
+                           </span><span style="color: rgba(0, 0, 255, 1)">orderby</span><span style="color: rgba(0, 0, 0, 1)"> d.Category
+
+                           </span><span style="color: rgba(0, 0, 255, 1)">select</span><span style="color: rgba(0, 0, 0, 1)"> d.Category;
+
+            cateLst.AddRange(cateQry.Distinct());
+
+            ViewBag.category </span>= <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> SelectList(cateLst);
+
+            </span><span style="color: rgba(0, 0, 255, 1)">var</span> books = <span style="color: rgba(0, 0, 255, 1)">from</span> m <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> db.Books
+
+                         </span><span style="color: rgba(0, 0, 255, 1)">select</span><span style="color: rgba(0, 0, 0, 1)"> m;
+
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (!<span style="color: rgba(0, 0, 0, 1)">String.IsNullOrEmpty(searchString))
+           {
+                books </span>= books.Where(s =&gt;<span style="color: rgba(0, 0, 0, 1)"> s.Name.Contains(searchString));
+
+            }
+
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(Category))
+
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View(books);
+
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> View(books.Where(x =&gt; x.Category ==<span style="color: rgba(0, 0, 0, 1)"> Category));
+            }
+        }</span></pre>
+</div>
+<p>&nbsp;</p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这个新的SearchIndex<span style="font-family: 宋体">方法</span>增加了一个新的查询条件，即Category。代码的前几行创建一个<span style="font-family: Calibri">List</span><span style="font-family: 宋体">对象从数据库中查询“书籍种类”，并将查询到的结果添加到</span><span style="font-family: Calibri">List</span><span style="font-family: 宋体">对象中。</span></span></p>
+<p class="p0"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 下面的代码是通过一个<span style="font-family: Times New Roman">LINQ</span><span style="font-family: 宋体">查询从数据库</span>把所有书籍种类都查了出来。&nbsp;&nbsp; <br></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">var</span> cateQry = <span style="color: rgba(0, 0, 255, 1)">from</span> d <span style="color: rgba(0, 0, 255, 1)">in</span><span style="color: rgba(0, 0, 0, 1)"> db.Books
+
+                           </span><span style="color: rgba(0, 0, 255, 1)">orderby</span><span style="color: rgba(0, 0, 0, 1)"> d.Category
+
+                           </span><span style="color: rgba(0, 0, 255, 1)">select</span> d.Category;</pre>
+</div>
+<p class="p0"><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 以下代码的作用是使用泛型<span style="font-family: Times New Roman">List</span><span style="font-family: 宋体">集合的</span><span style="font-family: Times New Roman">AddRange</span><span style="font-family: 宋体">方法所有</span>书籍类型添加到列表中。&nbsp;（如果没有<span style="font-family: Times New Roman">DISTINCT</span><span style="font-family: 宋体">修饰符，</span>会将相同的类型增加到列表中&nbsp;-&nbsp;<span style="font-family: 宋体">例如，</span>MS,SAP将会被我们添加两次）。</span></p>
+<div class="cnblogs_code">
+<pre> cateLst.AddRange(cateQry.Distinct());</pre>
+</div>
+<p><span>&nbsp;&nbsp; &nbsp;&nbsp; 然后，该代码存储在<span style="font-family: Times New Roman">ViewBag</span><span style="font-family: 宋体">对象流派列表。&nbsp;</span></span></p>
+<div class="cnblogs_code">
+<pre>  ViewBag.category = <span style="color: rgba(0, 0, 255, 1)">new</span> SelectList(cateLst);</pre>
+</div>
+<p class="p0"><br style="font-size: 16px"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp; 下面的代码演示如何检查Category参数。如果它不是空的，该代码进一步限制了书的查询所选择的书限制到指定的种类。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></span></p>
+<div class="cnblogs_code">
+<pre> <span style="color: rgba(0, 0, 255, 1)">if</span> (<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">.IsNullOrEmpty(Category))
+
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> View(books);
+            </span><span style="color: rgba(0, 0, 255, 1)">else</span><span style="color: rgba(0, 0, 0, 1)">
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">return</span> View(books.Where(x =&gt; x.Category ==<span style="color: rgba(0, 0, 0, 1)"> Category));
+            }</span></pre>
+</div>
+<p class="p0">&nbsp;<strong><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第四，在SearchIndex查询页面中添加“书籍种类”查询条件&nbsp;</span></strong><br><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 添加一个<span style="font-family: Times New Roman">HTML</span><span style="font-family: 宋体">样式的下拉列表框（</span><span style="font-family: Times New Roman">DropDownList</span><span style="font-family: 宋体">）到</span><span style="font-family: Times New Roman">Views\Book\&nbsp;</span>SearchIndex.cshtml文件中，放在“书籍名称”文本框的前面。已完成的代码如下所示：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)"> 
+
+     @using (Html.BeginForm("SearchIndex","book",FormMethod.Get)){     
+
+         </span><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)">书籍种类： @Html.DropDownList("category", "All")   
+
+           书籍名称： @Html.TextBox("SearchString")   
+
+         </span><span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">input </span><span style="color: rgba(255, 0, 0, 1)">type</span><span style="color: rgba(0, 0, 255, 1)">="submit"</span><span style="color: rgba(255, 0, 0, 1)"> value</span><span style="color: rgba(0, 0, 255, 1)">="查询"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;&lt;/</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span><span style="color: rgba(0, 0, 0, 1)"> 
+
+        } 
+
+</span><span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">p</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<p class="p0" style="text-align: center">&nbsp;<span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 按F5，运行这个应用程序，在浏览器中浏览/Book/&nbsp;SearchIndex这个地址。就可以按“书籍种类”、“书籍名称”进行书籍信息查询。如下图1,图2。</span><br><span style="font-size: 16px">&nbsp;</span><span style="font-size: 16px"><img src="https://images0.cnblogs.com/i/10343/201408/172056597959283.png" alt=""></span></p>
+<p class="p0" style="text-align: center"><span style="font-size: 16px">图1</span></p>
+<p class="p0" style="text-align: center"><img src="https://images0.cnblogs.com/i/10343/201408/172057156553295.png" alt=""><span style="font-size: 16px">&nbsp;</span></p>
+<p class="p0" style="text-align: center"><span style="font-size: 16px">图2</span><br><span style="font-size: 16px">&nbsp;</span><span style="font-size: 16px">在本篇中学习如何创建一个新的查询操作方法和视图，让用户通过书籍名称和书籍类型来进行查询。</span></p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2014-08-17 20:58</span>&nbsp;
+<a href="https://www.cnblogs.com/chillsrc/">DotNet菜园</a>&nbsp;
+阅读(<span id="post_view_count">27513</span>)&nbsp;
+评论(<span id="post_comment_count">4</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=3918277" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(3918277);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 13897, cb_blogApp = 'chillsrc', cb_blogUserGuid = 'c642360b-63cf-dd11-9e4d-001cf0cd104b';
+    var cb_entryId = 3918277, cb_entryCreatedDate = '2014-08-17 20:58', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 DotNet菜园
+<br /><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+</body>
+</html>

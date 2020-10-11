@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="在上面几篇文章的学习之后，组织管理的新增功能的前端与后台功能基本实现了我们所要。今天开始我们要通过WebAPI来替换控制器中的操作方法。在学习WebAPI之前，我先来介绍一下Swagger这个组件。" />
+    <meta property="og:description" content="在上面几篇文章的学习之后，组织管理的新增功能的前端与后台功能基本实现了我们所要。今天开始我们要通过WebAPI来替换控制器中的操作方法。在学习WebAPI之前，我先来介绍一下Swagger这个组件。" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>abp(net core)+easyui+efcore实现仓储管理系统——ABP WebAPI与EasyUI结合增删改查之七(三十三) - DotNet菜园 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=jzhy9Oyg5XODXo8F4hsEOQFzKCPYRKZCYc011rNEfQo" />
+    <link id="MainCss" rel="stylesheet" href="/skins/classicblue/bundle-classicblue.min.css?v=C_xOBodTdu7qViYoEOWb5uyE0XIl-SuwRkgFEwSDOCc" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/classicblue/bundle-classicblue-mobile.min.css?v=arJ4BmwdBcUZrSduKjIvQKPiliQ99OBUW7yasPqJtdY" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chillsrc/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chillsrc/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chillsrc/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 13897;
+        var currentBlogApp = 'chillsrc';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'ClassicBlue';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-01-02 09:53';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=fLUEwRea4WeqlJe_CLnNunLQZl_ViJFLgKpcNDuKptI"></script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/chillsrc/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/chillsrc/">DotNet菜园</a>
+</h1>
+<h2>
+专注所以专业,专业所以专注
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/chillsrc/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/DotNet%E8%8F%9C%E5%9B%AD">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/chillsrc/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+276&nbsp; </span>
+<span id="stats_article_count">文章 - 
+32&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+836</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chillsrc/p/12142220.html">
+    <span>abp(net core)+easyui+efcore实现仓储管理系统——ABP WebAPI与EasyUI结合增删改查之七(三十三)</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+    <div id="cnblogs_post_description" style="display: none">
+        在上面几篇文章的学习之后，组织管理的新增功能的前端与后台功能基本实现了我们所要。今天开始我们要通过WebAPI来替换控制器中的操作方法。在学习WebAPI之前，我先来介绍一下Swagger这个组件。
+    </div>
+<div id="cnblogs_post_body" class="blogpost-body">
+    <h3><span style="font-family: 仿宋; color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11231284.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统目录</span></a></span></h3>
+<div><span style="font-family: 宋体; color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" href="https://www.cnblogs.com/chillsrc/p/10913047.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——ABP总体介绍(一）</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-family: 宋体; font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/10944870.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——解决方案介绍(二)</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/10980974.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——领域层创建实体(三)</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px">&nbsp;<a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11024357.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——定义仓储并实现 (四)</span></a></span></div>
+<p align="left"><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11065667.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——创建应用服务（五）</span></a></span></p>
+<div align="left"><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11096690.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——展现层实现增删改查之控制器（六）</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11124614.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——展现层实现增删改查之列表视图（七）</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11159642.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——展现层实现增删改查之增删改视图（八）</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_0" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11195189.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——展现层实现增删改查之菜单与测试（九）</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_1" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11269737.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——多语言（十）</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a id="homepage1_HomePageDays_DaysList_ctl00_DayList_TitleUrl_1" class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11269737.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——使用 WEBAPI实现CURD (十一)</span></a></span></div>
+<div align="left"><span style="font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11448287.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——菜单-上 (十六) </span></a></span></div>
+<p align="left"><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11533414.html"><span style="color: rgba(0, 0, 255, 1)"> abp(net core)+easyui+efcore实现仓储管理系统——EasyUI前端页面框架 (十八) </span></a></span></p>
+<div align="left"><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11573043.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——EasyUI之货物管理一 (十九) </span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11770233.html"><span style="color: rgba(0, 0, 255, 1)"> abp(net core)+easyui+efcore实现仓储管理系统——EasyUI之货物管理六(二十四) </span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11804797.html"><span style="color: rgba(0, 0, 255, 1)"> abp(net core)+easyui+efcore实现仓储管理系统——EasyUI之货物管理七(二十五) </span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11842320.html"><span style="color: rgba(0, 0, 255, 1)"> abp(net core)+easyui+efcore实现仓储管理系统——EasyUI之货物管理八(二十六) </span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px">&nbsp;<a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11899403.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——ABP WebAPI与EasyUI结合增删改查之一(二十七) </span></a></span></div>
+<div align="left"><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11935424.html"><span style="color: rgba(0, 0, 255, 1)">abp(net core)+easyui+efcore实现仓储管理系统——ABP WebAPI与EasyUI结合增删改查之二(二十八)</span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/11975823.html"><span style="color: rgba(0, 0, 255, 1)"> abp(net core)+easyui+efcore实现仓储管理系统——ABP WebAPI与EasyUI结合增删改查之三(二十九) </span></a></span></div>
+<div><span style="color: rgba(0, 0, 255, 1); font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/12048585.html"><span style="color: rgba(0, 0, 255, 1)"> abp(net core)+easyui+efcore实现仓储管理系统——ABP WebAPI与EasyUI结合增删改查之四(三十) </span></a></span></div>
+<div><span style="font-size: 16px"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/12072901.html"><span style="color: rgba(0, 0, 255, 1)"> abp(net core)+easyui+efcore实现仓储管理系统——ABP WebAPI与EasyUI结合增删改查之五(三十一) </span></a></span></div>
+<div>
+<div><span style="font-size: 16px; color: rgba(0, 0, 255, 1)"><a class="postTitle2" href="https://www.cnblogs.com/chillsrc/p/12116075.html"><span style="color: rgba(0, 0, 255, 1)"> abp(net core)+easyui+efcore实现仓储管理系统——ABP WebAPI与EasyUI结合增删改查之六(三十二) </span></a></span></div>
+</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>
+<p><span style="font-size: 16px"><span style="font-family: 宋体">&nbsp;&nbsp;&nbsp;&nbsp; 在上面几篇文章的学习之后，组织管理的新增功能的前端与后台功能基本实现了我们所要。今天</span><span style="font-family: 宋体">开始</span><span style="font-family: 宋体">我们</span><span style="font-family: 宋体">要通过</span>WebAPI<span style="font-family: 宋体">来替换控制器中的操作方法。在学习</span>WebAPI之前，我先来介绍一下Swagger这个组件。</span></p>
+<p><span style="font-size: 16px">&nbsp;</span></p>
+<h1><span style="font-size: 16px"><strong><span style="font-family: 宋体">十三、</span></strong><strong>Swagger</strong><strong><span style="font-family: 宋体">管理</span></strong><strong>WEBAPI</strong></span></h1>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Swagger兼具了API文档管理和测试的功能,而且保证了代码和文档的一致性。它提供了无需任何实现逻辑的RESTfulAPI的UI表示。它允许用户在没有任何代码访问的情况下了解服务的功能，并减少创建服务文档的时间。</span></p>
+<p><span style="font-size: 16px"> &nbsp;&nbsp;Swagger使用swagger工具基于我们编写的服务代码生成的swagger.json文件来生成文档管理界面。此文件描述服务的功能，即服务支持多少方法，并提供有关方法参数的信息。使用这个文件，SwaggerUI生成客户机代码<span style="font-family: 宋体">。</span><span style="font-family: 宋体">下面</span><span style="font-family: 宋体">我们通过调用新增组织信息的</span>WEBAPI接口不成功为示例来学习一下ABP中的Swagger<span style="font-family: 宋体">使用。</span></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.在“添加组织信息”界面中输入相应的组织信息之后，点击“保存”按钮 。在弹出的确认对话框中点击“确定”按钮。在弹出的“保存成功”确认对话框中点击“确定”按钮。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102214859109-1968692908.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.如果保存界面一直是正在保存界面。见下图。首先我们去启动“ABP.TPLMS.Web.Host”项目，通过Swagger<span style="font-family: 宋体">来看看</span><span style="font-family: 宋体">我们的</span>WebAPI是否可用。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102214916895-712948468.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.我们把“ABP.TPLMS.WEB.Host”项目设为启动项目，然后在Visual Studio 2017中按F5启动swagger应用程序。生成并浏览WEBAPI，但是swagger并没有生成WEBAPI，只是给了一个错误信息。如下图。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102214928194-23786013.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.&nbsp;<span style="font-family: 宋体">在</span>Visual Studio 2017的“解决方案资源管理器”中，找到<span style="font-family: 宋体">领域层</span>“ABP.TPLMS.Web.Host”项目中的App_Data\Logs<span style="font-family: 宋体">目录下找到</span>Logs.txt。<span style="font-family: 宋体">在日志文件中看到</span>ABP写入的错误信息。错误信息如下：</span></p>
+<p><strong><span style="font-size: 16px">System.NotSupportedException: HTTP method "DELETE" &amp; path "api/services/app/Cargo/Delete" overloaded by actions - ABP.TPLMS.Cargos.CargoAppService.Delete (ABP.TPLMS.Application),ABP.TPLMS.Cargos.CargoAppService.Delete (ABP.TPLMS.Application).</span></strong></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp; 5.根据上面的错误信息，我们发现由于之前我们在写货物信息页面时的一个重载方法造成的。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp; 6.&nbsp;<span style="font-family: 宋体">在</span>Visual Studio 2017的“解决方案资源管理器”中，找到“ABP.TPLMS.Application”项目中的“Cargos”目录，找到ICargoAppService.cs文件，把“Delete”方法改为“DeleteBatch”方法。如下图。</span></p>
+<p><span style="font-size: 16px"><img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102214952114-882337260.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7.&nbsp;<span style="font-family: 宋体">在</span>Visual Studio 2017的“解决方案资源管理器”中，找到“ABP.TPLMS.Application”项目中的“Cargos”目录，找到CargoAppService.cs文件，把“Delete”方法改为“DeleteBatch”方法。如下图。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102215005157-2105235270.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp; 8.&nbsp;<span style="font-family: 宋体">在</span>Visual Studio 2017的“解决方案资源管理器”中，找到“ABP.TPLMS.Web.Mvc”项目中的“Controller”目录，找到CargoController.cs文件，把“Delete”方法中原来调用“Delete”方法，改为调用“DeleteBatch”方法。如下图。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102215015162-1434143791.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9.&nbsp;<span style="font-family: 宋体">在</span>Visual Studio 2017的解决方案资源管理器中，把<span style="font-size: 16px">“ABP.TPLMS.Web.Host”项目设为启动项目，然后</span>按F5运行。结果<span style="font-family: 宋体">如下图。</span><span style="font-family: 宋体">正如</span><span style="font-family: 宋体">图中所示</span><span style="font-family: 宋体">，它对每个</span>HTTP动词使用不同的颜色代码。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102215033323-1285698528.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp; 10.&nbsp;<span style="font-family: 宋体">当我们单击任何操作方法时，</span>Swagger会显示这个方法所需要的参数和测试按钮。如下图。</span></p>
+<p><span style="font-size: 16px"><img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102215155877-2115591612.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp; 11.&nbsp;<span style="font-family: 宋体">当我们单击</span>“Try It out”按钮时，它将询问参数详细信息<span style="font-family: 宋体">。我们在参数中填写参数值，然后点击</span>“Execute”按钮，<span style="font-family: 宋体">它将向</span>Web API发送请求。<span style="font-family: 宋体">如下图。</span></span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102215212093-1489126456.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp; 12.&nbsp;Org的WebAPI<span style="font-family: 宋体">方法</span>Get，返回结果<span style="font-family: 宋体">，</span><span style="font-family: 宋体">如下图。测试正常。</span></span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://img2018.cnblogs.com/blog/10343/202001/10343-20200102215221356-518614756.png" alt=""></span></p>
+</div>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-01-02 21:53</span>&nbsp;
+<a href="https://www.cnblogs.com/chillsrc/">DotNet菜园</a>&nbsp;
+阅读(<span id="post_view_count">1087</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12142220" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12142220);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 13897, cb_blogApp = 'chillsrc', cb_blogUserGuid = 'c642360b-63cf-dd11-9e4d-001cf0cd104b';
+    var cb_entryId = 12142220, cb_entryCreatedDate = '2020-01-02 21:53', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 DotNet菜园
+<br /><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+</body>
+</html>

@@ -1,0 +1,800 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="never" />
+    <meta name="description" content="软工结对编程项目作业 &amp; 一款小学生四则计算练习APP" />
+    <meta property="og:description" content="软工结对编程项目作业 &amp; 一款小学生四则计算练习APP" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>这就是小学生也会用的四则计算练习APP吗？- by软工结对编程项目作业 - DMingO - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=jzhy9Oyg5XODXo8F4hsEOQFzKCPYRKZCYc011rNEfQo" />
+    <link id="MainCss" rel="stylesheet" href="/skins/simplememory/bundle-simplememory.min.css?v=uknaX_hejnSu-njQgx4Hj1R0JiPLwUhFPUlwWNmWyB4" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/SimpleMemory/bundle-SimpleMemory-mobile.min.css" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/DMingO/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/DMingO/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/DMingO/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 600029;
+        var currentBlogApp = 'DMingO';
+        var cb_enable_mathjax = true;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleMemory';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-10-11 02:55';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=fLUEwRea4WeqlJe_CLnNunLQZl_ViJFLgKpcNDuKptI"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], processClass: 'math', processEscapes: true },
+        TeX: {
+        equationNumbers: { autoNumber: ['AMS'], useLabelIds: true },
+        extensions: ['extpfeil.js', 'mediawiki-texvc.js'],
+        Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': { linebreaks: { automatic: true } },
+        SVG: { linebreaks: { automatic: true } }
+        });
+    </script>
+    <script src="https://mathjax.cnblogs.com/2_7_5/MathJax.js?config=TeX-AMS-MML_HTMLorMML&amp;v=20200504"></script>
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <script>loadPageBeginHtml();</script>
+    </div>
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/DMingO/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/DMingO/">DMingO's blog</a>
+</h1>
+<h2>
+
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li>
+</li>
+<li>
+
+</li>
+<li>
+
+
+</li>
+<li>
+</li>
+<li>
+
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+31&nbsp; </span>
+<span id="stats_article_count">文章 - 
+0&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+5</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/DMingO/p/13797457.html">
+    <span>这就是小学生也会用的四则计算练习APP吗？- by软工结对编程项目作业</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+    <div id="cnblogs_post_description" style="display: none">
+        软工结对编程项目作业 & 一款小学生四则计算练习APP
+    </div>
+<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+    <h1 id="结对编程项目">结对编程项目</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align: center"><strong>软件工程</strong></th>
+<th style="text-align: center"><a href="https://edu.cnblogs.com/campus/gdgy/informationsecurity1812/">这就是链接</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">作业要求</td>
+<td style="text-align: center"><a href="https://edu.cnblogs.com/campus/gdgy/informationsecurity1812/homework/11157">这就是链接</a></td>
+</tr>
+<tr>
+<td style="text-align: center">作业目标</td>
+<td style="text-align: center">熟悉在未结对情况下如何结对开发项目</td>
+</tr>
+</tbody>
+</table>
+<h2 id="github与合作者">Github与合作者</h2>
+<p>合作者（学号）：</p>
+<ul>
+<li>区德明：318005422</li>
+<li>虚左以待</li>
+</ul>
+<p>Github链接：<br>
+<a href="https://github.com/DMingOu/CalculateExercise">https://github.com/DMingOu/CalculateExercise</a></p>
+<p>由于本来的合作者临时有事不能和我一起结对编程，所以我也只好咬咬牙单刀赴会了。</p>
+<p>因为本次的题目要求有图形化界面，而我也学过移动开发的，所以一不做二不休，直接提刀杀进AndroidStudio，开始<s>秃头</s>设计一款小学生也能用的四则计算题练习工具App，一来可以简化方便操作和展示，二来也算是在众多.exe中里面可以独树一帜。</p>
+<h2 id="一、psp">一、PSP</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left">PSP2.1</th>
+<th style="text-align: left">Personal Software Process Stages</th>
+<th>预估耗时 （分钟）</th>
+<th>实际耗时 （分钟）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left">Planning</td>
+<td style="text-align: left"><strong>计划</strong></td>
+<td>25</td>
+<td>38</td>
+</tr>
+<tr>
+<td style="text-align: left">· Estimate</td>
+<td style="text-align: left">· 估计这个任务需要多少时间</td>
+<td>25</td>
+<td>38</td>
+</tr>
+<tr>
+<td style="text-align: left">Development</td>
+<td style="text-align: left"><strong>开发</strong></td>
+<td>945</td>
+<td>830</td>
+</tr>
+<tr>
+<td style="text-align: left">· Analysis</td>
+<td style="text-align: left">· 需求分析 (包括学习新技术)</td>
+<td>75</td>
+<td>130</td>
+</tr>
+<tr>
+<td style="text-align: left">· Design Spec</td>
+<td style="text-align: left">· 生成设计文档</td>
+<td>100</td>
+<td>80</td>
+</tr>
+<tr>
+<td style="text-align: left">· Design Review</td>
+<td style="text-align: left">· 设计复审</td>
+<td>60</td>
+<td>35</td>
+</tr>
+<tr>
+<td style="text-align: left">· Coding Standard</td>
+<td style="text-align: left">· 代码规范 (为目前的开发制定合适的规范)</td>
+<td>30</td>
+<td>60</td>
+</tr>
+<tr>
+<td style="text-align: left">· Design</td>
+<td style="text-align: left">· 具体设计</td>
+<td>120</td>
+<td>110</td>
+</tr>
+<tr>
+<td style="text-align: left">· Coding</td>
+<td style="text-align: left">· 具体编码</td>
+<td>260</td>
+<td>260</td>
+</tr>
+<tr>
+<td style="text-align: left">· Code Review</td>
+<td style="text-align: left">· 代码复审</td>
+<td>60</td>
+<td>45</td>
+</tr>
+<tr>
+<td style="text-align: left">· Test</td>
+<td style="text-align: left">· 测试 (自我测试，修改代码，提交修改)</td>
+<td>95</td>
+<td>110</td>
+</tr>
+<tr>
+<td style="text-align: left">Reporting</td>
+<td style="text-align: left"><strong>报告</strong></td>
+<td>120</td>
+<td>105</td>
+</tr>
+<tr>
+<td style="text-align: left">· Test Repor</td>
+<td style="text-align: left">· 测试报告</td>
+<td>60</td>
+<td>50</td>
+</tr>
+<tr>
+<td style="text-align: left">· Size Measurement</td>
+<td style="text-align: left">· 计算工作量</td>
+<td>30</td>
+<td>30</td>
+</tr>
+<tr>
+<td style="text-align: left">· Postmortem &amp; Process Improvement Plan</td>
+<td style="text-align: left">· 事后总结, 并提出过程改进计划</td>
+<td>30</td>
+<td>25</td>
+</tr>
+<tr>
+<td style="text-align: left"></td>
+<td style="text-align: left">· 合计</td>
+<td>1090</td>
+<td>973</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二、四则运算练习工具app需求分析">二、四则运算练习工具APP需求分析</h2>
+<table>
+<thead>
+<tr>
+<th>需求描述</th>
+<th>是否实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>控制生成题目的个数</td>
+<td>是</td>
+</tr>
+<tr>
+<td>控制题目中数值范围</td>
+<td>是</td>
+</tr>
+<tr>
+<td>计算过程不能产生负数，除法的结果必须是真分数，题目不能重复，运算符不能超过3个</td>
+<td>是</td>
+</tr>
+<tr>
+<td>显示题目</td>
+<td>是</td>
+</tr>
+<tr>
+<td>显示答案</td>
+<td>是</td>
+</tr>
+<tr>
+<td>能支持一万道题目的生成</td>
+<td>是</td>
+</tr>
+<tr>
+<td>判定答案中的对错并进行数量统计</td>
+<td>是</td>
+</tr>
+<tr>
+<td>显示得分结果</td>
+<td>是</td>
+</tr>
+<tr>
+<td>具有图形化的操作界面</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h2 id="三、app开发计划">三、APP开发计划</h2>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>描述</th>
+<th>开发者</th>
+<th>进度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生成题目</td>
+<td>随机生成操作数和运算符，组成有效的四则运算表达式</td>
+<td>区德明</td>
+<td>完成</td>
+</tr>
+<tr>
+<td>计算结果</td>
+<td>根据生成的表达式，计算生成正确的结果</td>
+<td>区德明</td>
+<td>完成</td>
+</tr>
+<tr>
+<td>练习报告</td>
+<td>输出成绩结果</td>
+<td>区德明</td>
+<td>完成</td>
+</tr>
+<tr>
+<td>UI界面设计</td>
+<td>设计软件的界面设计XML</td>
+<td>区德明</td>
+<td>完成</td>
+</tr>
+<tr>
+<td>UI界面实现</td>
+<td>使用Kotlin语言实现 Andoid APP</td>
+<td>区德明</td>
+<td>完成</td>
+</tr>
+<tr>
+<td>功能测试与故障修复</td>
+<td>测试程序的功能，修复出现的故障</td>
+<td>区德明</td>
+<td>完成</td>
+</tr>
+<tr>
+<td>性能分析与优化</td>
+<td>分析程序执行的性能，优化性能表现</td>
+<td>区德明</td>
+<td>完成</td>
+</tr>
+</tbody>
+</table>
+<h4 id="结构图">结构图</h4>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201010222426647.png" alt="image-20201010222426647" loading="lazy"></p>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201010222450625.png" alt="image-20201010222450625" loading="lazy"></p>
+<h2 id="四、方案">四、方案</h2>
+<h3 id="41-生成题目的算法设计思路">4.1 生成题目的算法设计思路</h3>
+<p>线程池多线程并发，创建指定数量的题目，并利用Set集合进行去重操作。</p>
+<p>核心代码如下：</p>
+<p>执行生成题目的线程任务类</p>
+<pre><code class="language-kotlin">    /**
+     * 执行生成指定数量题目任务
+     * 线程类
+     */
+    private class GenerateWorker(
+        private val exerciseNum: Int, //生成数量
+        private val numRange: Int, //范围上限
+        private val workerIndex: Int,  //工作线程的编号
+        private val countDownLatch: CountDownLatch,
+        private val tempList : MutableList&lt;Exercise&gt;
+    ) : Runnable {
+        override fun run() {
+            try {
+                val start = System.currentTimeMillis()
+                val exerciseList = generateExercises(
+                    exerciseNum, numRange
+                )
+                //将 去重但是未编号的 列表 加入缓冲列表中
+                tempList.addAll(exerciseList)
+                countDownLatch.countDown()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+</code></pre>
+<p>执行完善收尾操作的线程任务：</p>
+<pre><code class="language-kotlin">    /**
+     * 用于补充题目序号， 完善，的任务
+     */
+    private class SupplyWorker(
+        private val exerciseNum: Int,
+        private val countDownLatch: CountDownLatch,
+        private val tempList : MutableList&lt;Exercise&gt; ,
+        private var startIndex : Int ,
+        private val mHandler: QuestionListHandler   //回调UI线程
+    ) : Runnable {
+        override fun run() {
+            getExerciseOnCount(exerciseNum)
+            countDownLatch.countDown()
+            //根据已有的列表数据，进行编号
+            for(exercise in tempList) {
+                startIndex++
+                exercise.number = startIndex
+            }
+            updateGlobalExerciseList(tempList)
+            //通知 View层更新内容
+            val message = Message()
+            message.what = 666
+            mHandler.dispatchMessage(message)
+        }
+    }
+</code></pre>
+<p>提供给外界调用的入口：</p>
+<pre><code class="language-kotlin">fun produce(exerciseNumber: Int, numberRange: Int,startIndex : Int, handler: QuestionListHandler) {
+            if (exerciseNumber == 0 || numberRange == 0) {
+                return
+            }
+            //最小范围是2
+            if (numberRange &lt; 2) {
+                throw RuntimeException("范围上限不可以少于2")
+            }
+            //手工计时器启动
+            start = System.currentTimeMillis()
+
+            //设置本次加载的起始序号
+            this.startIndex  = startIndex
+
+            //每个线程的工作量
+            val workload = 25
+            //记录线程编号
+            var index = 1
+            //剩余工作量
+            var remainWorkload = exerciseNumber
+            //启动创建题目的线程组
+            val threadCount = if (exerciseNumber % workload == 0)
+                exerciseNumber / workload
+            else
+                exerciseNumber / workload + 1
+            //生成线程+一个输出线程
+            countDownLatch = CountDownLatch(threadCount + 1)
+
+            //任务正式启动前。清空缓存列表,避免脏数据
+            tempExerciseList.clear()
+
+            while (true) {
+                //执行生成题目的任务线程，编号对应
+                remainWorkload -= if (remainWorkload &gt; workload) {
+                    execute(
+                        GenerateWorker(
+                            workload,
+                            numberRange,
+                            index++,
+                            countDownLatch,
+                            tempExerciseList
+                        )
+                    )
+                    workload
+                } else {
+                    execute(
+                        GenerateWorker(
+                            remainWorkload,
+                            numberRange,
+                            index,
+                            countDownLatch,
+                            tempExerciseList
+                        )
+                    )
+                    break
+                }
+            }
+            //启动完善每一道题的任务
+            execute(SupplyWorker(exerciseNumber, countDownLatch  ,tempExerciseList ,startIndex  , handler))
+            //数据创建完毕，重置状态
+            countDownLatch.await()
+            clear()
+    }
+</code></pre>
+<p>生成题目的操作，实际执行：</p>
+<pre><code class="language-kotlin">    @JvmStatic
+    fun generateExercises(exercisesNum: Int, numRange: Int  , startIndex : Int = -1): List&lt;Exercise&gt; {
+        //控制编号
+        var index = startIndex
+        //如果没有传入编号则视为生成时不做编号处理
+        val isSetIndex = index!=-1
+        //控制生成循环的结束
+        var count = 0
+        val exerciseList: MutableList&lt;Exercise&gt; = ArrayList()
+        while (count &lt; exercisesNum) {
+            val exercise = generateQuestion(numRange)
+            generateAnswer(exercise)
+            //有效题目加入List
+            if (validate(exercise)) {
+                count++
+                if(isSetIndex) {
+                    index++
+                    //设置序号
+                    exercise.number = index
+                }
+                //生成可以输出的题目样式
+                EXERCISE_QUEUE.add(exercise)
+                exerciseList.add(exercise)
+                //放入去重Set，用作判断
+                exercisesSet.add(exercise.simplestFormatQuestion)
+            }
+        }
+        return exerciseList
+    }
+</code></pre>
+<h3 id="42-客户端（用户入口）的设计思路">4.2 客户端（用户入口）的设计思路</h3>
+<p>采用单Activity+多Fragment的架构。</p>
+<ul>
+<li>util包提供算法和数据源的能力</li>
+<li>View包承载页面UI的显示，</li>
+<li>bean包存放实体类信息</li>
+<li>widget包存放的是一些自定义控件</li>
+</ul>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011122020373.png" alt="image-20201011122020373" loading="lazy"></p>
+<h2 id="五、效能分析">五、效能分析</h2>
+<p>通过大厂滴滴的开源性能工具平台，<strong>DoKit</strong>，接入App，进行性能的进一步分析，如下：</p>
+<h3 id="51-程序效能">5.1 程序效能</h3>
+<p>使用APP的出题功能，分别生成1000道，2000道，10000道题目不同的消耗内存情况</p>
+<ul>
+<li>生成1000道题目时，只需要130MB</li>
+<li>生成2000道题目时，只需要155MB</li>
+<li>生成10000道题目的时候，就需要1005MB了</li>
+</ul>
+<p>可以认为题目的数量影响着App的运行时所消耗的资源及内存，并随着题目的数量成正比例关系。</p>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201010231808068.png" alt="image-20201010231808068" width="40%" height="40%">      <img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201010231844289.png" alt="image-20201010231844289" width="40%" height="40%"></p>
+<img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201010231855561.png" alt="image-20201010231855561" width="40%" height="40%"> 
+<p>cpu消耗如下：</p>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011001304759.png" alt="image-20201011001304759" loading="lazy"></p>
+<p>页面打开跳转的时长：</p>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011001331114.png" alt="image-20201011001331114" loading="lazy"></p>
+<h3 id="52--性能优化">5.2  性能优化</h3>
+<h4 id="首轮优化">首轮优化</h4>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011010219147.png" alt="image-20201011010219147" loading="lazy"></p>
+<p>可以看出线程池的线程配置对于大数据量非常重要，从生成10000条题目为例子，在4个线程在并发的创建对象的时候，因为设置的单个线程任务量为2000，无法完成剩下的2000任务，只能等4个线程任务都完成后再创建新线程执行任务。</p>
+<h5 id="解决方案：调整线程池的配置，提高线程的数量，提高每个生成题目的线程的任务数量">解决方案：调整线程池的配置，提高线程的数量，提高每个生成题目的线程的任务数量</h5>
+<h5 id="优化后的结果：">优化后的结果：</h5>
+<p>线程池复用线程，分页加载50条数据，逐步的加载出全部的数据，分散内存和CPU的密集消耗。</p>
+<p>优化后的生成10000条数据，耗时从10秒提高到了7秒，提升了30%。如果继续对线程池的配置进行优化，效率还会继续提高。</p>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011010812858.png" alt="image-20201011010812858" loading="lazy"></p>
+<p>进一步优化</p>
+<h4 id="但是对于移动应用来说，加载时间的耗时始终是大问题，让用户觉得等待时间过长，同时会有卡顿的问题，亟待解决，所以下面要通过性能分析工具，分析哪个步骤流程才是在生成题目列表的过程中造成卡顿呢？？通过dokit的卡顿堆栈分析图：">但是对于移动应用来说，加载时间的耗时始终是大问题，让用户觉得等待时间过长，同时会有卡顿的问题，亟待解决，所以下面要通过性能分析工具，分析哪个步骤流程才是在生成题目列表的过程中造成卡顿呢？？通过DoKit的卡顿堆栈分析图：</h4>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011001457567.png" alt="image-20201011001457567" loading="lazy"></p>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011001632545.png" alt="image-20201011001632545" loading="lazy"></p>
+<p>可以看出卡顿 与 打开页面，创建对应数据，数据创建后，列表UI开始加载数据， 频繁大量地创建View对象息息相关。</p>
+<h5 id="进一步解决方案：分页加载">进一步解决方案：分页加载</h5>
+<p>数据量过大的时候，其实不需要一口气全部加载进去，可以采用分页加载的方式加载与创建对象，吞吐量减少的同时CPU和内存的占用也降低了。从另一个角度讲，页面也无必要一口气加载上千条乃至万条的数据 <s>( 屏幕就这么大 ,用户看不过来)</s></p>
+<p>设定分页加载题目的方式，每页固定数量为 50 ，若所需数量不足50条，则继续加载所需的数量题目。</p>
+<p>打开性能检测平台的监控 CPU，内存  ，帧率</p>
+<p><strong>未加载数据前：</strong></p>
+<img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011104239338.png" alt="image-20201011104239338" width="40%" height="40%">
+<p><strong>打开页面，加载10000条数据：</strong></p>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011104308452.png" alt="image-20201011104308452" width="40%" height="40%">        <img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011104425338.png" alt="image-20201011104425338" width="40%" height="40%"></p>
+<p>可以看出，优化后，加载大数据，对页面的影响小了很多，CPU和内存的短时间消耗急剧降低，对App这种只拥有固定内存（少量）的进程，可以有很不错的效果。</p>
+<h2 id="六、app真机测试报告">六、APP真机测试报告</h2>
+<h3 id="61-测试1：程序生成四则计算题和答案是否符合题目要求">6.1 测试1：程序生成四则计算题和答案是否符合题目要求</h3>
+<img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/2020-10-11_12-4-36.PNG" alt="2020-10-11_12-4-36" width="38%" height="38%">
+<p><strong>结果说明：</strong></p>
+<p>以上为测试生成100道数值10以内的题目的截图</p>
+<p>可以得出结论，看到题目是符合去重的要求且答案是正确的</p>
+<h3 id="62--测试2：程序是否能正确判断用户输入答案的正确性">6.2  测试2：程序是否能正确判断用户输入答案的正确性</h3>
+<p>以 6 道题目为例子，查看练习情况报告，可以看到可以给出正确答案提示，以及完成的情况，错对情况，得分率，很详细。</p>
+<img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011120046984.png" alt="image-20201011120046984" width="40%" height="40%">
+<h3 id="63-测试3：能否支持一万道题目的生成与显示">6.3 测试3：能否支持一万道题目的生成与显示</h3>
+<p>在出题模式下执行生成10000道数值范围在5以内的题目的功能</p>
+<p><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011115726814.png" alt="image-20201011115726814" width="40%" height="40%">      <img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011115734721.png" alt="image-20201011115734721" width="40%" height="40%"></p>
+<h3 id="最终效果">最终效果</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center"><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011122643614.png" alt="image-20201011122643614" width="60%" height="60%"></th>
+<th style="text-align: center"><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011122651433.png" alt="image-20201011122651433" width="60%" height="60%"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center"><strong>首页</strong></td>
+<td style="text-align: center"><strong>题目列表</strong></td>
+</tr>
+<tr>
+<td style="text-align: center"><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011133555193.png" alt="image-20201011133555193" width="60%" height="60%"></td>
+<td style="text-align: center"><img src="http://picbed-dmingou.oss-cn-shenzhen.aliyuncs.com/img/image-20201011133603583.png" alt="image-20201011133603583" width="60%" height="60%"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>练习做题</strong></td>
+<td style="text-align: center"><strong>练习情况报告</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="七、总结">七、总结</h2>
+<h3 id="项目小结">项目小结</h3>
+<p><strong>获得的经验：</strong></p>
+<p>虽说只是做了一个小工程，从中也学习到了多线程的相关知识，数据结构的使用和APP界面的设计与布局。</p>
+<p><strong>不足的地方</strong>:</p>
+<p>没有做查看历史做题的历史记录。</p>
+<p>生成大批量的题目的时候，会随着页面加载越来越多的题目，随着RecyclerView持有的子itemView数量逐渐增多会导致分页加载，RecyclerView时会有卡顿感。</p>
+<h3 id="结对感受">结对感受</h3>
+<p>期待ing，个人感觉是各司其职，对方请教时再给建议，要结合实际情况，不过分追求效果。</p>
+
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-10-11 14:55</span>&nbsp;
+<a href="https://www.cnblogs.com/DMingO/">DMingO</a>&nbsp;
+阅读(<span id="post_view_count">8</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=13797457" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(13797457);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 600029, cb_blogApp = 'DMingO', cb_blogUserGuid = '9ed1fc67-f207-4108-ab02-08d6a1820a94';
+    var cb_entryId = 13797457, cb_entryCreatedDate = '2020-10-11 14:55', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 DMingO
+<br /><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    <div id="page_end_html">
+        <!-- 右下角live2d效果 -->
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
+
+<script>
+    L2Dwidget.init({
+        "model": {
+            jsonPath: "https://unpkg.com/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json",
+            "scale": 1
+        },
+        "display": {
+            "position": "left",
+            "width": 150,
+            "height": 300,
+            "hOffset": 0,
+            "vOffset": -20
+        },
+        "mobile": {
+            "show": true,
+            "scale": 0.5
+        },
+        "react": {
+            "opacityDefault": 0.7,
+            "opacityOnHover": 0.2
+        }
+    });
+</script>
+    </div>
+</body>
+</html>
