@@ -1,0 +1,496 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="never" />
+    <meta name="description" content="文章首发于【陈树义】公众号，点击跳转到原文：https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw 前面我们使用 Prometheus &#x2B; Grafana " />
+    <meta property="og:description" content="文章首发于【陈树义】公众号，点击跳转到原文：https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw 前面我们使用 Prometheus &#x2B; Grafana " />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Prometheus入门教程（三）：Grafana 图表配置快速入门 - 陈树义 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=kXxbcm7tkkASG2_xwyD6Kw4CzHe0bT3mi0jyCb8YspQ" />
+    <link id="MainCss" rel="stylesheet" href="/skins/darkgreentrip/bundle-darkgreentrip.min.css?v=KCO_3ott2y-JO7odohKsrvtUrt9hTa27jdu0wc97cYk" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/chanshuyi/custom.css?v=mYrCG46a8QMMWM1jycX8ghFY3Sk=" />
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/darkgreentrip/bundle-darkgreentrip-mobile.min.css?v=tIFvQMy1scIQlz-FPuB-X5CclTNQuHEVChVECOD3yaY" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chanshuyi/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chanshuyi/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chanshuyi/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 181264;
+        var currentBlogApp = 'chanshuyi';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'darkgreentrip';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-10-21 05:56';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=kKx3DBtpvO8r97BzPmHJseQ10fGHkI-ZwMh4FA0eEd0"></script>
+    
+    
+    
+</head>
+<body class="no-navbar">
+    <a name="top"></a> 
+    <div id="top_nav" class="navbar navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133300895-1" defer></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-133300895-1');
+</script>
+
+
+<style>
+#back-top {
+     position: fixed;
+     bottom: 25px;
+     right: 20px;
+     z-index: 99;
+}
+#back-top span {
+     width: 50px;
+     height: 64px;
+     display: block;
+     background:url(http://images.cnblogs.com/cnblogs_com/seanshao/855033/o_rocket.png) no-repeat center center;
+}
+#back-top a{outline:none}
+</style>
+<script type="text/javascript">
+$(function() {
+	// hide #back-top first
+	$("#back-top").hide();
+	// fade in #back-top
+	$(window).scroll(function() {
+		if ($(this).scrollTop() > 500) {
+			$('#back-top').fadeIn();
+		} else {
+			$('#back-top').fadeOut();
+		}
+	});
+	// scroll body to 0px on click
+	$('#back-top a').click(function() {
+		$('body,html').animate({
+			scrollTop: 0
+		}, 800);
+		return false;
+	});
+});
+</script>
+<p id="back-top" style="display:none"><a href="#top"><span></span></a></p>
+    </div>
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/chanshuyi/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/chanshuyi/">陈树义</a>
+</h1>
+<h2>
+用最简单的语言，让复杂的技术不再难懂。
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/chanshuyi/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+</li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/chanshuyi/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+222&nbsp; </span>
+<span id="stats_article_count">文章 - 
+52&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+808</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chanshuyi/p/03_grafana_chart_quick_start.html">
+    <span>Prometheus入门教程（三）：Grafana 图表配置快速入门</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+    <h1 id="文章首发于【陈树义】公众号，点击跳转到原文：httpsmpweixinqqcomssa0nyevo8yz6qlrz03qjsw">文章首发于【陈树义】公众号，点击跳转到原文：<a href="https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw">https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw</a></h1>
+<p>前面我们使用 Prometheus + Grafana 实现了一个简单的 CPU 使用率变化图，但是这个图还有许多缺陷，例如：左边栏的数值太小了无法调整，下面的图标信息无法定制化等等。</p>
+<p>其实 Grafana 的功能是非常强大的，可以针对不同的需求进行针对性设置，从而做出让你满意的监控图表。那么我们今天就系统地讲一讲如何设置 Grafana 图表！</p>
+<h2 id="dashboard-与-panel">Dashboard 与 Panel</h2>
+<p>Dashboard（面板）与 Panel（图表）是 Prometheus 的基本单元，我们所有的监控数据都会通过这两个东西来呈现。</p>
+<p>Dashboard 就是一个大的面板，里面包含了无数个图表（Panel）。例如：我们希望监控订单系统的各项业务指标，那么我们可以建立一个名为「订单业务监控」的面板，然后在这个面板下建立许多个图表。</p>
+<h2 id="panel-图表配置">Panel 图表配置</h2>
+<p>Panel（图表）是 Prometheus 中数据呈现的最小单元，我们看到的面板数据，都是由一个个图表构成的。图表（Panel）的设置区域一共可以分为三部分：</p>
+<ul>
+<li>预览区：用来预览设置的图表。</li>
+<li>数据设置区：用来设置数据源、数据指标等。</li>
+<li>图表设置区：用来对图表的名称等进行设置。</li>
+</ul>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126244507.jpg" alt="" loading="lazy"></p>
+<h3 id="预览区">预览区</h3>
+<p>预览区非常简单，就是针对「数据设置区」和「图表设置区」的设置结果，进行模拟显示，从而让我们可以实时看到效果，方便我们进行配置。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126406827.jpg" alt="" loading="lazy"></p>
+<h3 id="数据设置区">数据设置区</h3>
+<p>数据设置区可以分为三个设置区域，分别是：</p>
+<ul>
+<li>查询设置区：设置查询数据的数据源、指标等。</li>
+<li>转换设置区：可以对查询出来的数据进行过滤等。</li>
+<li>告警设置区：可以对设置的指标设置告警规则。</li>
+</ul>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126472186.jpg" alt="" loading="lazy"></p>
+<h1 id="文章首发于【陈树义】公众号，点击跳转到原文：httpsmpweixinqqcomssa0nyevo8yz6qlrz03qjsw-2">文章首发于【陈树义】公众号，点击跳转到原文：<a href="https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw">https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw</a></h1>
+<h4 id="查询设置区">查询设置区</h4>
+<p>查询设置区可以分为两块，分别是：</p>
+<ul>
+<li>数据源设置</li>
+<li>数据指标设置</li>
+</ul>
+<h5 id="数据源设置">数据源设置</h5>
+<p>数据源设置用来设置使用哪个数据源。此外，还可以针对选择的数据进行更精细化的设置，例如：Max data points 等设置。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126548958.jpg" alt="" loading="lazy"></p>
+<h5 id="数据指标设置">数据指标设置</h5>
+<p>这块用来设置你想显示数据源中的哪个指标、标识填什么、格式是啥。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126608004.jpg" alt="" loading="lazy"></p>
+<p>整体来说有这么几个选项：</p>
+<ul>
+<li>Metrics 指标名</li>
+</ul>
+<p>表明这个图表是用来展示数据源中的什么数据，是显示变化率，还是数值，这里相当于一个表达式。例如我这里是用来显示 CPU 的变化率的，所以我填入的是：「rate(system_cpu_usage[1m])」，这表示使用 1 分钟的数据变化率来显示 CPU 的变化情况。</p>
+<ul>
+<li>Legend 图例</li>
+</ul>
+<p>图例可以设置图例的显示数值是什么，例如这里我写了：「{{instance}}-1m」，这表示使用实例名为前缀，后面再加上「-1m」字符串，最终显示为：「localhost:8080-1m」，其中 localhost:8080 为实例名。</p>
+<ul>
+<li>Min Step 最小步长</li>
+</ul>
+<p>最小步长表示图形里每两个点的最小数据间隔是多少，例如：这里我设置了 200，那表示图形上每隔 200 个单位才会有一个点。观察一下图形可以大致知道 min step 的作用。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126685281.jpg" alt="" loading="lazy"></p>
+<ul>
+<li>Resolution 精度</li>
+</ul>
+<p>这表示其数据精度是怎样的，是 1 比 1 的精度，还是原有的 1/2，还是 1/3 等等。如果是 1/2 的话，那么就是原本 1 个单位显示一个点，现在 2 个单位合并起来显示成一个点了，那么其精度就变低了。</p>
+<ul>
+<li>Format 格式</li>
+</ul>
+<p>表示你的数据格式是什么，这里有：Time series、Table、Heap Map 三个选项。Time series 表示是时间序列数据，即随着时间的流动有源源不断的数据。Table 表示是一个表格数据。Heap Map 表示是热力图数据。</p>
+<p>我们可以通过左下角的 Query 来增加显示的数据。例如我这里使用了 3 个图例数据来分别显示：1 分钟的 CPU 使用率情况、5 分钟的 CPU 使用率情况、15 分钟的 CPU 使用率情况。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126777456.jpg" alt="" loading="lazy"></p>
+<p>设置完成后的图标整体效果如下：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126850517.jpg" alt="" loading="lazy"></p>
+<h4 id="转换设置区">转换设置区</h4>
+<p>转换设置区主要是用来一些更复杂的数据处理，例如：过滤一些数据，做集合操作等。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126926246.jpg" alt="" loading="lazy"></p>
+<p>这块使用得相对少一些，这里就不深入讲解，等使用到的时候再深入了解也不迟。</p>
+<h4 id="告警设置区">告警设置区</h4>
+<p>告警设置区用来进行指标告警，这块内容也相对简单，直接看页面就可以弄清楚了。后面文章也有例子讲解，这里不再赘述。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031126996675.jpg" alt="" loading="lazy"></p>
+<h3 id="图表设置区">图表设置区</h3>
+<p>这块用来设置图表名称、Y 轴显示样式等图表细节的。主要有下面几个区域：</p>
+<ul>
+<li>Settings 设置</li>
+<li>Visualization 可视化</li>
+</ul>
+<h4 id="setting-设置">Setting 设置</h4>
+<p>用来设置图表名称和描述。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127114691.jpg" alt="" loading="lazy"></p>
+<h4 id="visualization-可视化">Visualization 可视化</h4>
+<p>用来设置图表使用什么格式显示，有 图形（Graph）、统计（Stat）、表格（Table）、文本（Text）等。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127199151.jpg" alt="" loading="lazy"></p>
+<h4 id="display-显示">Display 显示</h4>
+<p>用来设置图表样式相关信息。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127472115.jpg" alt="" loading="lazy"></p>
+<p>例如 Bars 表示图形有长条，如下图所示：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127540208.jpg" alt="" loading="lazy"></p>
+<p>例如设置 Hover tooltip 的 Mode 为 Single，表示鼠标悬浮到图表时，只显示单条线的悬浮提示，而不是全部线条都显示悬浮提示。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127626183.jpg" alt="" loading="lazy"></p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127659124.jpg" alt="" loading="lazy"></p>
+<p>其他设置都相对简单，这里不再赘述。</p>
+<h4 id="axes-轴">Axes 轴</h4>
+<p>用来设置轴的相关信息，例如：X/Y轴的显示单位，X/Y轴的最小最大值等。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127718679.jpg" alt="" loading="lazy"></p>
+<p>例如在显示 CPU 使用率时，CPU 使用率的数据是 0-1，但是默认是显示成小数，如下图所示：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127801625.jpg" alt="" loading="lazy"></p>
+<h1 id="文章首发于【陈树义】公众号，点击跳转到原文：httpsmpweixinqqcomssa0nyevo8yz6qlrz03qjsw-3">文章首发于【陈树义】公众号，点击跳转到原文：<a href="https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw">https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw</a></h1>
+<p>那如果我希望它能用百分比显示，那么我可以设置 Left Y 的 Unit 参数，将其设置为：percent(0.0-1.0)。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127863554.jpg" alt="" loading="lazy"></p>
+<p>设置完之后图表变成了这样：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127926261.jpg" alt="" loading="lazy"></p>
+<p>其他参数的设置都类似，这里不再赘述了。</p>
+<h4 id="legend-图例">legend 图例</h4>
+<p>这里用来设置图例信息，例如：图例的显示位置、图例显示最大值、最小值。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031127991304.jpg" alt="" loading="lazy"></p>
+<p>这块的内容也相对简单，自己去试试就清楚了，不再赘述。</p>
+<h4 id="thresholds-阈值">Thresholds 阈值</h4>
+<p>用来设置一个阈值，当超过指定的值，会有标记成背景颜色。通常用来针对某个关键数据，当超过某个值进行高亮，方便一目了然查看数据。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031128065929.jpg" alt="" loading="lazy"></p>
+<p>例如 CPU 使用率的例子，我设置了超过 3% 就高亮成红色（Critical）。</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031128170449.jpg" alt="" loading="lazy"></p>
+<p>最终效果如下图所示：</p>
+<p><img src="https://www-shuyi-me.oss-cn-shenzhen.aliyuncs.com/blog/16031128229499.jpg" alt="" loading="lazy"></p>
+<h2 id="总结">总结</h2>
+<p>我们通过一个 CPU 使用率的例子，将 Grafana 图表的配置都过了一遍。总的来说，Grafana 图表配置可分为：预览区、数据配置区、图表配置区。其中涉及到了数据源的配置、数据指标的配置以及各种图表显示的配置等。</p>
+<p>虽然我们可以直接使用 <a href="https://grafana.com/grafana/dashboards">Grafana官网 - Dashboards 模块</a>的现成模板，但如果你想做符合自己业务情况的监控面板，掌握 Grafana 图表的配置可是必不可少哦。</p>
+<h1 id="文章首发于【陈树义】公众号，点击跳转到原文：httpsmpweixinqqcomssa0nyevo8yz6qlrz03qjsw-4">文章首发于【陈树义】公众号，点击跳转到原文：<a href="https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw">https://mp.weixin.qq.com/s/sA0nYevO8yz6QLRz03qJSw</a></h1>
+
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-10-21 17:56</span>&nbsp;
+<a href="https://www.cnblogs.com/chanshuyi/">陈树义</a>&nbsp;
+阅读(<span id="post_view_count">0</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=13853850" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(13853850);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/10.3.1/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 181264, cb_blogApp = 'chanshuyi', cb_blogUserGuid = 'dea53ec9-fa6e-e311-8d02-90b11c0b17d6';
+    var cb_entryId = 13853850, cb_entryCreatedDate = '2020-10-21 17:56', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+   </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 陈树义
+<br /><span id="poweredby">Powered by .NET 5.0.0-rc.2.20475.5 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    <div id="page_end_html">
+        <script language="javascript" type="text/javascript">
+
+// 生成目录索引列表
+// ref: http://www.cnblogs.com/wangqiguo/p/4355032.html
+// modified by: zzq
+function GenerateContentList()
+{
+    var mainContent = $('#cnblogs_post_body');
+    var h2_list = $('#cnblogs_post_body h2');   //如果你的章节标题不是h2,只需要将这里的h2换掉即可
+
+    if(mainContent.length < 1)
+        return;
+ 
+    if(h2_list.length>0)
+    {
+        var content = '<a  name="_labelTop"></a>';
+        content += '<div id="toc">';
+        content += '<a class="head" href="#cb_post_title_url">目录</a>';
+        content += '<ul style="margin-left:40px;margin-right:40px;margin-top:5px;">';
+        for(var i=0; i<h2_list.length; i++)
+        {
+            var h3_list = $(h2_list[i]).nextAll("h3");
+            var li3_content = '';
+            for(var j=0; j<h3_list.length; j++)
+            {
+                var tmp = $(h3_list[j]).prevAll('h2').first();
+                if(!tmp.is(h2_list[i]))
+                    break;
+                var li3_anchor = '<a name="_label' + i + '_' + j + '"></a>';
+                $(h3_list[j]).before(li3_anchor);
+                var h3Title = $(h3_list[j]).text();
+                var h3TitleAfter = h3Title.toLowerCase().replace(/[&\|\\\\\s*^%$，？.?！!#@:：、（）+\-]/g,"");
+                console.log("h3Title:" + h3Title + ",h3TitleAfter:" + h3TitleAfter);
+                li3_content += '<li style="margin-left:10px;margin-bottom:5px;"><a href="#' + encodeURIComponent(h3TitleAfter)  + '">' + h3Title + '</a></li>';
+            }
+            
+            var li2_content = '';
+            var h2Title = $(h2_list[i]).text();
+            var h2TitleAfter = h2Title.toLowerCase().replace(/[&\|\\\\\s*^%$？，.?！!#@:：、（）+\-]/g,"");
+            console.log("h2Title:" + h2Title + ",h2TitleAfter:" + h2TitleAfter);
+            if(li3_content.length > 0)
+                li2_content = '<li style="margin-bottom:5px;"><a href="#' + encodeURIComponent(h2TitleAfter)  + '">' + h2Title + '</a><ul style="margin-left:10px;margin-top:5px;">' + li3_content + '</ul></li>';
+            else
+                li2_content = '<li style="margin-bottom:5px;"><a href="#' + encodeURIComponent(h2TitleAfter)  + '">' + h2Title + '</a></li>';
+            content += li2_content;
+        }
+        content += '</ul>';
+        if($('#cnblogs_post_body').length != 0 )
+        {
+            $($('#cnblogs_post_body')[0]).prepend(content);
+        }
+    }   
+}
+
+GenerateContentList();
+</script>
+    </div>
+</body>
+</html>

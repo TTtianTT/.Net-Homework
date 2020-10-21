@@ -45,6 +45,7 @@ namespace CrawlerWithWinForm
             this.txtStartUrl.Name = "txtStartUrl";
             this.txtStartUrl.Size = new System.Drawing.Size(172, 25);
             this.txtStartUrl.TabIndex = 0;
+            this.txtStartUrl.Text = "www.cnblog.com";
             // 
             // lbxFinish
             // 

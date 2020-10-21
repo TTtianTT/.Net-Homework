@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="在Web应用的开发中，不论是网站还是服务接口，我们可能会遇到来自客户端的某个请求，而这请求的背后，隐藏着要执行的大量的繁重任务，如果我们在后台程序中，同步的进行处理，那么程序执行时间比较久，用户体验是" />
+    <meta property="og:description" content="在Web应用的开发中，不论是网站还是服务接口，我们可能会遇到来自客户端的某个请求，而这请求的背后，隐藏着要执行的大量的繁重任务，如果我们在后台程序中，同步的进行处理，那么程序执行时间比较久，用户体验是" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>后台程序在处理繁重的任务时，调用外部程序异步执行的简单实现 - bananaplan - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=kXxbcm7tkkASG2_xwyD6Kw4CzHe0bT3mi0jyCb8YspQ" />
+    <link id="MainCss" rel="stylesheet" href="/skins/lessismoreright/bundle-lessismoreright.min.css?v=OuIR6VZMwNPtTKU-hAnflCXnCLQqA-paR3ll9MErHDM" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/lessismoreright/bundle-lessismoreright-mobile.min.css?v=IYuPjHqtjfD2sYlRY1oohsJ4qxy5ebPfYkgpUs8tqls" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/bananaplan/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/bananaplan/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/bananaplan/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 127831;
+        var currentBlogApp = 'bananaplan';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'LessIsMoreRight';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-10-21 10:57';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=kKx3DBtpvO8r97BzPmHJseQ10fGHkI-ZwMh4FA0eEd0"></script>
+    
+    
+    
+</head>
+<body class="has-navbar">
+    <a name="top"></a> 
+    <div id="top_nav" class="navbar">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <div id="home">
+    <div id="header">
+        <div id="blogTitle">
+            
+<div class="title"><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/bananaplan/">bananaplan</a>
+</div>
+<div class="subtitle">
+
+</div>
+
+        </div>
+        <div id="navigator">
+            
+<ul id="navList">
+    <li id="nav_sitehome"><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+    <li id="nav_myhome">
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/bananaplan/">
+首页</a>
+</li>
+    <li id="nav_newpost">
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+    <li id="nav_contact">
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/bananaplan">
+联系</a></li>
+    <li id="nav_rss">
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/bananaplan/rss/">
+订阅</a></li>
+    <li id="nav_admin">
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+            <div class="blogStats">
+                
+<span id="stats_post_count">随笔 - 
+11&nbsp;</span>
+<span id="stats_article_count">文章 - 
+0&nbsp;</span>
+<!-- <span id="stats-comment_count"></span> -->
+<span id="stats_comment_count">评论 - 
+173</span>
+            </div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="mainContent">
+            <div class="forFlow">
+                <div id="post_detail">
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/bananaplan/p/13851138.html">
+    <span>后台程序在处理繁重的任务时，调用外部程序异步执行的简单实现</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+    <p>在Web应用的开发中，不论是网站还是服务接口，我们可能会遇到来自客户端的某个请求，而这请求的背后，隐藏着要执行的大量的繁重任务，如果我们在后台程序中，同步的进行处理，那么程序执行时间比较久，用户体验是糟糕的，甚至会导致502执行超时。针对这种情况，有很多成熟的解决方案【据我粗浅的认知，使用队列是一个较好的方案】，但实现起来稍显复杂和繁琐。如果我们对要异步执行的任务没有特别的要求【比如失败重试或异步任务执行完毕后的事件回调】，那么，可以用一种非常轻松的方式来简单实现：<code>nohup 要执行的命令 &gt; /dev/null 2&gt;&amp;1 &amp;</code>。</p>
+<p>如果，你看到这里，觉得这没什么新奇的，那说明你水平挺好，至少比我要好【发自真心】。也希望你在离开之前，说一说有没有啥更好的方法，分享一下。</p>
+<h4 id="应用场景">应用场景</h4>
+<p>目前，我在两种具体的场景下，实际使用了这种异步执行任务的方法。</p>
+<p>1、早前，做一个网站，数据是另一个同事从第三方采集的，采集下来的数据，需要导入到我的数据库中，于是，我在网站后台提供了一个功能，一个文件上传导入的按钮，当同事将他采集的数据，通过文件上传的方式，保存在服务器上的时候，后台程序会读取这个文件的内容，并基于里面的数据，进行一下必要的分析，最后将分析后的数据，通过SQL写入到数据库中。此过程执行的快与慢，取决于数据文件的大小，一个几千行数据的文件，最后可能要执行一分多钟。如果采用传统的同步执行，那么从文件上传 -&gt; 数据分析 -&gt; 写入数据库 这整个过程中，浏览器都在转圈圈，若是时间再长点，执行就超时了，前功尽弃。所以，这里我采用了异步执行任务的方式，在数据文件成功上传后，服务端直接响应回浏览器，显示一个“数据导入成功，正在进行处理”的提示，整个前端的交互就到此为止，后面数据分析和写入数据库，就交给另一个单独的进程去处理了。</p>
+<p>2、就在前两天，我刚用这种方式，写了这样的功能。我们做了一个APP【用APICloud做的一个不入流的APP】，当用户在使用APP发布了一个内容后，我们需要调用百度AI的内容审核接口，对用户发布的文字和图片，进行自动审核，如果发现其中包含不良信息，则自动审核不过。而这个调用百度接口的过程，是略微有点耗时的，这主要取决于用户发布的内容中所包含图片的多少，图多自然百度接口处理响应的慢。同样的，如果用同步的方式，用户发布内容 -&gt; 调用百度接口 -&gt; 等待接口返回数据 -&gt; 判断是否审核通过，太耗时了，这样在用户看来，就是内容发出去之后，等待了好几秒，甚至十几秒，最后才有反应，这用户体验就太差了。所以，可以做到当用户发布了内容后，立刻提示“发布成功，正在审核”的字样，而在几秒钟之后，用户就看到他刚刚发布的内容审核通过，并出现在内容列表中的时候，是多么自然的一个过程。</p>
+<h4 id="实现思路">实现思路</h4>
+<p>所以，有的时候，异步的处理一下任务，还是很有必要的。既然咱们开头说到，在Web应用的开发中，那就跳不出Linux服务器，现如今除了.NET系的可能还会部署在Windows上【博客园貌似就不是】，其他的后端应用，基本都会部署在Linux上，而我们开头提到的实现方式，就是在Linux下的命令实现。</p>
+<p>首先，要实现程序的异步执行，大概有两种方式：线程 和 进程【说大概，是因为听说有的语言还支持协程。嗯？什么鬼？ -_-!!!】。像Java这种，支持线程的编程语言，异步执行可以用线程实现，也可以用进程实现【Runtime.exec()】；而像PHP这种，在默认情况下，是没有线程的，并且大家普遍也都不在PHP下使用线程，那么，这就只能通过其内部函数，调用外部进程，去实现异步任务的执行。</p>
+<p>在PHP下，执行一个外部程序，并且<strong>要求这个外部程序是在后台运行，且不会让你的宿主程序等待挂起</strong>【宿主也就是执行调用外部命令的PHP程序】，有一点要特别注意，这是在官方手册的exec函数中特意提到的：</p>
+<blockquote>
+<p>If a program is started with this function, in order for it to continue running in the background, the output of the program must be redirected to a file or another output stream. Failing to do so will cause PHP to hang until the execution of the program ends.</p>
+</blockquote>
+<p>意思就是，为了让外部程序在后台运行，这个外部程序的输出【指标准输出【像 Python中的 print，PHP中的 echo 和 Java中的 System.out.print】和标准错误】必须重定向到一个文件或另一个输出流中。否则，宿主程序可能会挂起，等待外部程序执行完毕后，才会终止结束他的生命周期。</p>
+<p>所以，文章开头提到的命令中的 <code>&gt; /dev/null 2&gt;&amp;1</code>，就是用来重定向标准输出和标准错误，将其写入 <code>/dev/null</code> 文件的，以使得宿主程序在调用外部程序，让其后台运行后，自己会立刻执行后续代码，直到结束，可以很快的结束自己的生命周期，而此时，外部程序，还正在默默的努力运行中。</p>
+<p>当我在写这篇文章之前，还特意查了一下，在Java下用Runtime.exec()调用外部程序的实现方式，发现有篇文章提到了这样一点：</p>
+<p><img src="https://img2020.cnblogs.com/blog/111619/202010/111619-20201021095113207-7268125.png" alt="" loading="lazy"></p>
+<p>意思也是要将外部程序的输出重定向出来，这与PHP官方手册中提到的注意事项，完全一致。</p>
+<h4 id="具体实现">具体实现</h4>
+<p>下面，我们就来解释一下 <code>nohup 要执行的命令 &gt; /dev/null 2&gt;&amp;1 &amp;</code> 这条命令的含义。</p>
+<p>首先，是 <code>要执行的命令</code>，比如我上文提到的，调用百度AI，进行内容审核，那么命令就像 <code>php /www/wwwroot/app_service/artisan baidu:censor 文章ID</code> 这样，我这里用的PHP的Laravel框架，至于你用什么语言，什么框架，怎么写这个 <code>要执行的命令</code>，也要视你的情况而定。</p>
+<p>其次，要让一个程序，在后台运行，需要在命令后面加上 <code>&amp;</code>【也就是末尾的 &amp;】，以告诉系统，我要执行的命令，是一个需要后台运行的程序。</p>
+<p>然后，为了防止我们的宿主程序等待挂起，我们需要重定向外部程序的输出，于是就加上了 <code>&gt; /dev/null 2&gt;&amp;1</code>，<code>&gt; /dev/null</code> 是指将标准输出重定向到 <code>/dev/null</code> 文件，而后面的 <code>2&gt;&amp;1</code> 是指，将标准错误也重定向到跟前面标准输出一样的位置。而 <code>/dev/null</code> 是一个不存在的文件，所以 <code>&gt; /dev/null 2&gt;&amp;1</code> 的整体意思是，这个外部程序执行时，他产生的所有标准输出和标准错误【就是报错信息】，统统不要保存，我不要看到。当然，如果你在调用外部程序后，发现没有按预期执行，可能是这个外部程序报错了，你可以将输出，重定向到一个真实的文件，以保存外部程序的输出信息，便于你排错。</p>
+<p>最后，是 <code>nohup</code>。当你通过指定 <code>&amp;</code> 让外部程序在后台运行后，如果此时你关闭、退出你的 terminal 终端【就是黑乎乎的命令行窗口】，那么此时你刚刚正在后台运行的外部程序，也会终止。为了避免这个问题，需要在开头加上 <code>nohup</code>，来告诉系统，关闭、退出终端时，别把我刚刚执行的外部程序的这个后台进程杀掉啊！！！</p>
+<p>好了，具体实现要用到的命令，解释清楚了，那在各个语言中，如何实现呢？这个，我相信各个语言中，都有调用外部程序的方式，你可以自己研究下。我用PHP多一点，最后就贴一下PHP的实现方法：</p>
+<p><code>exec('nohup php /www/wwwroot/app_service/artisan baidu:censor 文章ID &gt; /dev/null 2&gt;&amp;1 &amp;');</code>【Laravel】</p>
+<p><code>exec('nohup php /www/wwwroot/app_service/baidu_censor.php 文章ID &gt; /dev/null 2&gt;&amp;1 &amp;');</code></p>
+<h4 id="参考文章">参考文章</h4>
+<ul>
+<li><a href="https://www.jianshu.com/p/af4b3264bc5d">java Runtime.exec()执行shell/cmd命令：常见的几种陷阱与一种完善实现</a></li>
+<li><a href="https://blog.csdn.net/u011095110/article/details/78666833">详解nohup和&amp; 区别</a></li>
+</ul>
+
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-10-21 10:57</span>&nbsp;
+<a href="https://www.cnblogs.com/bananaplan/">bananaplan</a>&nbsp;
+阅读(<span id="post_view_count">133</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=13851138" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(13851138);return false;">收藏</a></div>
+        </div>
+        <script src="https://common.cnblogs.com/highlight/10.3.1/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 127831, cb_blogApp = 'bananaplan', cb_blogUserGuid = 'cf3e8c71-f707-df11-ba8f-001cf0cd104b';
+    var cb_entryId = 13851138, cb_entryCreatedDate = '2020-10-21 10:57', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script>
+        <a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+   </script>
+</div>
+
+    </div>
+</div>
+            </div>
+        </div>
+
+        <div id="sideBar">
+            <div id="sideBarMain">
+                <div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_ad"></div>
+                <div id="calendar"><div id="blog-calendar" style="display:none"></div></div>                
+                <script>loadBlogDefaultCalendar();</script>
+                <div id="leftcontentcontainer">
+                    <!-- begin:SingleColumn -->
+                    <div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+                    <!-- end:  SingleColumn -->
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="footer">
+        <!--done-->
+Copyright &copy; 2020 bananaplan
+<br /><span id="poweredby">Powered by .NET 5.0.0-rc.2.20475.5 on Kubernetes</span>
+
+    </div>
+</div>
+
+    
+</body>
+</html>

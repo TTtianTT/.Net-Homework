@@ -118,7 +118,7 @@ namespace Crawler
                 if (!Regex.IsMatch(strRef, htmlPattern)) continue;  //只爬取html文本
                 if (!urls.Keys.Contains(strRef))
                 {
-                    Console.WriteLine($"strRef");
+                    Console.WriteLine($"{strRef}");
                     urls.TryAdd(strRef, false);
                     queue.Enqueue(strRef);
                 }

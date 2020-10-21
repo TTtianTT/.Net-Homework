@@ -1,0 +1,295 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="never" />
+    <meta name="description" content="摘要：分享一个HBase集群恢复的方法。 背景 在HBase 1.x中，经常会遇到元数据不一致的情况，这个时候使用HBCK的命令，可以快速修复元数据，让集群恢复正常。 另外HBase数据迁移时，大家经" />
+    <meta property="og:description" content="摘要：分享一个HBase集群恢复的方法。 背景 在HBase 1.x中，经常会遇到元数据不一致的情况，这个时候使用HBCK的命令，可以快速修复元数据，让集群恢复正常。 另外HBase数据迁移时，大家经" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>技术实操丨HBase 2.X版本的元数据修复及一种数据迁移方式 - 华为云开发者社区 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=kXxbcm7tkkASG2_xwyD6Kw4CzHe0bT3mi0jyCb8YspQ" />
+    <link id="MainCss" rel="stylesheet" href="/skins/simpleblue/bundle-simpleblue.min.css?v=Bz6eufLWGVsWJjKcjfFVp12zhnPfKDi7i7Z6x00pOIo" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/simpleblue/bundle-simpleblue-mobile.min.css?v=xbzzau3Jqgjmy0hPlKp75vATFEb2H-hCGf6MOx4l_3g" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/huaweiyun/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/huaweiyun/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/huaweiyun/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 602073;
+        var currentBlogApp = 'huaweiyun';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleBlue';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-10-21 02:57';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=kKx3DBtpvO8r97BzPmHJseQ10fGHkI-ZwMh4FA0eEd0"></script>
+    
+    
+    
+</head>
+<body class="has-navbar">
+    <a name="top"></a> 
+    <div id="top_nav" class="navbar">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <div id="home">
+    <div id="header">
+        <div id="blogTitle">
+            
+<div class="title"><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/huaweiyun/">华为云开发者社区</a>
+</div>
+<div class="subtitle">
+
+</div>
+
+        </div>
+        <div id="navigator">
+            
+<ul id="navList">
+    <li id="nav_sitehome"><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+    <li id="nav_myhome">
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/huaweiyun/">
+首页</a>
+</li>
+    <li id="nav_newpost">
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+    <li id="nav_contact">
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E5%8D%8E%E4%B8%BA%E4%BA%91%E5%BC%80%E5%8F%91%E8%80%85%E7%A4%BE%E5%8C%BA">
+联系</a></li>
+    <li id="nav_rss">
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/huaweiyun/rss/">
+订阅</a></li>
+    <li id="nav_admin">
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+            <div class="blogStats">
+                
+<span id="stats_post_count">随笔 - 
+453&nbsp;</span>
+<span id="stats_article_count">文章 - 
+0&nbsp;</span>
+<!-- <span id="stats-comment_count"></span> -->
+<span id="stats_comment_count">评论 - 
+57</span>
+            </div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="mainContent">
+            <div class="forFlow">
+                <div id="post_detail">
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/huaweiyun/p/13852394.html">
+    <span>技术实操丨HBase 2.X版本的元数据修复及一种数据迁移方式</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body">
+    <blockquote>摘要：分享一个HBase集群恢复的方法。</blockquote>
+<h2>背景</h2>
+<p>在HBase 1.x中，经常会遇到元数据不一致的情况，这个时候使用HBCK的命令，可以快速修复元数据，让集群恢复正常。</p>
+<p>另外HBase数据迁移时，大家经常使用到一种迁移方式是：拷贝HBase的数据目录/hbase/data/default到新的集群，然后在新集群执行HBCK的命令让元数据重建，这种拷贝数据目录然后恢复元数据的方式是一种快速直接的手段。</p>
+<p>HBase升级到2.X版本之后，hbase hbck中的一些修复命令已经不再支持，包括，所以在HBase遇到集群故障，无法通过HBCK快速把元数据修复，通过HBase数据目录迁移的方式也就使用不了。</p>
+<p>在HBase 2.X的客户端执行hbase hbck时，常用的fixMeta命令已经不再支持。</p>
+<h2>hbck-1无法使用</h2>
+<p>HBase 2.X版本加强了可靠性，因为使用了 procedure，由于之前的hbck(hbck-1)是会直接去向region server或者hdfs发送请求进行修复，而在HBase 2.0版本上集群内部操作全部都被挪到了procedure v2(下文都称为procedure)上进行处理。</p>
+<p>因为所有的命令都是经过master来协调处理，所以在修复时也需要通过master进行修复。否则反而可能导致更严重的不一致问题。所以hbck-1在HBase 2.x版本是不适用的。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-8f2b68da3adb1c1c856c745a2aae4317_720w.jpg" width="900" class="origin_image zh-lightbox-thumb lazy" data-caption="" data-size="normal" data-rawwidth="900" data-rawheight="273" data-original="https://pic4.zhimg.com/v2-8f2b68da3adb1c1c856c745a2aae4317_r.jpg" data-actualsrc="https://pic4.zhimg.com/v2-8f2b68da3adb1c1c856c745a2aae4317_b.jpg" data-lazy-status="ok"></p>
+<h2>HBase2.X版本中元数据的恢复方法</h2>
+<p>1. 修改配置hbase.assignment.skip.empty.regions=false</p>
+<p>如果是普通的hbase:meta系统表中的元数据不正确，在修改完此参数重启HBase后就已经能恢复</p>
+<p>当第一步骤完成后还不能修复，就要使用下面的命令了</p>
+<p>例如启动后发现，hbase shell能list出数据，但是表无法put或者scan，这时候hbase:meta表里的t1表记录其实是不正确的</p>
+<p><img src="https://pic2.zhimg.com/80/v2-076d38fd89f35b602f78527ad1c30a81_720w.jpg" width="900" class="origin_image zh-lightbox-thumb lazy" data-caption="" data-size="normal" data-rawwidth="900" data-rawheight="359" data-original="https://pic2.zhimg.com/v2-076d38fd89f35b602f78527ad1c30a81_r.jpg" data-actualsrc="https://pic2.zhimg.com/v2-076d38fd89f35b602f78527ad1c30a81_b.jpg" data-lazy-status="ok"></p>
+<p>2. hbase org.apache.hadoop.hbase.util.hbck.OfflineMetaRepair -fix</p>
+<p>这个命令需要停止HBase然后执行。</p>
+<p>当表的数据目录存在(/hbase/data/default/&lt;table&gt;)，而在hbase:meta表中元数据不正确时，需要HBase停止后，执行这个meta表修复命令，</p>
+<p>执行完成后，启动HBase。</p>
+<p>启动完成后，查看hbase:meta表的用户表记录，可以看到t1表的元数据都生成了。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-891e5dfd7cdd6714a3d7115b27ea6dcd_720w.jpg" width="900" class="origin_image zh-lightbox-thumb lazy" data-caption="" data-size="normal" data-rawwidth="900" data-rawheight="326" data-original="https://pic2.zhimg.com/v2-891e5dfd7cdd6714a3d7115b27ea6dcd_r.jpg" data-actualsrc="https://pic2.zhimg.com/v2-891e5dfd7cdd6714a3d7115b27ea6dcd_b.jpg" data-lazy-status="ok"></p>
+<p>3. 此时用户表就恢复了，如果还存在region空洞fixHdfsHoles或者fixHdfsOverlaps问题，可以使用hbck1中的["-fixHdfsHoles -fixHdfsOrphans -fixHdfsOverlaps -fixReferenceFiles"]</p>
+<p>在华为云EI内核团队的hbase2中，已经将这4个命令重新集成进hbck-1中，便于维护。</p>
+<h2>新集群清理及数据迁移</h2>
+<p>看完上面的元数据恢复，应该就知道接下来的这种HBase数据迁移方式的原理：通过拷贝数据目录，让HBase元数据与业务数据目录重新建立关系，达到业务正常读写。</p>
+<p>下面例子只考虑用户使用default命名空间</p>
+<p>1. 拷贝旧集群的HBase数据目录到新集群，将旧集群的/hbase/data/default目录拷贝到了hdfs上的/mydata/目录；</p>
+<p>2. 如果新集群数据不需要清理，则跳过此步骤</p>
+<p>停止HBase</p>
+<p>清除HBase在数据存储目录，hdfs dfs -rm -r /hbase</p>
+<p>清除HBase在zk的节点，使用ZK客户端工具zkCli.sh –server &lt;ZK NODE&gt;:2181 进入后执行deleteall /hbase</p>
+<p>启动HBase,让目录结构自动生成</p>
+<p>3. 保持HBase集群停止状态，拷贝旧机器数据目录到新集群HBase的数据目录中；</p>
+<p>hdfs dfs -cp /mydata/default/* /hbase/data/default/</p>
+<p>4. 执行hbase修复命令hbase org.apache.hadoop.hbase.util.hbck.OfflineMetaRepair –fix</p>
+<p>5. 设置hbase.assignment.skip.empty.regions=false并启动HBase</p>
+<p>运行完上述步骤，在新的集群就能对迁移过来的HBase进行业务访问了。</p>
+<p class="ztext-empty-paragraph">&nbsp;</p>
+<p><a class=" wrap external" href="https://bbs.huaweicloud.com/blogs?utm_source=cnblog&amp;utm_medium=bbs-ex&amp;utm_campaign=other&amp;utm_content=content" target="_blank" data-za-detail-view-id="1043">点击关注，第一时间了解华为云新鲜技术~</a></p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-10-21 14:57</span>&nbsp;
+<a href="https://www.cnblogs.com/huaweiyun/">华为云开发者社区</a>&nbsp;
+阅读(<span id="post_view_count">18</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=13852394" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(13852394);return false;">收藏</a></div>
+        </div>
+        <script src="https://common.cnblogs.com/highlight/10.3.1/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 602073, cb_blogApp = 'huaweiyun', cb_blogUserGuid = 'cd60776e-b8cd-4919-fb14-08d7f1c7f588';
+    var cb_entryId = 13852394, cb_entryCreatedDate = '2020-10-21 14:57', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script>
+        <a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+   </script>
+</div>
+
+    </div>
+</div>
+            </div>
+        </div>
+
+        <div id="sideBar">
+            <div id="sideBarMain">
+                <div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_ad"></div>
+                <div id="calendar"><div id="blog-calendar" style="display:none"></div></div>                
+                <script>loadBlogDefaultCalendar();</script>
+                <div id="leftcontentcontainer">
+                    <!-- begin:SingleColumn -->
+                    <div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+                    <!-- end:  SingleColumn -->
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="footer">
+        <!--done-->
+Copyright &copy; 2020 华为云开发者社区
+<br /><span id="poweredby">Powered by .NET 5.0.0-rc.2.20475.5 on Kubernetes</span>
+
+    </div>
+</div>
+
+    
+</body>
+</html>

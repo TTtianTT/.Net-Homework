@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="在《迁移桌面程序到MS Store（8）——通过APPX下载Win32Component》中我们讨论了通过APPX来下载Service部分的安装包。但是纯UWP的客户端并不能自动运行下载的exe或者m" />
+    <meta property="og:description" content="在《迁移桌面程序到MS Store（8）——通过APPX下载Win32Component》中我们讨论了通过APPX来下载Service部分的安装包。但是纯UWP的客户端并不能自动运行下载的exe或者m" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>迁移桌面程序到MS Store（9）——APPX With Desktop Extension - 楼上那个蜀黍 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=kXxbcm7tkkASG2_xwyD6Kw4CzHe0bT3mi0jyCb8YspQ" />
+    <link id="MainCss" rel="stylesheet" href="/skins/codinglife/bundle-codinglife.min.css?v=dij5UHLPkhCwoV5SpUeOW7BnKC0vZ5-8GYi-drRcxLA" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/codinglife/bundle-codinglife-mobile.min.css?v=JtOonyglmq10yOLdtvmh-WsVtFwm8HRB8mR_g_TGArQ" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/manupstairs/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/manupstairs/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/manupstairs/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 105048;
+        var currentBlogApp = 'manupstairs';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'CodingLife';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-07-02 04:56';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=kKx3DBtpvO8r97BzPmHJseQ10fGHkI-ZwMh4FA0eEd0"></script>
+    
+    
+    
+</head>
+<body class="has-navbar">
+    <a name="top"></a> 
+    <div id="top_nav" class="navbar">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/manupstairs/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/manupstairs/">楼上那个蜀黍</a>
+</h1>
+<h2>
+
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/manupstairs/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E6%A5%BC%E4%B8%8A%E9%82%A3%E4%B8%AA%E8%9C%80%E9%BB%8D">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/manupstairs/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+83&nbsp; </span>
+<span id="stats_article_count">文章 - 
+0&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+347</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/manupstairs/p/11121697.html">
+    <span>迁移桌面程序到MS Store（9）——APPX With Desktop Extension</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body">
+    <p>在<a href="https://www.cnblogs.com/manupstairs/p/10918862.html" target="_blank">《迁移桌面程序到MS Store（8）——通过APPX下载Win32Component》</a>中我们讨论了通过APPX来下载Service部分的安装包。但是纯UWP的客户端并不能自动运行下载的exe或者msi文件。本篇将着手解决这个问题。<br>假设我们有如下结构的application，蓝色APPX中包含UWP及.NET Standard Libraries。而Service部分以WCF的形式Host在Windows Service上，这其中包含了诸如Win32 API等无法迁移到UWP的内容。</p>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702164525113-198486526.png" alt=""></p>
+<p>因为用户不愿除了从MS Store下载外，再额外手动下载Service部分的安装包。所以我们希望在APPX中，包含额外的exe或msi安装包，通过Packaging工程的形式来打包成APPX，结构图如下所示，绿色UWP Client包含了UWP UI及.NET Standard Libraries,而Service部分直接以exe或msi形式嵌入。</p>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702164607551-969913326.png" alt="" width="481" height="327"></p>
+<p>样例代码放在全球最大的同性交友平台GitHub：<br><a href="https://github.com/manupstairs/AppxWithDesktopExtension" target="_blank">https://github.com/manupstairs/AppxWithDesktopExtension</a><br>也可以去MS Store试下成品：<br><a href="https://www.microsoft.com/store/productid/9N22D8RLKZN2" target="_blank">https://www.microsoft.com/store/productid/9N22D8RLKZN2</a><br>首先看AppWithDesktopExtension1文件夹，由三个工程组成。</p>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702164653443-1673900050.png" alt="" width="479" height="284"></p>
+<p>UWPClient是一个标准的UWP工程，该工程仅有一个Button按钮，在点击该按钮后，去启动DotNetConsoleApp.exe程序。</p>
+<div class="cnblogs_code">
+<pre>        <span style="color: rgba(0, 0, 255, 1)">private</span> <span style="color: rgba(0, 0, 255, 1)">async</span> <span style="color: rgba(0, 0, 255, 1)">void</span> Button_Click(<span style="color: rgba(0, 0, 255, 1)">object</span><span style="color: rgba(0, 0, 0, 1)"> sender, RoutedEventArgs e)
+        {
+            </span><span style="color: rgba(0, 0, 255, 1)">if</span> (ApiInformation.IsApiContractPresent(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Windows.ApplicationModel.FullTrustAppContract</span><span style="color: rgba(128, 0, 0, 1)">"</span>, <span style="color: rgba(128, 0, 128, 1)">1</span>, <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">))
+            {
+                </span><span style="color: rgba(0, 0, 255, 1)">await</span><span style="color: rgba(0, 0, 0, 1)"> FullTrustProcessLauncher.LaunchFullTrustProcessForCurrentAppAsync();
+            }
+        }</span></pre>
+</div>
+<p>默认的UWP工程的references中是不包含ApiInformation类及FullTrustProcessLauncher类的。这里我们需要添加Windows Desktop Extensions for the UWP的引用。</p>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702164827975-1669509318.png" alt="" width="992" height="543"></p>
+<p>UWPClient本身并不能包含exe或者Win32App的工程，所以我们还是需要通过Packaging工程来同时包含二者。首先在AppxWithDesktopExtension工程的Applications中添加UWPClient的引用。然后再将生成好的DotNetConsoleApp.exe拷贝到AppxWithDesktopExtesion工程。假设该exe文件是一个installer文件，所以我们不是添加工程的reference而是直接添加该exe文件。</p>
+<p>这里有个需要注意的地方是，建议建一个同名文件夹放置exe文件。直接添加exe到根目录的话，我在提交商店预处理的时候遇到“DotNetConsoleApp.exe“ doesn't exist in the package的错误，我有理由相信这是某软对路径的判断没处理好，但是咱们犟不过他，只好模仿添加工程reference的情况下的文件结构，来绕过去这个问题。</p>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702164940027-1913910854.png" alt="" width="499" height="458"></p>
+<p>此时该Packaging工程已同时包含UWPClient及DotNetConsoleApp.exe两部分内容。然而实现二者之间的调用，我们还需要编辑Packaging工程的Package.appxmanifest文件，选中该文件后右键点击Open with…然后再弹出的对话框中选择XML(Text)Editor。</p>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702165036666-174347336.png" alt="" width="569" height="416"></p>
+<p>在Package.appxmanifest文件的Application节点中添加如下内容：</p>
+<div class="cnblogs_code">
+<pre>      <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">Extensions</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span>
+        <span style="color: rgba(0, 0, 255, 1)">&lt;</span><span style="color: rgba(128, 0, 0, 1)">desktop:Extension
+          </span><span style="color: rgba(255, 0, 0, 1)">xmlns:desktop</span><span style="color: rgba(0, 0, 255, 1)">="http://schemas.microsoft.com/appx/manifest/desktop/windows10"</span><span style="color: rgba(255, 0, 0, 1)">
+          Category</span><span style="color: rgba(0, 0, 255, 1)">="windows.fullTrustProcess"</span><span style="color: rgba(255, 0, 0, 1)">
+          Executable</span><span style="color: rgba(0, 0, 255, 1)">="DotNetConsoleApp\DotNetConsoleApp.exe"</span> <span style="color: rgba(0, 0, 255, 1)">/&gt;</span>
+      <span style="color: rgba(0, 0, 255, 1)">&lt;/</span><span style="color: rgba(128, 0, 0, 1)">Extensions</span><span style="color: rgba(0, 0, 255, 1)">&gt;</span></pre>
+</div>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702165142651-1702365997.png" alt="" width="1006" height="253"></p>
+<p>至此，我们已基本完成了Appx with Desktop Extension的操作，几乎已经可以使用一个很流行的词叫“闭环”。但是等等，在点击F5运行之前，有个设置还需要改一下。在Solution文件上右键选中Properties，然后在Configuration中，将Packaging工程的Platform改成和UWPClient一致。UWPClient默认是x86，当然你都改成x64也可以。</p>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702165241598-1353740392.png" alt="" width="682" height="470"></p>
+<p>有同学肯定要问为什么不能选AnyCPU，这是因为UWP使用了.NET Native预编译技术，是Platform相关的，详见：<br>.NET Native – What it means for Universal Windows Platform (UWP) developers<br><a href="https://blogs.windows.com/buildingapps/2015/08/20/net-native-what-it-means-for-universal-windows-platform-uwp-developers/#mhT71xdPsoIclvV0.97" target="_blank">https://blogs.windows.com/buildingapps/2015/08/20/net-native-what-it-means-for-universal-windows-platform-uwp-developers/#mhT71xdPsoIclvV0.97</a><br>With .NET Native brought into the mix, AnyCPU is no longer a valid build configuration because native compilation is architecture dependent. <br>最后在我们运行AppxWithDesktopExtension程序之前，先看一眼DotNetConsoleApp工程到底做了什么。</p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> DotNetConsoleApp
+{
+    </span><span style="color: rgba(0, 0, 255, 1)">class</span><span style="color: rgba(0, 0, 0, 1)"> Program
+    {
+        </span><span style="color: rgba(0, 0, 255, 1)">static</span> <span style="color: rgba(0, 0, 255, 1)">void</span> Main(<span style="color: rgba(0, 0, 255, 1)">string</span><span style="color: rgba(0, 0, 0, 1)">[] args)
+        {
+            Console.WriteLine(</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">Suppose I'm an installer.</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+            Console.ReadLine();
+        }
+    }
+}</span></pre>
+</div>
+<p>是的，我们啥也没做，就是打印一行字假装我们是installer。实际在Appx我们也并没有引用该工程，而仅是包含了事先build好的DotNetConsoleApp.exe文件。<br>点击F5运行AppWithDesktopExtension工程，结果如下图所示。</p>
+<p><img src="https://img2018.cnblogs.com/blog/362529/201907/362529-20190702165359189-1120790662.png" alt="" width="527" height="372"></p>
+<p>本篇内容至此结束，附上GitHub地址：<br><a href="https://github.com/manupstairs/AppxWithDesktopExtension" target="_blank">https://github.com/manupstairs/AppxWithDesktopExtension</a><br>MS Store：<br><a href="https://www.microsoft.com/store/productid/9N22D8RLKZN2" target="_blank">https://www.microsoft.com/store/productid/9N22D8RLKZN2</a></p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-07-02 16:56</span>&nbsp;
+<a href="https://www.cnblogs.com/manupstairs/">楼上那个蜀黍</a>&nbsp;
+阅读(<span id="post_view_count">448</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=11121697" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(11121697);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/10.3.1/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 105048, cb_blogApp = 'manupstairs', cb_blogUserGuid = '87c8ad1f-442a-e111-b988-842b2b196315';
+    var cb_entryId = 11121697, cb_entryCreatedDate = '2019-07-02 16:56', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+   </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 楼上那个蜀黍
+<br /><span id="poweredby">Powered by .NET 5.0.0-rc.2.20475.5 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+</body>
+</html>
