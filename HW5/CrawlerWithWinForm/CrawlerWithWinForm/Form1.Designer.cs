@@ -45,24 +45,24 @@ namespace CrawlerWithWinForm
             this.txtStartUrl.Name = "txtStartUrl";
             this.txtStartUrl.Size = new System.Drawing.Size(172, 25);
             this.txtStartUrl.TabIndex = 0;
-            this.txtStartUrl.Text = "www.cnblog.com";
+            this.txtStartUrl.Text = "https://www.cnblog.com/";
             // 
             // lbxFinish
             // 
             this.lbxFinish.FormattingEnabled = true;
             this.lbxFinish.ItemHeight = 15;
-            this.lbxFinish.Location = new System.Drawing.Point(3, 45);
+            this.lbxFinish.Location = new System.Drawing.Point(333, 45);
             this.lbxFinish.Name = "lbxFinish";
-            this.lbxFinish.Size = new System.Drawing.Size(263, 124);
+            this.lbxFinish.Size = new System.Drawing.Size(346, 184);
             this.lbxFinish.TabIndex = 1;
             // 
             // lbxError
             // 
             this.lbxError.FormattingEnabled = true;
             this.lbxError.ItemHeight = 15;
-            this.lbxError.Location = new System.Drawing.Point(272, 45);
+            this.lbxError.Location = new System.Drawing.Point(3, 45);
             this.lbxError.Name = "lbxError";
-            this.lbxError.Size = new System.Drawing.Size(274, 124);
+            this.lbxError.Size = new System.Drawing.Size(324, 184);
             this.lbxError.TabIndex = 2;
             // 
             // button1
@@ -90,11 +90,11 @@ namespace CrawlerWithWinForm
             this.flowLayoutPanel1.Controls.Add(this.txtStartUrl);
             this.flowLayoutPanel1.Controls.Add(this.button1);
             this.flowLayoutPanel1.Controls.Add(this.button2);
-            this.flowLayoutPanel1.Controls.Add(this.lbxFinish);
             this.flowLayoutPanel1.Controls.Add(this.lbxError);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(96, 70);
+            this.flowLayoutPanel1.Controls.Add(this.lbxFinish);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(42, 70);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(584, 183);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(683, 313);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // Form1

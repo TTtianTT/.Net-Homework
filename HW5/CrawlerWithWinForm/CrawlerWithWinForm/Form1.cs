@@ -61,6 +61,7 @@ namespace CrawlerWithWinForm
             lbxFinish.Items.Clear();
             lbxError.Items.Clear();
             crawler = new Crawler(txtStartUrl.Text);
+           // crawler = new Crawler(txtStartUrl.Text);
             crawler.PageDownloaded += Crawler_PageDownloaded;
             crawler.PageDownloadFailed += Crawler_PageDownloadFailed;
             new Thread(crawler.Crawl).Start();
@@ -70,5 +71,7 @@ namespace CrawlerWithWinForm
         {
             crawler.Run = false;
         }
+
+
     }
 }

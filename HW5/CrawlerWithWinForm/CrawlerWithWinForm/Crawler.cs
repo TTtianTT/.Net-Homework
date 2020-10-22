@@ -38,6 +38,7 @@ namespace CrawlerWinForm
             //求原始网址
             int startIndex = startUrl.IndexOf(":") + 3, endIndex = startUrl.IndexOf("/", startIndex);
             originalSite = startUrl.Substring(startIndex, endIndex - startIndex);
+            //originalSite = startUrl.Substring(startIndex, endIndex - startIndex);
         }
 
         public void Crawl()

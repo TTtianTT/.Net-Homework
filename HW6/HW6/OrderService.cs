@@ -16,10 +16,8 @@ namespace HW6
                 //若无商品（数据库初始化），默认添加商品
                 if (management.Goodss.Count(goods => true) == 0)
                 {
-                    management.Goodss.Add(new Goods() { Name = "apple", Price = 6.8 });
-                    management.Goodss.Add(new Goods() { Name = "bear", Price = 4.8 });
-                    management.Goodss.Add(new Goods() { Name = "orange", Price = 2.8 });
-                    management.Goodss.Add(new Goods() { Name = "lemon", Price = 7.8 });
+                    management.Goodss.Add(new Goods() { Name = "milk", Price = 5.3 });
+                    management.Goodss.Add(new Goods() { Name = "cola", Price = 9.2 });
                     management.SaveChanges();
                 }
             }
