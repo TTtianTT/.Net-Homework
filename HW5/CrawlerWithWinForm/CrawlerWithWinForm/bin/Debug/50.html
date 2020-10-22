@@ -1,0 +1,397 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="作者：HelloGitHub-小鱼干 摘要：还记得花式夸赞程序员的彩虹屁插件 vscode-rainbow-fart 吗？它后续有人啦！JazzIt 同它的前辈 vscode-rainbow-fart" />
+    <meta property="og:description" content="作者：HelloGitHub-小鱼干 摘要：还记得花式夸赞程序员的彩虹屁插件 vscode-rainbow-fart 吗？它后续有人啦！JazzIt 同它的前辈 vscode-rainbow-fart" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>本周 GitHub 速览：您的代码有声儿吗？（Vol.38） - 削微寒 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=jzhy9Oyg5XODXo8F4hsEOQFzKCPYRKZCYc011rNEfQo" />
+    <link id="MainCss" rel="stylesheet" href="/skins/blacklowkey/bundle-blacklowkey.min.css?v=4KEmaEFoQ72fond65B4U2Zp59N9fvfGhFFxIzkSj97w" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/xueweihan/custom.css?v=RRRtuZg9tgADpy&#x2B;UPLStdn026o0=" />
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/blacklowkey/bundle-blacklowkey-mobile.min.css?v=cX_jltB7Us4Tw2n_S08_lsTU6B1YdJoNGzly3o8GZ-8" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/xueweihan/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/xueweihan/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/xueweihan/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 228315;
+        var currentBlogApp = 'xueweihan';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'BlackLowKey';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-09-22 11:09';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=fLUEwRea4WeqlJe_CLnNunLQZl_ViJFLgKpcNDuKptI"></script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <a href="https://github.com/521xueweihan/HelloGitHub/"><img style="position: absolute; top: 0; right: 0; border: 0" src="https://images.cnblogs.com/cnblogs_com/xueweihan/859919/o_200129100904forkme_right_green_007200.png" alt="Fork me on GitHub" data-canonical-src="https://images.cnblogs.com/cnblogs_com/xueweihan/859919/o_200129100904forkme_right_green_007200.png"></a>
+    </div>
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/xueweihan/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/xueweihan/">削微寒的程序员之路</a>
+</h1>
+<h2>
+谦逊、专注，才能成长。
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/xueweihan/">
+首页</a>
+</li>
+<li>
+
+
+</li>
+<li>
+</li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/xueweihan/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+396&nbsp; </span>
+<span id="stats_article_count">文章 - 
+0&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+1248</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/xueweihan/p/13707006.html">
+    <span>本周 GitHub 速览：您的代码有声儿吗？（Vol.38）</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+    <p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174458597-2075486642.png" alt="" loading="lazy"></p>
+<p>作者：HelloGitHub-<strong>小鱼干</strong></p>
+<blockquote>
+<p>摘要：还记得花式夸赞程序员的彩虹屁插件 vscode-rainbow-fart 吗？它后续有人啦！JazzIt 同它的前辈 vscode-rainbow-fart 一样，是一个能让代码“发声”的工具，它会在脚本运行成功或者失败时播放音乐，支持自定义的悲喜乐 ←.← 当然，本周有意思的不只是 JazzIt，还有 jupyter-text2code 它能让英语查询语言秒变 Python 代码，让你提高效率省时省力，老项目视频补帧——DAIN 这周表现也不俗，获得了过千 star…</p>
+</blockquote>
+<p>以下内容摘录自微博<a href="https://www.weibo.com/hellogithub/">@HelloGitHub</a> 的 GitHub Trending 及 Hacker News 热帖（简称 HN 热帖），选项标准：<code>新发布</code> | <code>实用</code> | <code>有趣</code>，根据项目 release 时间分类，发布时间不超过 7 day 的项目会标注 <code>New</code>，无该标志则说明项目 release 超过一周。由于本文篇幅有限，还有部分项目未能在本文展示，望周知 🌝</p>
+<ul>
+<li>本文目录
+<ul>
+<li>
+<ol>
+<li>本周特推</li>
+</ol>
+<ul>
+<li>1.1 脚本音乐：JazzIt</li>
+<li>1.2 GitHub 官方 cli：cli</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>GitHub Trending 周榜</li>
+</ol>
+<ul>
+<li>2.1 模糊即服务：OneFuzz</li>
+<li>2.2 测试好帮手：ARL</li>
+<li>2.3 Linux 学习利器：linux-command</li>
+<li>2.4 按层分析 Docker：dive</li>
+<li>2.5 制图神器：FreeCAD</li>
+<li>2.6 文本变代码：jupyter-text2code</li>
+<li>2.7 视频补帧：DAIN</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>推荐阅读</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-本周特推">1. 本周特推</h2>
+<h3 id="11-脚本音乐：jazzit">1.1 脚本音乐：JazzIt</h3>
+<p><strong>本周 star 增长数：550+</strong></p>
+<p><code>New</code> 想要脚本运行时/出错时播放音乐的小工具吗？JazzIt 支持你可以在函数中添加一个装饰器，让它变得有活力——播放一段旋律，当你运行成功时可以听到欢乐得如同猪八戒背媳妇的音乐，而程序出错时 JazzIt 也可以发出让人伤心欲绝的声音，例如，斗地主失败的音乐…</p>
+<blockquote>
+<p>GitHub 地址→https://github.com/Sangarshanan/jazzit</p>
+</blockquote>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174510632-1335639648.png" alt="" loading="lazy"></p>
+<h3 id="12-github-官方-cli：cli">1.2 GitHub 官方 cli：cli</h3>
+<p><strong>本周 star 增长数：3000+</strong></p>
+<p>gh/cli 是 GitHub 官方发布的命令版 GitHub，支持 pr、issue 等常规 GitHub 操作，目前 gh 处于 1.0 版。</p>
+<blockquote>
+<p>GitHub 地址→https://github.com/cli/cli</p>
+</blockquote>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174520857-307696499.png" alt="" loading="lazy"></p>
+<h2 id="2-github-trending-周榜">2. GitHub Trending 周榜</h2>
+<h3 id="21-模糊即服务：onefuzz">2.1 模糊即服务：OneFuzz</h3>
+<p><strong>本周 star 增长数：1200+</strong></p>
+<p><code>New</code> OneFuzz——一个微软内部使用的，由开发人员驱动的持续开发模糊测试平台。开源后，世界各地的开发人员都可以通过 OneFuzz 直接从其开发系统接收模糊测试结果。</p>
+<blockquote>
+<p>GitHub 地址→https://github.com/microsoft/onefuzz</p>
+</blockquote>
+<h3 id="22-测试好帮手：arl">2.2 测试好帮手：ARL</h3>
+<p><strong>本周 star 增长数：450+</strong></p>
+<p>ARL 是一个资产侦察灯塔系统，可协助甲方安全团队或者渗透测试人员有效侦察和检索资产，发现存在的薄弱点和攻击面。</p>
+<blockquote>
+<p>GitHub 地址→https://github.com/TophantTechnology/ARL</p>
+</blockquote>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174529623-182274986.png" alt="" loading="lazy"></p>
+<h3 id="23-linux-学习利器：linux-command">2.3 Linux 学习利器：linux-command</h3>
+<p><strong>本周 star 增长数：550+</strong></p>
+<p>linux-command 是一个 Linux 命令大全搜索工具，内容包含 Linux 命令手册、详解、学习、搜集，此外它还有 Chrome 插件版本。</p>
+<blockquote>
+<p>GitHub 地址→https://github.com/jaywcjlove/linux-command</p>
+</blockquote>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174542191-177580459.gif" alt="" loading="lazy"></p>
+<h3 id="24-按层分析-docker：dive">2.4 按层分析 Docker：dive</h3>
+<p><strong>本周 star 增长数：650+</strong></p>
+<p>dive 是一款用于分析 Docker 镜像、图层内容以及探索缩小 Docker 镜像大小的方法的工具。主要特性：</p>
+<ul>
+<li>按层显示 Docker 镜像内容；</li>
+<li>指出每一层的变化；</li>
+<li>评估 “镜像的效率”；</li>
+<li>快速的构建/分析周期；</li>
+<li>和 CI 集成；</li>
+<li>支持多个镜像和容器引擎：比如 docker、docker-archive 和 podman；</li>
+</ul>
+<blockquote>
+<p>GitHub 地址→https://github.com/wagoodman/dive</p>
+</blockquote>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174554559-1419326522.gif" alt="" loading="lazy"></p>
+<h3 id="25-制图神器：freecad">2.5 制图神器：FreeCAD</h3>
+<p><strong>本周 star 增长数：800+</strong></p>
+<p>FreeCAD 是一个 3D CAD 建模工具，并不局限于特定目的。FreeCAD 的目标虽然指向 机械工程和产品设计，但是它也适合工程领域内的其他用户，比如建筑或者其他工程专业。此外，用户可以使用 Python 来扩展该软件的功能。</p>
+<blockquote>
+<p>GitHub 地址→https://github.com/FreeCAD/FreeCAD</p>
+</blockquote>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174605838-28112906.png" alt="" loading="lazy"></p>
+<h3 id="26-文本变代码：jupyter-text2code">2.6 文本变代码：jupyter-text2code</h3>
+<p><strong>本周 star 增长数：600+</strong></p>
+<p><code>New</code> jupyter-text2code 可让你在 Jupyter 中快速将查询语言变为 Python 代码，不过目前只支持英语查询语句。</p>
+<blockquote>
+<p>GitHub 地址→https://github.com/deepklarity/jupyter-text2code</p>
+</blockquote>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174617488-1212451069.gif" alt="" loading="lazy"></p>
+<h3 id="27-视频补帧：dain">2.7 视频补帧：DAIN</h3>
+<p><strong>本周 star 增长数：1100+</strong></p>
+<p>DAIN 是一款开源的 AI 视频补帧软件，通过 DAIN 用户可以将任何形式的媒体，比如电影、定格动画、动漫、卡通等视频格式插上新的帧，从而达成更大的帧率，通常适用于给一些动作场面添加，使整个视频看起来更加的柔顺，也可用 DAIN 给一些老旧的视频电影添加新的帧，让视频看起来更加的丝滑。</p>
+<blockquote>
+<p>GitHub 地址→https://github.com/baowenbo/DAIN</p>
+</blockquote>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200921174630027-744476161.gif" alt="" loading="lazy"></p>
+<p>图片来源：微博@大谷 Spitzer</p>
+<h2 id="3-推荐阅读">3. 推荐阅读</h2>
+<ul>
+<li><a href="https://www.cnblogs.com/xueweihan/p/13666222.html">本周 GitHub 速览：自动化当道，破密、爬虫各凭本事</a></li>
+<li><a href="https://www.cnblogs.com/xueweihan/p/13627535.html">GitHub 热点速览 Vol.36：当股票遇到机器学习，异常股无所遁形</a></li>
+</ul>
+<p>以上本周的 GitHub Trending 🎉 如果你 Pick 其他好玩、实用的 GitHub 项目，记得来 <a href="https://github.com/521xueweihan/HelloGitHub">HelloGitHub</a> issue 区和我们分享下哟 🌝</p>
+<hr>
+<p><img src="https://img2020.cnblogs.com/blog/759200/202009/759200-20200914134046229-911658496.png" alt="" loading="lazy"></p>
+<p>关注 HelloGitHub 公众号</p>
+
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-09-22 11:09</span>&nbsp;
+<a href="https://www.cnblogs.com/xueweihan/">削微寒</a>&nbsp;
+阅读(<span id="post_view_count">732</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=13707006" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(13707006);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 228315, cb_blogApp = 'xueweihan', cb_blogUserGuid = '41673165-d8fd-e411-b908-9dcfd8948a71';
+    var cb_entryId = 13707006, cb_entryCreatedDate = '2020-09-22 11:09', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 削微寒
+<br /><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+</body>
+</html>

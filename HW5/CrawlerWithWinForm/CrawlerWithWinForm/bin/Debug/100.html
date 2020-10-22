@@ -1,0 +1,425 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta name="description" content=".NET Core 是一个通用开发平台，由 Microsoft 和 GitHub 上的 .NET 社区共同维护。 它是跨平台的，支持 Windows、macOS 和 Linux，并且可用于设备、云和嵌" />
+    <meta property="og:description" content=".NET Core 是一个通用开发平台，由 Microsoft 和 GitHub 上的 .NET 社区共同维护。 它是跨平台的，支持 Windows、macOS 和 Linux，并且可用于设备、云和嵌" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>学习ASP.NET Core Razor 编程系列一 - DotNet菜园 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=jzhy9Oyg5XODXo8F4hsEOQFzKCPYRKZCYc011rNEfQo" />
+    <link id="MainCss" rel="stylesheet" href="/skins/classicblue/bundle-classicblue.min.css?v=C_xOBodTdu7qViYoEOWb5uyE0XIl-SuwRkgFEwSDOCc" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/classicblue/bundle-classicblue-mobile.min.css?v=arJ4BmwdBcUZrSduKjIvQKPiliQ99OBUW7yasPqJtdY" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chillsrc/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chillsrc/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chillsrc/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 13897;
+        var currentBlogApp = 'chillsrc';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'ClassicBlue';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2018-03-16 11:21';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=fLUEwRea4WeqlJe_CLnNunLQZl_ViJFLgKpcNDuKptI"></script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/chillsrc/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/chillsrc/">DotNet菜园</a>
+</h1>
+<h2>
+专注所以专业,专业所以专注
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/chillsrc/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/DotNet%E8%8F%9C%E5%9B%AD">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/chillsrc/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+276&nbsp; </span>
+<span id="stats_article_count">文章 - 
+32&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+836</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chillsrc/p/8579777.html">
+    <span>学习ASP.NET Core Razor 编程系列一</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+    <div id="cnblogs_post_description" style="display: none">
+        .NET Core 是一个通用开发平台，由 Microsoft 和 GitHub 上的 .NET 社区共同维护。 它是跨平台的，支持 Windows、macOS 和 Linux，并且可用于设备、云和嵌入式/IoT 方案。 本教程学习如何创建基于ASP.NET Core Razor页面的Web应用程序。
+    </div>
+<div id="cnblogs_post_body" class="blogpost-body">
+    <h1><span style="font-size: 16px">一. 概述</span></h1>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .NET Core 1.0发布的时候就想进行学习的，不过根据微软的以往的发布规律1.0版可以认为是大众测试版，2.0才算稳定。现在2.1都已经发布了预览版,之前对其"不稳定"的顾虑也打消的差不多了,决定学习一下。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;<strong>&nbsp;&nbsp;&nbsp; ASP.NET Core 具有如下优点：</strong></span></p>
+<ul>
+<li><span style="font-size: 16px">生成 Web UI 和 Web API 的统一场景。</span></li>
+<li><span style="font-size: 16px">集成新式客户端框架和开发工作流。</span></li>
+<li><span style="font-size: 16px">基于环境的云就绪配置系统。</span></li>
+<li><span style="font-size: 16px">内置依赖项注入。</span></li>
+<li><span style="font-size: 16px">轻型的高性能模块化 HTTP 请求管道。</span></li>
+<li><span style="font-size: 16px">能够在&nbsp;IIS、Nginx、Apache、Docker&nbsp;上进行托管或在自己的进程中进行自托管。</span></li>
+<li><span style="font-size: 16px">定目标到&nbsp;.NET Core&nbsp;时，可以使用并行应用版本控制。</span></li>
+<li><span style="font-size: 16px">简化新式 Web 开发的工具。</span></li>
+<li><span style="font-size: 16px">兼容性<strong>，</strong>.NET Core 通过 .NET 标准与 .NET Framework、Xamarin 和 Mono 兼容。</span></li>
+<li><span style="font-size: 16px">能够在 Windows、macOS 和 Linux 进行生成和运行。</span></li>
+<li><span style="font-size: 16px">开放源代码和以社区为中心。</span></li>
+</ul>
+<h1><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如何跨平台?</span></h1>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我先上一张图，然后我们再来看一下官方对.NET CORE 的介绍。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316111735677-1542147239.jpg" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .NET Framework本身是个"跨Windows"的平台, 而在这个基础上, 又支持C#和VB等语言进行 "跨语言",&nbsp;</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .NET Core 是一个通用开发平台，由 Microsoft 和 GitHub 上的 .NET 社区共同维护。 它是跨平台的，支持 Windows、macOS 和 Linux，并且可用于设备、云和嵌入式/IoT 方案。</span></p>
+<p><strong><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp; .NET Core 包括以下部分：</span></strong></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp; .NET 运行时：提供类型系统、程序集加载、垃圾回收器、本机互操作和其他基本服务。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp; 一组 框架库：提供基元数据类型、应用编写类型和基本实用程序。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp; 一组 SDK 工具和语言编译器：提供基本的开发人员体验，可用于 .NET Core SDK。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp; “dotnet”应用主机，用于启动 .NET Core 应用。 它选择运行时并托管运行时，提供程序集加载策略来启动应用。 同一主机还可用于以大致相同的方式.NET Core 主要以两种方式发行，以包方式在 NuGet.org 上发行，以及以独立方式发行。以包方式在 NuGet.org 上发行, 使应用更加灵活、模块化的同时提高性能.</span></p>
+<h2><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .NET API 和兼容性</span></h2>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 可将 .NET Core 看作是 .NET Framework 在 .NET Framework 基类库 (BCL) 的跨平台版本。 它实施 .NET 标准规范。 .NET Core 提供了一个可用于 .NET Framework 或 Mono/Xamarin 的 API 子集。 在某些情况下，类型未完全实现（某些成员不可用或已移动）。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>与 .NET Standard 的关系</strong></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .NET 标准是一种 API 规范，用于描述开发者可以在每个 .NET 实现代码中使用的一组一致 .NET API。 .NET 实现需要实现此规范才能被视为符合 .NET Standard ，并且才能支持面向 .NET Standard 的库。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>&nbsp;&nbsp; 与 .NET Framework 比较</strong></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .NET 由 Microsoft 于 2000 年首次发布，而后发展至今。 15 年多以来，.NET Framework 一直是 Microsoft 出品的主要 .NET 实现。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>&nbsp; .NET Core 和 .NET Framework 的主要差异在于：</strong></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp; &nbsp; &nbsp; 应用模型 -- .NET Core 不支持所有 .NET Framework 应用模型，某种程序上是因为其中许多模型都是基于 Windows 技术，如 WPF（基于 DirectX 生成）。 但 .NET Core 和 .NET Framework 两者都支持控制台和 ASP.NET Core 应用模型。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp; &nbsp; &nbsp; API -- .NET Core 包含很多与 .NET Framework 相同，但数量较少的 API，并且具有不同的组成要素（程序集名称不同；关键用例中的类型形状不同）。 目前，这些差异通常都需要更改，以将源移植到 .NET Core。 .NET Core 实现 .NET 标准 API，随着时间的推移，将包含更多 .NET Framework BCL API。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp; &nbsp; &nbsp; 子系统 -- .NET Core 实现 .NET Framework 中子系统的子级，目的是实现更简单的实现和编程模型。 例如，不支持代码访问安全性 (CAS)，但支持反射。</span></p>
+<p><span style="font-size: 16px">&nbsp; &nbsp; &nbsp;&nbsp; 平台 -- .NET Framework 支持 Windows 和 Windows Server，而 NET Core 还支持 macOS 和 Linux。</span></p>
+<p><span style="font-size: 16px">&nbsp; &nbsp; &nbsp;&nbsp; 开放源 -- .NET Core 属于开放源，而 .NET Framework 的只读子集属于开放源。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 虽然 .NET Core 是唯一的且与 .NET Framework 和其他 .NET 实现大不相同，但使用源或二进制共享技术分享代码仍很简单。</span></p>
+<p><span style="font-size: 16px">&nbsp;</span></p>
+<p><span style="font-size: 16px">二、开始学习第一个ASP.NET Core应用程序</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 本教程学习如何创建基于ASP.NET Core Razor页面的Web应用程序。</span></p>
+<p align="left"><span style="font-size: 16px"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第一，请先安装以下软件</strong></span></p>
+<ul>
+<li><span style="font-size: 16px">.NET Core SDK 2.0版本或更高版本</span></li>
+<li><span style="font-size: 16px">Visual Studio 2017版本15.3 或更高版本，并且包含 ASP.NET Web开发功能模块</span></li>
+</ul>
+<p align="left"><span style="font-size: 16px"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第二，创建一个Razor Web应用程序</strong></span></p>
+<ol>
+<li><span style="font-size: 16px">在Visual Studio 2017中选择菜单--&gt;文件--&gt;新建--&gt;项目。如下图。</span></li>
+</ol>
+<p align="left"><span style="font-size: 16px">&nbsp; &nbsp; &nbsp; &nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316111806608-419868230.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp; </span><span style="font-size: 16px">在弹出的“新建项目”的对话框中做如下选择。</span></p>
+<ul>
+<li><span style="font-size: 16px">在左边的列表中，选择 .NET Core ，如下图中1处</span></li>
+<li><span style="font-size: 16px">在中间的列表中，选择 ASP.NET Core Web应用程序，如下图中2处。</span></li>
+<li><span style="font-size: 16px">在名称文本框中输入“<strong>RazorMvcBooks</strong>” ，如下图中3处。</span></li>
+<li><span style="font-size: 16px">在下图中4处，点击“确定”按钮，创建Web应用程序</span></li>
+</ul>
+<p align="left"><span style="font-size: 16px">&nbsp; &nbsp; &nbsp;&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316111831635-974374944.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.</span><span style="font-size: 16px">在弹出的“新建<strong>ASP.NET Core Web </strong><strong>应用程序-RazorMvcBooks</strong>”的对话框中做如下选择：</span></p>
+<ul>
+<li><span style="font-size: 16px">在下图1处，从下拉框中选择“Net Core”与“Asp.NET Core 2.0”</span></li>
+<li><span style="font-size: 16px">在下图2处，选择Web应用程序</span></li>
+<li><span style="font-size: 16px">鼠标点击确定按钮，如下图3处。</span></li>
+</ul>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316111843345-2009855638.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">注</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 使用ASP.NET Core的.NET框架，你必须首先选择在第一个下拉框中选择框架，然后在第二下下拉框中选择ASP.NET Core的版本。如上图1处。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp; &nbsp; &nbsp; &nbsp;</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4. </span><span style="font-size: 16px">Visual Studio&nbsp; 2017使用默认模板创建了一个ASP.NET&nbsp; Core MVC Razor页面项目。我们刚才通过输入一个项目名称并选择了几个选项，创建了一个Web应用程序。这是一个简单的入门项目，项目结构如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316111916572-1394672928.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.</span><span style="font-size: 16px">按F5在调拨模式下运行这个应用程序或者按Ctrl+F5在不调试模式下运行这个应用程序。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316111940635-1410502412.png" alt=""></span></p>
+<ul>
+<li><span style="font-size: 16px">Visual Studio 2017 将启动IIS Express并运行RazorMvcBooks应用程序。注意，地址栏显示“localhost：端口”而不是域名（如www.cnblogs.com）。这是因为localhost是本地计算机的标准主机名。当Visual Studio 2017创建Web项目时，Web服务器使用随机端口。在上面的图片中，端口号是53416。浏览器中的URL显示“http://localhost: 53416/”。你运行应用程序时，可能会看到一个不同的端口号。</span></li>
+</ul>
+<p align="left"><span style="font-size: 16px">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.</span><span style="font-size: 16px">如果使用Ctrl + F5（非调试模式）启用应用程序，在这个模式下允许您进行代码更改，在保存文件之后，刷新浏览器，不需要重新启动应用程序就可以查看代码更改之后的结果。许多开发人员喜欢使用非调试模式来快速启动应用程序并查看更改。见下图。图中1 处是启动时的在页面中要显示的内容。我在程序代码中进行了修改。如图2处。在浏览器中按F5，进行刷新之后，页面显示就如图3处所示。</span></p>
+<p><span style="font-size: 16px">&nbsp; &nbsp; &nbsp; &nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316112017438-2055515789.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7. </span><span style="font-size: 16px">使用默认模板创建的<strong>RazorMvcBooks项目</strong>，有Home，About和Contact三个页面。根据浏览器窗口的大小，您可能需要单击菜单图标来显示相关菜单链接。如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316112027588-271884943.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8.</span><span style="font-size: 16px">测试链接。在<strong>RazorMVCBooks的页面</strong>可以点击About链接。如下图。所示。</span></p>
+<h2><span style="font-size: 16px"><img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316112038004-1854514274.png" alt=""></span></h2>
+<h2><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第三、项目文件与文件夹</span></h2>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 下表列出了项目中的文件和文件夹。如下图。在本教程中，将startup.cs文件理解是最重要。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180316112100264-472103536.png" alt=""></span></p>
+<table border="0" cellpadding="0">
+<thead>
+<tr>
+<td>
+<p align="center"><span style="font-size: 16px"><strong>文件或文件夹</strong></span></p>
+</td>
+<td>
+<p align="center"><span style="font-size: 16px"><strong>作用</strong></span></p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px">wwwroot</span></p>
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">存放静态文件的文件夹，些文件包括网站使用的CSS样式表、图像和 JavaScript 文件</span></p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px">Pages</span></p>
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">这个文件夹中主要放是Razor页面文件。以 <em>.cshtml</em> 结尾的文件是 Razor 文件，以 <em>.cs</em> 结尾的文件是C#类文件</span></p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px"><em>appsettings.json</em></span></p>
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">基于 json 格式的文件，用于应用程序范围的配置设置</span></p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px"><em>Program.cs</em></span></p>
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">ASP.NET Core 应用程序的入口点</span></p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px"><em>Startup.cs</em></span></p>
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">配置服务和请求管道, 用于处理所有对应用程序请求。</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第四、Page文件夹中的文件说明</span></h2>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _layout.cshtml文件中包含通用的HTML元素（脚本和样式表）和应用程序的总体布局。例如，当你点击<strong>RazorMvcBooks</strong>，Home，About的链接时，你会看到同样的页眉与页脚布局。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _viewstart.cshtml文件当作_layout.cshtml文件的布局属性来使用。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; _viewimports.cshtml包含导入到每个Razor页面的Razor指令。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; _validationscriptspartial.cshtml文件提供对jQuery验证脚本的引用。当我们添加创建和编辑网页时，_validationscriptspartial.cshtml文件将被使用。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; About.cshtml、Contact.cshtml和Index.cshtml是用来启动应用程序的基本页面。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Error.cshtml用于显示错误信息。</span></p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2018-03-16 11:21</span>&nbsp;
+<a href="https://www.cnblogs.com/chillsrc/">DotNet菜园</a>&nbsp;
+阅读(<span id="post_view_count">8827</span>)&nbsp;
+评论(<span id="post_comment_count">12</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=8579777" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(8579777);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 13897, cb_blogApp = 'chillsrc', cb_blogUserGuid = 'c642360b-63cf-dd11-9e4d-001cf0cd104b';
+    var cb_entryId = 8579777, cb_entryCreatedDate = '2018-03-16 11:21', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 DotNet菜园
+<br /><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+</body>
+</html>

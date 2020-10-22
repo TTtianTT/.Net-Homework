@@ -1,0 +1,2499 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="Origin" />
+    
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>测试高级进阶技能系列 - Cypress - 随笔分类 - 小菠萝测试笔记 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=kXxbcm7tkkASG2_xwyD6Kw4CzHe0bT3mi0jyCb8YspQ" />
+    
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/poloyy/custom.css?v=H9CpASw45TS&#x2B;LgkgwobKE4JLhUA=" />
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/SimpleMemory/bundle-SimpleMemory-mobile.min.css" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/poloyy/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/poloyy/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/poloyy/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 567504;
+        var currentBlogApp = 'poloyy';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleMemory';
+        var visitorUserId = '';
+    </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=kKx3DBtpvO8r97BzPmHJseQ10fGHkI-ZwMh4FA0eEd0"></script>
+    
+    
+    
+</head>
+<body class="no-navbar">
+    <a name="top"></a> 
+    <div id="top_nav" class="navbar navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/poloyy/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/poloyy/">阿菠萝阿瑶</a>
+</h1>
+<h2>
+
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/poloyy/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E5%B0%8F%E8%8F%A0%E8%90%9D%E6%B5%8B%E8%AF%95%E7%AC%94%E8%AE%B0">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/poloyy/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+555&nbsp; </span>
+<span id="stats_article_count">文章 - 
+0&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+298</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+
+<!--done-->
+
+
+<div class="entrylist">
+    <h1 class="entrylistTitle">
+        
+随笔分类 - 测试高级进阶技能系列 - Cypress
+
+    </h1>
+    <div class="entrylistDescription">
+        
+
+    </div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13852941.html">
+    <span>Cypress系列（69）- route() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 管理控制整个网络请求 重要注意事项 Cypress 目前仅支持拦截 XMLHttpRequest（XHR） 可在开发者工具（netwo
+        <a href="https://www.cnblogs.com/poloyy/p/13852941.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13852941.html" title="permalink">2020-10-21 16:12</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(67)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13852941" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13841964.html">
+    <span>Cypress系列（68）- request() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 发起一个 HTTP 请求 语法格式 cy.request(url) cy.request(url, body) cy.request(
+        <a href="https://www.cnblogs.com/poloyy/p/13841964.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13841964.html" title="permalink">2020-10-20 14:17</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(104)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13841964" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13840462.html">
+    <span>Cypress系列（67）- 环境变量设置指南</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 常见的环境变量设置方式 可参考这篇文章：https://www.cnblogs.com/poloyy/p/13056393.html 前言 
+        <a href="https://www.cnblogs.com/poloyy/p/13840462.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13840462.html" title="permalink">2020-10-19 15:23</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(71)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(1)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13840462" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13830031.html">
+    <span>Cypress系列（66）- 测试运行最佳实践</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 动态生成测试用例 直接看这篇文章哦：https://www.cnblogs.com/poloyy/p/13042466.html 静态挑选待
+        <a href="https://www.cnblogs.com/poloyy/p/13830031.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13830031.html" title="permalink">2020-10-19 09:45</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(22)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13830031" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13821860.html">
+    <span>Cypress系列（65）- 测试运行失败自动重试</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 重试的介绍 学习前的三问 什么是重试测试 为什么重试很重要 如何使用重试 为什么要重试 使用 Cypress 进行自动化测试时，仍然会存在一
+        <a href="https://www.cnblogs.com/poloyy/p/13821860.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13821860.html" title="permalink">2020-10-16 08:58</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(132)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13821860" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13814787.html">
+    <span>Cypress系列（64）- 数据驱动策略</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 数据驱动是测试框架中最常用的设计模式了 使用数据驱动，可以在不增加代码量的前提下根据数据生成不同的测试策略 策略一：数据通过 JS 的
+        <a href="https://www.cnblogs.com/poloyy/p/13814787.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13814787.html" title="permalink">2020-10-14 14:33</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(63)</span> 
+        <span class="post-comment-count">评论(4)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13814787" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13808675.html">
+    <span>Cypress系列（63）- 使用 Custom Commands</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html Custom Commands 自定义命令介绍 Custom Commands 被认为是替代 PageObject 的良好选择 使用 Cus
+        <a href="https://www.cnblogs.com/poloyy/p/13808675.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13808675.html" title="permalink">2020-10-14 10:32</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(114)</span> 
+        <span class="post-comment-count">评论(4)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13808675" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13804226.html">
+    <span>Cypress系列（62）- 改造 PageObject 模式</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html PO 模式 PageObject（页面对象）模式是自动化测试中的一个最佳实践，相信很多小伙伴都知道的 PO 模式特征 将每个页面（或者待测试
+        <a href="https://www.cnblogs.com/poloyy/p/13804226.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13804226.html" title="permalink">2020-10-13 09:22</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(118)</span> 
+        <span class="post-comment-count">评论(1)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13804226" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13744006.html">
+    <span>Cypress系列（61）- 断言最佳实践</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 背景 Cypress 的断言库是基于 Chai 断言库的 并且增加了对 Sinon-Chai，Chai-jQuery 断言库的支持，带来了强
+        <a href="https://www.cnblogs.com/poloyy/p/13744006.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13744006.html" title="permalink">2020-10-12 14:24</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(86)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13744006" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13743099.html">
+    <span>Cypress系列（60）- 运行时的截图和录屏</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 背景 在测试运行时截图和录屏能够在测试错误时快速定位到问题所在 Cypress 截图和录屏功能强大 无须配置，自动截图 以 cypress 
+        <a href="https://www.cnblogs.com/poloyy/p/13743099.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13743099.html" title="permalink">2020-09-28 10:51</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(259)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13743099" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13739864.html">
+    <span>Cypress系列（59）- 实时调试和中断</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 Cypress 提供了两种方式的 debug .debug() 作用 在定位问题时，可以使用 .debug() 来调试，查看此时系统的
+        <a href="https://www.cnblogs.com/poloyy/p/13739864.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13739864.html" title="permalink">2020-09-27 15:35</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(84)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13739864" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13739349.html">
+    <span>Cypress系列（58）- 停用条件测试</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html Cypress 下什么是条件测试 判断一个元素是否存在，当它存在时，执行 A 操作；当它不存在时，执行 B 操作 Cypress 认为条件测
+        <a href="https://www.cnblogs.com/poloyy/p/13739349.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13739349.html" title="permalink">2020-09-27 14:34</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(69)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13739349" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13738529.html">
+    <span>Cypress系列（57）- 删除等待代码</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 背景 在其他的自动化测试框架中，很大概率会用到强制等待（sleep），隐式等待 但在 Cypress 中，你无须使用等待，Cypress 的
+        <a href="https://www.cnblogs.com/poloyy/p/13738529.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13738529.html" title="permalink">2020-09-27 11:45</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(66)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13738529" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13738361.html">
+    <span>Cypress系列（56）- 避免访问多个站点</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 背景 为了绕开同源策略的限制而实现的方案，使得 Cypress 不能支持在一个测试用例文件里访问多个不同域名的 URL 如果访问了多个不同域
+        <a href="https://www.cnblogs.com/poloyy/p/13738361.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13738361.html" title="permalink">2020-09-27 11:17</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(51)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13738361" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13738202.html">
+    <span>Cypress系列（55）- 设置全局 URL</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 背景 为了绕过同源策略，当 Cypress 开始运行测试时，会在 localhost 上打开一个随机端口进行初始化 直到遇见第一个 cy.v
+        <a href="https://www.cnblogs.com/poloyy/p/13738202.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13738202.html" title="permalink">2020-09-27 10:55</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(72)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13738202" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13738191.html">
+    <span>Cypress系列（54）- Cypress 最佳实践大集合</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html Cypress 官方推荐的最佳实践大集合 点击即可跳转 设置全局 URL 避免访问多个站点 删除等待代码 停用条件测试 实时调试和中断 运行
+        <a href="https://www.cnblogs.com/poloyy/p/13738191.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13738191.html" title="permalink">2020-09-27 10:54</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(104)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13738191" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13730822.html">
+    <span>Cypress系列（53）- as() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 起别名以供以后使用 可在 cy.get() 或 cy.wait() 命令中引用别名 语法格式 .as(aliasName) 正确格式 
+        <a href="https://www.cnblogs.com/poloyy/p/13730822.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13730822.html" title="permalink">2020-09-25 16:08</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(88)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13730822" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13714430.html">
+    <span>Cypress系列（52）- fixture() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 加载位于文件中的一组固定数据 语法格式 cy.fixture(filePath) cy.fixture(filePath, encod
+        <a href="https://www.cnblogs.com/poloyy/p/13714430.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13714430.html" title="permalink">2020-09-24 10:28</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(114)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13714430" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13686431.html">
+    <span>Cypress系列（51）- its() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 获取上一条命令结果的属性值 语法格式 .its(propertyName) .its(propertyName, options) 参
+        <a href="https://www.cnblogs.com/poloyy/p/13686431.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13686431.html" title="permalink">2020-09-21 12:23</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(106)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13686431" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13672255.html">
+    <span>Cypress系列（50）- wrap() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 返回传递给它的对象 语法格式 cy.wrap(subject) cy.wrap(subject, options) 参数说明 subj
+        <a href="https://www.cnblogs.com/poloyy/p/13672255.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13672255.html" title="permalink">2020-09-17 16:43</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(122)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13672255" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13680832.html">
+    <span>Cypress系列（49）- invoke() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 对前一条命令返回的结果进行调用方法 语法格式 .invoke(functionName) .invoke(options, funct
+        <a href="https://www.cnblogs.com/poloyy/p/13680832.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13680832.html" title="permalink">2020-09-17 09:37</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(106)</span> 
+        <span class="post-comment-count">评论(2)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13680832" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13678233.html">
+    <span>Cypress系列（48）- and() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 创建一个断言，断言将自动重试，直到它们通过或超时 和 should() 一个用法 语法格式 .and(chainers) .and(c
+        <a href="https://www.cnblogs.com/poloyy/p/13678233.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13678233.html" title="permalink">2020-09-16 11:47</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(90)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13678233" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13673519.html">
+    <span>Cypress系列（47）- 操作上一条命令返回结果的命令集</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 点击命令可以跳转到命令详解的文章哦 命令 作用 then() 将上一条命令返回的结果注入到下一个命令中 and() 创建一个断言。断言将自动
+        <a href="https://www.cnblogs.com/poloyy/p/13673519.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13673519.html" title="permalink">2020-09-16 10:31</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(82)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13673519" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13671895.html">
+    <span>Cypress系列（46）- then() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 在 Cypress 中，保存一个值或者引用的最好方式是使用闭包 then() 就是 Cypress 对闭包的一个典型应用 then()
+        <a href="https://www.cnblogs.com/poloyy/p/13671895.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13671895.html" title="permalink">2020-09-15 10:54</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(132)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13671895" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13631293.html">
+    <span>Cypress系列（45）- cypress-skip-and-only-ui 插件详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 一个测试用例集（describe）通常包含多个测试用例（it） 当网络不稳定而引起测试失败时，我们希望仅重试失败的用例而不是重跑整个测
+        <a href="https://www.cnblogs.com/poloyy/p/13631293.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13631293.html" title="permalink">2020-09-08 11:00</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(121)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13631293" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13626189.html">
+    <span>Cypress系列（44）- 命令行运行 Cypress</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 前面也介绍过 Cypress 命令行，先来看看它的语法格式 cypress &lt;command&gt; [options] command：必
+        <a href="https://www.cnblogs.com/poloyy/p/13626189.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13626189.html" title="permalink">2020-09-08 09:50</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(193)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13626189" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13625824.html">
+    <span>Cypress系列（43）-  wait() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 等待数毫秒或等待别名资源解析，然后再继续执行下一个命令 语法格式 cy.wait(time) cy.wait(alias) cy.wa
+        <a href="https://www.cnblogs.com/poloyy/p/13625824.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13625824.html" title="permalink">2020-09-07 11:18</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(149)</span> 
+        <span class="post-comment-count">评论(1)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13625824" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13608977.html">
+    <span>Cypress系列（43）-  visit() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 访问远程 URL 语法格式 cy.visit(url) cy.visit(url, options) cy.visit(options
+        <a href="https://www.cnblogs.com/poloyy/p/13608977.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13608977.html" title="permalink">2020-09-03 17:52</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(147)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13608977" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13030898.html">
+    <span>Cypress系列（41）- Cypress 的测试报告</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 注意 51 testting 有一篇文章会和我的一样，因为是我投的稿~~ 前言 Cypress 的测试报告模块脱胎于 Mocha 的测试报告
+        <a href="https://www.cnblogs.com/poloyy/p/13030898.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13030898.html" title="permalink">2020-07-24 09:50</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(511)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13030898" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13174388.html">
+    <span>Cypress系列（40）- viewport() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 控制浏览器窗口的尺寸和方向 重点 也可以通过在配置项中定义 viewportWidth 和 viewportHeight 来全局设置浏
+        <a href="https://www.cnblogs.com/poloyy/p/13174388.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13174388.html" title="permalink">2020-06-22 09:33</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(271)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(1)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13174388" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13173533.html">
+    <span>Cypress系列（39）- reload() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 刷新页面 语法格式 cy.reload() cy.reload(forceReload) cy.reload(options) cy.
+        <a href="https://www.cnblogs.com/poloyy/p/13173533.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13173533.html" title="permalink">2020-06-21 21:40</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(270)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13173533" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13173455.html">
+    <span>Cypress系列（38）- go() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 在浏览器历史记录中，访问前一个或后一个 URL 语法格式 cy.go(direction) cy.go(direction, opti
+        <a href="https://www.cnblogs.com/poloyy/p/13173455.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13173455.html" title="permalink">2020-06-21 18:12</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(232)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13173455" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13152064.html">
+    <span>Cypress系列（37）- location() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 获取当前页面的 window.location 语法格式 cy.location() cy.location(key) cy.loca
+        <a href="https://www.cnblogs.com/poloyy/p/13152064.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13152064.html" title="permalink">2020-06-17 13:52</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(271)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13152064" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13151943.html">
+    <span>Cypress系列（36）- document() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 获取当前页面的&#160;window.document 语法格式 cy.document() cy.document(options) opt
+        <a href="https://www.cnblogs.com/poloyy/p/13151943.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13151943.html" title="permalink">2020-06-17 13:24</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(248)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13151943" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13151649.html">
+    <span>Cypress系列（35）- root() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 获取当根元素 语法格式 cy.root() cy.root(options) options：只有 timeout 和 log，不再展
+        <a href="https://www.cnblogs.com/poloyy/p/13151649.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13151649.html" title="permalink">2020-06-17 11:50</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(200)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13151649" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13151135.html">
+    <span>Cypress系列（34）- window() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 获取当前页面的 window 对象 语法格式 cy.window() cy.window(options) options：只有 ti
+        <a href="https://www.cnblogs.com/poloyy/p/13151135.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13151135.html" title="permalink">2020-06-17 10:47</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(292)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13151135" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13150936.html">
+    <span>Cypress系列（33）- hash() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 获取页面当前的 url 的哈希值 等价于&#160;cy.location(&#39;hash&#39;) 语法格式 cy.hash() cy.hash(opt
+        <a href="https://www.cnblogs.com/poloyy/p/13150936.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13150936.html" title="permalink">2020-06-17 10:22</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(163)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13150936" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13149710.html">
+    <span>Cypress系列（32）- url() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 获取页面当前的 url 等价于&#160;cy.location(&#39;href&#39;) 语法格式 cy.url() cy.url(options) o
+        <a href="https://www.cnblogs.com/poloyy/p/13149710.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13149710.html" title="permalink">2020-06-16 23:07</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(361)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13149710" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13149627.html">
+    <span>Cypress系列（31）- title() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 获取页面的标题，&#160;document.title 语法格式 cy.title() cy.title(options) options：只
+        <a href="https://www.cnblogs.com/poloyy/p/13149627.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13149627.html" title="permalink">2020-06-16 23:06</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(212)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13149627" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13149791.html">
+    <span>Cypress系列（30）- 操作浏览器的命令</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 点击命令可以跳转到命令详解的文章哦 命令 作用 .go() 浏览器前进、后退 .reload() 刷新页面 .viewport() 控制浏览
+        <a href="https://www.cnblogs.com/poloyy/p/13149791.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13149791.html" title="permalink">2020-06-16 23:04</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(427)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13149791" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13143982.html">
+    <span>Cypress系列（29）- 获取页面全局对象的命令</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 点击命令可以跳转到命令详解的文章哦 命令 作用 .window() 获取当前页面的窗口对象 .title() 获取当前页面的title .u
+        <a href="https://www.cnblogs.com/poloyy/p/13143982.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13143982.html" title="permalink">2020-06-16 22:58</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(279)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13143982" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13141302.html">
+    <span>Cypress系列（28）- scrollTo() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 滑动浏览器自带的滚动条、元素的滚动条 语法格式 cy.scrollTo(position) cy.scrollTo(x, y) cy.
+        <a href="https://www.cnblogs.com/poloyy/p/13141302.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13141302.html" title="permalink">2020-06-16 15:43</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(252)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13141302" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13140634.html">
+    <span>Cypress系列（27）- scrollIntoView() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 将指定 DOM 元素滑动到可视视图中的左上角 语法格式 .scrollIntoView() .scrollIntoView(optio
+        <a href="https://www.cnblogs.com/poloyy/p/13140634.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13140634.html" title="permalink">2020-06-16 14:07</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(238)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13140634" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13140409.html">
+    <span>Cypress系列（26）- 聚焦与失焦命令的详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html .focus() 命令 聚焦 DOM 元素 语法格式 .focus() .focus(options) 正确写法 cy.get(&#39;input
+        <a href="https://www.cnblogs.com/poloyy/p/13140409.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13140409.html" title="permalink">2020-06-16 13:15</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(246)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13140409" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13066039.html">
+    <span>Cypress系列（25）- submit() 命令详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 语法格式 .submit() .submit(options) 正确写法 cy.get(&#39;form&#39;).submit() 重点：必须是 fo
+        <a href="https://www.cnblogs.com/poloyy/p/13066039.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13066039.html" title="permalink">2020-06-16 11:46</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(197)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13066039" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13066035.html">
+    <span>Cypress系列（24）- 操作页面元素的命令</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 点击命令可以跳转到命令详解的文章哦 命令 作用 .type() 输入框输入文本元素 .focus() 聚焦DOM元素 .blur() DOM
+        <a href="https://www.cnblogs.com/poloyy/p/13066035.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13066035.html" title="permalink">2020-06-16 11:26</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(453)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13066035" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13066031.html">
+    <span>Cypress系列（23）- 可操作类型的命令 之 trigger()</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html .trigger() 在DOM元素上触发指定事件 语法格式 .trigger(eventName) .trigger(eventName, 
+        <a href="https://www.cnblogs.com/poloyy/p/13066031.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13066031.html" title="permalink">2020-06-13 22:27</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(338)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13066031" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13066025.html">
+    <span>Cypress系列（22）- 可操作类型的命令 之 select()</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html .select() 在&#160;&lt;select&gt;&#160;中选择一个&#160;&lt;option&gt; 语法格式 // 选中指定值的选项 .select(value) //
+        <a href="https://www.cnblogs.com/poloyy/p/13066025.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13066025.html" title="permalink">2020-06-12 18:40</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(350)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13066025" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13065988.html">
+    <span>Cypress系列（21）- 可操作类型的命令 之 check()、uncheck()</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html .check() 针对&#160;&lt;input&gt;&#160;标签的单选框或复选框，达到选中的作用 语法格式 // 所有匹配到的选择框都会被选中一遍 .check
+        <a href="https://www.cnblogs.com/poloyy/p/13065988.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13065988.html" title="permalink">2020-06-12 18:39</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(342)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13065988" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13066015.html">
+    <span>Cypress系列（20）- 可操作类型的命令 之 clear()</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 作用 一看就知道是清空输入框的所有内容 有趣的是，&#160;.clear()&#160;等价于&#160;.type(&quot;{selectall}{backspace}&quot;)
+        <a href="https://www.cnblogs.com/poloyy/p/13066015.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13066015.html" title="permalink">2020-06-12 18:37</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(242)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13066015" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13066011.html">
+    <span>Cypress系列（19）- 可操作类型的命令 之 type() </span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前端 html 代码 后面栗子主要以这个页面为主哦 .type() 基础介绍 在 DOM 元素中输入内容 语法格式 // 输入文本 .typ
+        <a href="https://www.cnblogs.com/poloyy/p/13066011.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13066011.html" title="permalink">2020-06-12 18:36</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(409)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13066011" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13066005.html">
+    <span>Cypress系列（18）- 可操作类型的命令 之 点击命令</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 啥是可操作类型？就是可以和 DOM 元素交互的命令，比如：点击，双击.....等等等 这些命令模拟用户和应用程序交互，Cypress 
+        <a href="https://www.cnblogs.com/poloyy/p/13066005.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13066005.html" title="permalink">2020-06-12 09:48</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(620)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13066005" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13065998.html">
+    <span>Cypress系列（17）- 查找页面元素的辅助方法</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 单一的基础定位元素方法并不一定能满足复杂的场景，所以 Cypress 还提供了一些辅助方法，可以提高找到元素的准确性 前端页面代码 后
+        <a href="https://www.cnblogs.com/poloyy/p/13065998.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13065998.html" title="permalink">2020-06-11 13:41</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(580)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13065998" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13065990.html">
+    <span>Cypress系列（16）- 查找页面元素的基本方法</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前端页面代码 后面写的 Cypress 代码，都会基于这个 html 页面来定位元素哦，文件位置随意放，代码需要手动自己敲一遍 .get(s
+        <a href="https://www.cnblogs.com/poloyy/p/13065990.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13065990.html" title="permalink">2020-06-09 09:06</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(879)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13065990" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13066714.html">
+    <span>Cypress系列（15）- Cypress 元素定位选择器</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 做 UI 自动化测试，每个测试用例都会包含对元素的操作 健壮、可靠的元素定位策略可以保障测试成功率的提高 相对于其他测试框架来说，Cy
+        <a href="https://www.cnblogs.com/poloyy/p/13066714.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13066714.html" title="permalink">2020-06-08 16:54</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(1075)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(1)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13066714" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13056393.html">
+    <span>Cypress系列（14）- 环境变量详解</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 环境变量，其实就是根据环境的变化，变量会有不同的值 比如最常见的：开发环境、测试环境、生产环境的 URL 肯定不一样，我们可以根据不同
+        <a href="https://www.cnblogs.com/poloyy/p/13056393.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13056393.html" title="permalink">2020-06-08 13:43</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(766)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(1)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13056393" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13052972.html">
+    <span>Cypress系列（0）- 如何学习 Cypress</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 Cypress 未来很有可能会火的一塌糊涂，那么我们又应该如何进行学习呢？ 目前国内 Cypress 可以学习的资源并不多，你百度只搜
+        <a href="https://www.cnblogs.com/poloyy/p/13052972.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13052972.html" title="permalink">2020-06-05 23:48</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(1068)</span> 
+        <span class="post-comment-count">评论(2)</span> 
+        <span class="post-digg-count">推荐(3)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13052972" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13045410.html">
+    <span>Cypress系列（13）- 详细介绍 Cypress Test Runner </span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 Test Runner 也叫运行器，Cypress 因为它的存在，才在众多自动化测试框架中脱颖而出 Cypress 使测试在一个独特的
+        <a href="https://www.cnblogs.com/poloyy/p/13045410.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13045410.html" title="permalink">2020-06-05 09:53</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(463)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13045410" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13044532.html">
+    <span>Cypress系列（12）- Cypress 编写和组织测试用例篇 之 断言</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 断言是测试用例的必要组成部分 没有断言，咱们就不知道测试用例的有效性，到底通过没通过 Cypress 的断言基于 Chai 断言库，并
+        <a href="https://www.cnblogs.com/poloyy/p/13044532.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13044532.html" title="permalink">2020-06-04 16:44</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(672)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13044532" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13042466.html">
+    <span>Cypress系列（11）- Cypress 编写和组织测试用例篇 之 动态生成测试用例</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 自动化测试中，数据驱动是很重要的一个点 实际项目中，肯定会出现这种情况：多条测试用例的执行步骤，断言步骤完全一致，只有输入和输出数据不
+        <a href="https://www.cnblogs.com/poloyy/p/13042466.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13042466.html" title="permalink">2020-06-04 11:34</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(632)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(0)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13042466" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13040113.html">
+    <span>Cypress系列（10）- Cypress 编写和组织测试用例篇 之 动态跳过测试用例</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 上一节只讲了如何跳过执行 or 只执行某些测试用例集 or 测试用例 在实际项目中，可能存在需要在运行中动态地去决定某个测试是否需要执
+        <a href="https://www.cnblogs.com/poloyy/p/13040113.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13040113.html" title="permalink">2020-06-03 21:14</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(470)</span> 
+        <span class="post-comment-count">评论(1)</span> 
+        <span class="post-digg-count">推荐(2)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13040113" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13039624.html">
+    <span>Cypress系列（9）- Cypress 编写和组织测试用例篇 之 .skip() 和 .only() 的详细使用</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 在做自动化测试中，跳过执行某些测试用例，或只运行某些指定的测试用例，这种情况是很常见的 Cypress 中也提供了这种功能 跳过执行测
+        <a href="https://www.cnblogs.com/poloyy/p/13039624.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13039624.html" title="permalink">2020-06-03 19:26</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(532)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(2)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13039624" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13037502.html">
+    <span>Cypress系列（8）- Cypress 编写和组织测试用例篇 之 钩子函数Hook</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html Hook 就是常说的钩子函数，在&#160;pytest 框架里面也有 hook 这个概念；接下来就让我们来看看 Mocha 提供的 Hook 函数叭
+        <a href="https://www.cnblogs.com/poloyy/p/13037502.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13037502.html" title="permalink">2020-06-03 14:49</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(623)</span> 
+        <span class="post-comment-count">评论(1)</span> 
+        <span class="post-digg-count">推荐(2)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13037502" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13034592.html">
+    <span>Cypress系列（7）- Cypress 编写和组织测试用例篇 之 Mocha的介绍</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 Cypress 底层依赖于很多优秀的开源测试框架，其中就有 Mocha Mocha 是一个适用于 Node.js 和浏览器的测试框架，
+        <a href="https://www.cnblogs.com/poloyy/p/13034592.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13034592.html" title="permalink">2020-06-03 13:16</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(722)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(1)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13034592" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13027421.html">
+    <span>Cypress系列（6）- Cypress 的重试机制</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 重试（Retry-ability）是 Cypress 的核心概念之一，有助于我们写出更加健壮的测试 命令和断言 Cypress 测试中
+        <a href="https://www.cnblogs.com/poloyy/p/13027421.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13027421.html" title="permalink">2020-06-01 20:57</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(790)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(1)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13027421" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13024996.html">
+    <span>Cypress系列（5）- 自定义 Cypress</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 Cypress 不仅支持用户自定义文件结构，还支持用户自定义 Cypress 的各项配置 Cypress 可以通过&#160;cypress.j
+        <a href="https://www.cnblogs.com/poloyy/p/13024996.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13024996.html" title="permalink">2020-06-01 14:24</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(927)</span> 
+        <span class="post-comment-count">评论(3)</span> 
+        <span class="post-digg-count">推荐(1)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13024996" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/13022249.html">
+    <span>Cypress系列（4）- 解析 Cypress 的默认文件结构</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 默认文件结构 在使用&#160;cypress open&#160;命令首次打开 Cypress，Cypress 会自动进行初始化配置并生成一个默认的文件夹结构
+        <a href="https://www.cnblogs.com/poloyy/p/13022249.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/13022249.html" title="permalink">2020-06-01 11:32</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(992)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(3)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=13022249" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/12992659.html">
+    <span>Cypress系列（3）- Cypress 的初次体验</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 前言 这里的栗子项目是 Cypress 提供的，在&#160;github 上，所以要 clone 到本地的话需要装 Git 哦！ 下载被测应用 进入
+        <a href="https://www.cnblogs.com/poloyy/p/12992659.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/12992659.html" title="permalink">2020-05-31 17:03</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(1428)</span> 
+        <span class="post-comment-count">评论(4)</span> 
+        <span class="post-digg-count">推荐(3)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=12992659" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/12966125.html">
+    <span>Cypress系列（2）- Cypress 框架的详细介绍</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html Cypress 简介 基于 JavaScript 的前端测试工具，可以对浏览器中运行的任何内容进行快速、简单、可靠的测试 Cypress 是
+        <a href="https://www.cnblogs.com/poloyy/p/12966125.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/12966125.html" title="permalink">2020-05-26 15:57</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(2373)</span> 
+        <span class="post-comment-count">评论(0)</span> 
+        <span class="post-digg-count">推荐(7)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=12966125" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+                <div class="postSeparator"></div>
+            <div class="entrylistItem">
+                <div class="entrylistPosttitle">
+                    
+<a class="entrylistItemTitle" href="https://www.cnblogs.com/poloyy/p/12919454.html">
+    <span>Cypress系列（1）- Window下安装 Cypress 并打开</span>
+    
+
+
+</a>
+
+                </div>
+                <div class="entrylistPostSummary">
+                    
+<div class="c_b_p_desc">
+摘要：如果想从头学起Cypress，可以看下面的系列文章哦 https://www.cnblogs.com/poloyy/category/1768839.html 系统要求 Cypress 是一个被安装在你电脑上的桌面应用，你的操作系统需要满足如下条件才能正常安装 Mac OS&#160;10.9+（仅提供64位
+        <a href="https://www.cnblogs.com/poloyy/p/12919454.html" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+
+                </div>
+                <div class="entrylistItemPostDesc">
+                    
+<!--Post Desc-->
+posted @ <a href="https://www.cnblogs.com/poloyy/p/12919454.html" title="permalink">2020-05-26 13:21</a><text> </text>
+小菠萝测试笔记
+        <span class="post-view-count">阅读(2000)</span> 
+        <span class="post-comment-count">评论(3)</span> 
+        <span class="post-digg-count">推荐(4)</span>     <a href="https://i.cnblogs.com/EditPosts.aspx?postid=12919454" rel="nofollow">编辑</a>
+
+                </div>
+            </div>
+    <p>
+        
+
+
+
+    </p>
+</div>
+
+
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 小菠萝测试笔记
+<br /><span id="poweredby">Powered by .NET 5.0.0-rc.2.20475.5 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    <div id="page_end_html">
+        
+
+<!-- 音乐播放器 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<meting-js
+        id="329641066"
+        lrc-type="0"
+        server="netease"
+        order="random"
+        type="playlist"
+        fixed="true"
+        list-olded="true">
+</meting-js>
+
+
+<script type="text/javascript">
+/*加一只小猫咪*/
+
+$("#main").append('<div class="back-to-top cd-top faa-float animated cd-is-visible" style="top: -999px;"></div>')
+//scroll 事件适用于所有可滚动的元素和 window 对象（浏览器窗口）。
+$(window).scroll(function() {
+	var scroHei = $(window).scrollTop(); //滚动的高度
+	if (scroHei > 500) {
+		$('.back-to-top').css('top', '-200px');
+	} else {
+		$('.back-to-top').css('top', '-999px');
+	}
+})
+/*点击返回顶部*/
+$('.back-to-top').click(function() {
+$('body,html').animate({
+	scrollTop: 0
+}, 400);
+})
+
+</script>
+<div id="cnzzProtocol"  style="display: none;">
+    <span class="id_cnzz_stat_icon" id='cnzz_stat_icon_1278866025'></span>
+    <script src='https://s19.cnzz.com/z_stat.php?id=1278866025&online=1&show=line' type='text/javascript'></script>
+</div>
+<div id="cnzzProtocol"  style="display: none;">
+</div>
+    </div>
+</body>
+</html>

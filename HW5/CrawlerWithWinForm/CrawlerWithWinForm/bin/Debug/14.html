@@ -1,0 +1,388 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="场景 虽然能配置提交代码时触发Jenkins任务，但有时并不需要每次提交代码都触发，而是仅在有需要时才执行。 除了在Jenkins页面上手动执行任务，还可以向Jenkins网站发起HTTP请求，触发指" />
+    <meta property="og:description" content="场景 虽然能配置提交代码时触发Jenkins任务，但有时并不需要每次提交代码都触发，而是仅在有需要时才执行。 除了在Jenkins页面上手动执行任务，还可以向Jenkins网站发起HTTP请求，触发指" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>远程触发Jenkins的Pipeline任务 - 程序员欣宸 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=jzhy9Oyg5XODXo8F4hsEOQFzKCPYRKZCYc011rNEfQo" />
+    <link id="MainCss" rel="stylesheet" href="/skins/en_summergarden/bundle-en_summergarden.min.css?v=eJPbnlR84uox-N8Y1kMPtN4OnGKJuv0XEEgil80ofFA" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/en_summergarden/bundle-en_summergarden-mobile.min.css?v=mYzM5jEqKntYY2mNfd3bMDmKByg95WSW2ILR6-fQOnc" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/bolingcavalry/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/bolingcavalry/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/bolingcavalry/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 530190;
+        var currentBlogApp = 'bolingcavalry';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'En_summerGarden';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-10-11 11:03';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=fLUEwRea4WeqlJe_CLnNunLQZl_ViJFLgKpcNDuKptI"></script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a href="https://www.cnblogs.com/bolingcavalry/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="Return Home" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/bolingcavalry/">zq2599</a>
+</h1>
+<h2>
+
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+
+<ul id="navList">
+	<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+CnBlogs</a>
+</li>
+	<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/bolingcavalry/">
+Home</a>
+</li>
+	<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+New Post</a>
+</li>
+	<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E7%A8%8B%E5%BA%8F%E5%91%98%E6%AC%A3%E5%AE%B8">
+Contact</a></li>
+	<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+Admin</a>
+</li>
+	<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/bolingcavalry/rss/">
+Subscription</a>
+	
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/bolingcavalry/rss/">
+    <img src="/skins/en_summergarden/images/xml.gif" alt="订阅" />
+</a></li>
+</ul>
+
+
+
+		<div class="blogStats">
+			
+			<!--done-->
+Posts - 
+76&nbsp;
+Articles - 
+0&nbsp;
+Comments - 
+16&nbsp;
+
+
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class = "postTitle">
+			
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/bolingcavalry/p/13796594.html">
+    <span>远程触发Jenkins的Pipeline任务</span>
+    
+
+
+</a>
+
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			
+<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+    <h3 id="场景">场景</h3>
+<ul>
+<li>虽然能配置提交代码时触发Jenkins任务，但有时并不需要每次提交代码都触发，而是仅在有需要时才执行。</li>
+<li>除了在Jenkins页面上手动执行任务，还可以向Jenkins网站发起HTTP请求，触发指定任务的执行，本文就来实战通过Http请求同时触发多个Jenkins任务执行。</li>
+</ul>
+<h3 id="概述">概述</h3>
+<p>对于pipeline类型的Jenkins任务，一般是通过插件	<br>
+<font color="blue">Generic Webhook Trigger</font>来支持远程触发的，在使用过程中以下三点需要注意：</p>
+<ol>
+<li>远程触发Jenk任务，请求的URL怎么写；</li>
+<li>Http请求的参数，如何作为pipeline脚本的参数；</li>
+<li>假设有Jenkins任务A，某时刻有10个触发该任务的请求同时到达，Jenkins如何处理？（后面会重点讨论此问题）</li>
+</ol>
+<p>针对上述问题，我们来做一次实战：向Jenkins服务发起http请求，请求参数是一个Github代码仓库的地址和分支名，Jenkins收到这个请求后，执行一个pipeline任务，该任务是下载指定的Github仓库的代码，流程如下图所示；<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110253074-112645935.png" alt="在这里插入图片描述" loading="lazy"></p>
+<h3 id="环境信息">环境信息</h3>
+<ol>
+<li>操作系统：CentOS 7.7</li>
+<li>Jenkins：2.190.3</li>
+<li>Generic Webhook Trigger插件：1.66</li>
+</ol>
+<p>关于Jenkins的部署，请参考文章《》</p>
+<h3 id="实战">实战</h3>
+<ol>
+<li>先来安装插件<font color="blue">Generic Webhook Trigger</font>，如下图，进入插件管理页面：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110254037-269107960.png" alt="在这里插入图片描述" loading="lazy"></li>
+<li>安装插件的操作步骤如下图所示，请按照红框数字的顺序操作：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110254794-625249424.png" alt="在这里插入图片描述" loading="lazy"></li>
+<li>稍等片刻，插件在线安装成功，如下图，接下来创建个pipeline任务试试：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110255338-452310394.png" alt="在这里插入图片描述" loading="lazy"></li>
+<li>新建名为remote-test的pipeline任务：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110256116-366293180.png" alt="在这里插入图片描述" loading="lazy"></li>
+<li>如下图红框所示，出现了<font color="blue">Generic Webhook Trigger</font>选项：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110256837-1511366095.png" alt="在这里插入图片描述" loading="lazy"></li>
+<li>勾选了<font color="blue">Generic Webhook Trigger</font>之后页面会发生变化，如下图，在红框位置，先设置token的值为<font color="blue">token-remote-test</font>，这样http请求中的token参数的值如果等于<font color="blue">token-remote-test</font>，就会触发当前任务：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110257677-325322406.png" alt="在这里插入图片描述" loading="lazy"></li>
+<li>接下来设置请求参数，如下图红框所示，先输入固定的ref参数，然后再把repositoryURL和branch也设置好，即Github代码仓库地址和分支名，这样http请求中repositoryURL和branch参数就能传递到后面的pipeline脚本中去了：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110258948-271918435.png" alt="在这里插入图片描述" loading="lazy"></li>
+<li>接下来可以写pipeline脚本了：</li>
+</ol>
+<pre><code class="language-shell">pipeline {
+    agent any
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+              [key: 'ref', value: '$.ref'],
+              [key: 'repositoryURL', value: '$.repositoryURL'],
+              [key: 'branch', value: '$.branch']
+            ],
+            token: 'token-remote-test' ,
+            causeString: '$ref' ,
+            printContributedVariables: true,
+            printPostContent: true
+        )
+    }
+    
+    stages {
+        stage('show-param') {
+            steps {
+                echo 'token参数：$token'
+                echo '代码仓库：$repositoryURL'
+                echo '代码分支：$branch'
+            }
+        }
+
+        stage('down-sourcecode') {
+            steps {
+                echo '开始下载源码'
+                checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/$branch']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[url: '$repositoryURL']]])
+            }
+        }            
+    }
+}
+</code></pre>
+<p>上述脚本有以下几个关键点：<br>
+a. triggers 、GenericTrigger、genericVariables这几个参数是固定的，按上述示例去写即可；<br>
+b. printContributedVariables、printPostContent为true，会在执行任务时打印出请求参数的内容来；<br>
+c. 这里一共有两个stage，在<font color="blue">show-param</font>执行的时候，会将http请求参数全部打印出来；<br>
+d. <font color="blue">checkout</font>是pipeline提供的API，用于下载Github仓库的代码，其branches参数的值用上了http的请求参数branch，userRemoteConfigs.url参数的值用上了http的请求参数branchrepositoryURL<br>
+9. 上述pipeline脚本写在下图红框位置，然后点击底部的"Save"按钮保存：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110259888-1658899196.png" alt="在这里插入图片描述" loading="lazy"><br>
+10. 任务配置完成，接下来用postman发起http请求；<br>
+11. 我这边jenkins网站的地址是：<a href="http://192.168.133.149:32049">http://192.168.133.149:32049</a> ，因此触发任务的请求地址是：<a href="http://192.168.133.149:32049/generic-webhook-trigger/invoke?token=token-remote-test">http://192.168.133.149:32049/generic-webhook-trigger/invoke?token=token-remote-test</a> ，注意token参数的值和任务设置中的token值保持一致就能触发任务；<br>
+12. 在Postman上的配置如下图所示，请按照数字顺序配置，repositoryURL参数的值为https://github.com/zq2599/jenkinsdemo.git，这是我放在Github上的一个java工程，可以正常下载：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110300536-766585505.png" alt="在这里插入图片描述" loading="lazy"><br>
+13. 配置完成后点击Send按钮发送请求，正常情况下收到的返回码是200，如下图红框，如果非200（例如404），请检查参数和Jenkins任务的参数设置(例如token不一致)：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110301352-1229902575.png" alt="在这里插入图片描述" loading="lazy"><br>
+14. 回到Jenkins页面查看日志，如下图红框，请求参数都被打印出来了：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110302304-1996732554.png" alt="在这里插入图片描述" loading="lazy"><br>
+15. 继续往下看，可见Github源码成功下载：<br>
+<img src="https://img2020.cnblogs.com/other/485422/202010/485422-20201011110303156-862482595.png" alt="在这里插入图片描述" loading="lazy"></p>
+<ul>
+<li>至此，通过Http触发Jenkins的pipeline实战就完成了，我们可以通过程序、脚本等各种手段，按照不同的需求来触发Jenkins任务，并传给任务不同的参数。</li>
+</ul>
+<h3 id="并发问题">并发问题</h3>
+<ul>
+<li>远程触发Jenkins任务虽然灵活方便，但是在处理并发请求时会有问题：10个请求同时到达，只有一个会执行，这个问题的破解方法留在下一篇文章《远程触发Jenkins的Pipeline任务的并发问题处理》详细讨论吧。<br>
+<a href="https://github.com/zq2599/blog_demos">https://github.com/zq2599/blog_demos</a></li>
+</ul>
+
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+		</div>
+		<div class="postDesc">posted @ 
+<span id="post-date">2020-10-11 11:03</span>&nbsp;
+<a href="https://www.cnblogs.com/bolingcavalry/">程序员欣宸</a>&nbsp;
+Views(<span id="post_view_count">6</span>)&nbsp;
+Comments(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=13796594" rel="nofollow">Edit</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(13796594);return false;">收藏</a></div>
+	</div>
+	
+	
+</div>
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 530190, cb_blogApp = 'bolingcavalry', cb_blogUserGuid = 'ad6b0b69-b553-e211-aa8f-842b2b196315';
+    var cb_entryId = 13796594, cb_entryCreatedDate = '2020-10-11 11:03', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div></div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="calendar"><div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script></div>
+			
+			<DIV id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</DIV>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 程序员欣宸
+<br /><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+</body>
+</html>

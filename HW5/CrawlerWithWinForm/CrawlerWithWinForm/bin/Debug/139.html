@@ -1,0 +1,448 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="在本节中，您将使用包管理控制台（PMC）来更新数据库：&#xD;&#xA;&#xD;&#xA;       •添加VisualStudio Web代码生成包。这个包是运行脚本引擎所必需的。&#xD;&#xA;&#xD;&#xA;       • 执行Add-Mig" />
+    <meta property="og:description" content="在本节中，您将使用包管理控制台（PMC）来更新数据库：&#xD;&#xA;&#xD;&#xA;       •添加VisualStudio Web代码生成包。这个包是运行脚本引擎所必需的。&#xD;&#xA;&#xD;&#xA;       • 执行Add-Mig" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>学习ASP.NET Core Razor 编程系列三——创建数据表及创建项目基本页面 - DotNet菜园 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=jzhy9Oyg5XODXo8F4hsEOQFzKCPYRKZCYc011rNEfQo" />
+    <link id="MainCss" rel="stylesheet" href="/skins/classicblue/bundle-classicblue.min.css?v=C_xOBodTdu7qViYoEOWb5uyE0XIl-SuwRkgFEwSDOCc" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/classicblue/bundle-classicblue-mobile.min.css?v=arJ4BmwdBcUZrSduKjIvQKPiliQ99OBUW7yasPqJtdY" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chillsrc/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chillsrc/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chillsrc/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 13897;
+        var currentBlogApp = 'chillsrc';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'ClassicBlue';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2018-03-26 04:41';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=fLUEwRea4WeqlJe_CLnNunLQZl_ViJFLgKpcNDuKptI"></script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="top_nav" class="navbar navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/chillsrc/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/chillsrc/">DotNet菜园</a>
+</h1>
+<h2>
+专注所以专业,专业所以专注
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/chillsrc/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/DotNet%E8%8F%9C%E5%9B%AD">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/chillsrc/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+276&nbsp; </span>
+<span id="stats_article_count">文章 - 
+32&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+836</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chillsrc/p/8651973.html">
+    <span>学习ASP.NET Core Razor 编程系列三——创建数据表及创建项目基本页面</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+    <div id="cnblogs_post_description" style="display: none">
+        在本节中，您将使用包管理控制台（PMC）来更新数据库：
+
+       •添加VisualStudio Web代码生成包。这个包是运行脚本引擎所必需的。
+
+       • 执行Add-Migration Initial生成代码文件。
+
+       • 执行Update-Database命名，更新数据库。
+    </div>
+<div id="cnblogs_post_body" class="blogpost-body">
+    <p align="left"><strong><span style="font-size: 14pt; color: rgba(0, 0, 255, 1)"><span style="color: rgba(0, 0, 255, 1)"><span style="font-size: 14pt; color: rgba(0, 0, 255, 1)"><span class="postTitle2"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET Core Razor 编程系列</span></span></span>目录</span></span></strong></p>
+<p align="left"><span style="font-size: 14pt; color: rgba(0, 0, 255, 1)"><a id="homepage1_HomePageDays_DaysList_ctl02_DayList_TitleUrl_0" class="postTitle2" href="http://www.cnblogs.com/chillsrc/p/8579777.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET Core Razor 编程系列一</span></a></span></p>
+<p align="left"><span style="color: rgba(0, 0, 255, 1); font-size: 14pt"><a id="homepage1_HomePageDays_DaysList_ctl01_DayList_TitleUrl_0" class="postTitle2" href="http://www.cnblogs.com/chillsrc/p/8622439.html"><span style="color: rgba(0, 0, 255, 1)">学习ASP.NET Core Razor 编程系列二——添加一个实体</span></a></span></p>
+<p align="left">&nbsp;</p>
+<p align="left"><span style="font-size: 16px"><strong>一、创建脚本工具并执行初始迁移</strong></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在本节中，您将使用包管理控制台（PMC）来更新数据库：</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp; &nbsp; &nbsp; •添加VisualStudio Web代码生成包。这个包是运行脚本引擎所必需的。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp; &nbsp;&nbsp; &nbsp; • 执行Add-Migration Initial生成代码文件。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp; &nbsp; &nbsp; • 执行Update-Database命名，更新数据库。</span></p>
+<ol>
+<li><span style="font-size: 16px">从菜单中选择“工具àNuGet包管理器器—&gt;程序包管理器控制台”菜单。</span></li>
+</ol>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163156475-1296666935.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. 在PMC中，输入以下命令：</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1） Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design，如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163219346-811446005.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2) 上面的命令执行完毕之后，输入 Add-Migration Initial。如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163232633-2129750666.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. 在上面的命令执行完毕之后，会在项目中增加Migrations目录和用于创建初始数据库的代码，如下图。这些代码是基于DbContext指定的模型（在Models/ BookCntext.cs）。初始参数用于命名迁移。您可以修改成任何名称，但按惯例您可以选择描述迁移的名称。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163305898-384373730.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4. </span><span style="font-size: 16px">在上面的命令执行完毕之后，输入Update-Database,这个命令通过运行<em>Migrations</em> / <em>&lt;time-stamp&gt;_Initial.cs</em>文件，创建数据库表。执行过程如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163325803-1662411008.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5. 执行结束之后，会在数据库中创建Book表。如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163419589-1424226340.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;</span></p>
+<p align="left"><strong><span style="font-size: 16px">二、创建书籍管理系统的增删改查页面</span></strong></p>
+<ol>
+<li><span style="font-size: 16px">在Windows资源管理器中，选中项目所在的文件夹（文件夹中有Startup.cs文件，Program.cs文件和csproj文件），键盘上按钮“Shift”，鼠标右键—&gt;“在此处打开命令窗口”，打开命令窗口。如下图。</span></li>
+</ol>
+<p><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163441079-447976984.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp; </span><span style="font-size: 16px">命令窗口中输入以下命令</span></p>
+<ul>
+<li><span style="font-size: 16px">dotnet aspnet-codegenerator razorpage -m Book -dc BookContext -udl -outDir Pages\Books --referenceScriptLibraries</span></li>
+</ul>
+<p align="left"><span style="font-size: 16px">如果收到错误：</span></p>
+<p align="left"><span style="font-size: 16px">未找到与命令“dotnet aspnet codegenerator”匹配的可执行文件。如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163519454-1330356823.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. 则请退出Visual Studio 2017 ，再次执行命令。</span></p>
+<p align="left"><span style="font-size: 16px">如果收到以下错误信息：</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163542444-717944026.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 则请更新Microsoft.VisualStudio.Web.CodeGeneration.Design到2.0.0。如果版本大于2.0，则请降到2.0.0。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163602648-2070822351.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4. 再次执行命令。这次执行成功，如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163632387-438032957.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5. 运行完毕后会在你的Page\Books文件夹中生成增删改查的cshtml。如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163651571-667546496.png" alt=""><br></span></p>
+<h2><span style="font-size: 16px">三、下表详细介绍了ASP.NET的核心代码生成器`参数：</span></h2>
+<p align="left"><span style="font-size: 16px">&nbsp;</span></p>
+<table border="0" cellpadding="0">
+<thead>
+<tr>
+<td>
+<p align="center"><span style="font-size: 16px"><strong>参数</strong></span></p>
+
+
+</td>
+<td>
+<p align="center"><span style="font-size: 16px"><strong>说明</strong></span></p>
+
+
+</td>
+
+
+</tr>
+
+
+</thead>
+<tbody>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px">-m</span></p>
+
+
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">实体类的名称。</span></p>
+
+
+</td>
+
+
+</tr>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px">-dc</span></p>
+
+
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">数据上下文.</span></p>
+
+
+</td>
+
+
+</tr>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px">-udl</span></p>
+
+
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">使用默认布局</span></p>
+
+
+</td>
+
+
+</tr>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px">-outDir</span></p>
+
+
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">用于创建视图的相对输出文件夹路径</span></p>
+
+
+</td>
+
+
+</tr>
+<tr>
+<td>
+<p align="left"><span style="font-size: 16px">--referenceScriptLibraries</span></p>
+
+
+</td>
+<td>
+<p align="left"><span style="font-size: 16px">向“编辑”和“创建”页面添加 <code>_ValidationScriptsPartial</code></span></p>
+
+
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 使用 <code>h</code> 开关获取 <code>aspnet-codegenerator razorpage</code> 命令方面的帮助：</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在命令窗口中输入以下命令：</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dotnet aspnet-codegenerator razorpage -h</span></p>
+<p><span style="font-size: 16px">&nbsp;</span></p>
+<h2><span style="font-size: 16px">四、 测试应用程序</span></h2>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. 在Visual Studio 2017中按下F5，运行应用程序。如下图。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163726882-1330848042.png" alt=""></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. 在浏览器中的地址栏中的url的未尾添加/Books（http://localhost:53416/Books）。如下图。</span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163742771-148413742.png" alt=""><br></span></p>
+<p align="left"><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. </span><span style="font-size: 16px">点击“Create New”链接，在新建界面中把信息录入，然后点击“Create”按钮。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163837499-2132451551.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.浏览器中页面返回到列表页面，如下图。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163853279-1544563634.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5. </span><span style="font-size: 16px">在书籍列表中，选择一本书籍，然后点击“Edit”链接。如下图。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163911859-989798815.png" alt=""><br></span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6. </span><span style="font-size: 16px">在编辑界面中进行信息修改，然后点击保存。如下图。</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326163934383-100972569.png" alt=""></span><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7. 在书籍列表中，选择一本书籍，然后点击“Details”链接。如下图。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326164008063-497599376.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 8. </span><span style="font-size: 16px">在书籍列表中，选择一本书籍，然后点击“Delete”链接。如下图。</span></p>
+<p><span style="font-size: 16px">&nbsp;<img src="https://images2018.cnblogs.com/blog/10343/201803/10343-20180326164030129-1149777969.png" alt=""></span></p>
+<p><span style="font-size: 16px">&nbsp;</span></p>
+<p><span style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 注：如果收到 SQL 异常，则检查是否已运行迁移并更新了数据库。</span></p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2018-03-26 16:41</span>&nbsp;
+<a href="https://www.cnblogs.com/chillsrc/">DotNet菜园</a>&nbsp;
+阅读(<span id="post_view_count">5667</span>)&nbsp;
+评论(<span id="post_comment_count">10</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=8651973" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(8651973);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 13897, cb_blogApp = 'chillsrc', cb_blogUserGuid = 'c642360b-63cf-dd11-9e4d-001cf0cd104b';
+    var cb_entryId = 8651973, cb_entryCreatedDate = '2018-03-26 16:41', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 DotNet菜园
+<br /><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+</body>
+</html>

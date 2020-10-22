@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="never" />
+    <meta name="description" content="背景 我们都知道 Zookeeper 是基于 ZAB 协议实现的，在介绍 ZAB 协议之前，先回顾一下 Zookeeper 的起源与发展。 Zookeeper 究竟是在什么样的时代背景下被提出？为了解" />
+    <meta property="og:description" content="背景 我们都知道 Zookeeper 是基于 ZAB 协议实现的，在介绍 ZAB 协议之前，先回顾一下 Zookeeper 的起源与发展。 Zookeeper 究竟是在什么样的时代背景下被提出？为了解" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>zookeeper核心之ZAB协议就这么简单！ - chinaxieshuai - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="//common.cnblogs.com/favicon.svg" type="image/svg+xml" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=kXxbcm7tkkASG2_xwyD6Kw4CzHe0bT3mi0jyCb8YspQ" />
+    <link id="MainCss" rel="stylesheet" href="/skins/codinglife/bundle-codinglife.min.css?v=dij5UHLPkhCwoV5SpUeOW7BnKC0vZ5-8GYi-drRcxLA" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/codinglife/bundle-codinglife-mobile.min.css?v=JtOonyglmq10yOLdtvmh-WsVtFwm8HRB8mR_g_TGArQ" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/chinaxieshuai/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/chinaxieshuai/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/chinaxieshuai/wlwmanifest.xml" />
+    <script>
+        var currentBlogId = 569638;
+        var currentBlogApp = 'chinaxieshuai';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'CodingLife';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-10-21 01:40';
+        </script>
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=kKx3DBtpvO8r97BzPmHJseQ10fGHkI-ZwMh4FA0eEd0"></script>
+    
+    
+    
+</head>
+<body class="has-navbar">
+    <a name="top"></a> 
+    <div id="top_nav" class="navbar">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="/images/logo.svg?v=R9M0WmLAIPVydmdzE2keuvnjl-bPR7_35oHqtiBzGsM" alt="博客园Logo" /></a>
+                </li>
+                <li><a href="/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3" />
+                        <button type="submit" id="zzk_search_button">
+                            <img src="/images/aggsite/search.svg" alt="搜索" />
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="/images/aggsite/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="/images/aggsite/message.svg?v=oS4PkibyMjZ9rGD5XAcLt99uW_s76Javy2up4dbnZNY" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="/images/aggsite/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/">注册</a>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/chinaxieshuai/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/chinaxieshuai/">java之旅</a>
+</h1>
+<h2>
+
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/chinaxieshuai/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/chinaxieshuai">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/chinaxieshuai/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+17&nbsp; </span>
+<span id="stats_article_count">文章 - 
+13&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+1</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/chinaxieshuai/p/13851853.html">
+    <span>zookeeper核心之ZAB协议就这么简单！</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+    <h3 id="背景">背景</h3>
+<p>我们都知道 Zookeeper 是基于 ZAB 协议实现的，在介绍 ZAB 协议之前，先回顾一下 Zookeeper 的起源与发展。</p>
+<p>Zookeeper 究竟是在什么样的时代背景下被提出？为了解决了哪些棘手的问题？</p>
+<p>Zookeeper 最早起源于雅虎研究院的一个研究小组。当时，研究人员发现，在雅虎的很多大型系统基本都需要依赖一个类似的系统来进行分布式协调，但是这些系统都存在分布式单点问题，所以雅虎的开发人员就试图开发出一个通用的无单点问题的分布式协调框架，以便让开发人员将精力集中在处理业务逻辑上。</p>
+<p>于是，Zookeeper 就诞生了！</p>
+<p>Zookeeper 的出现不仅解决了分布式系统下数据一致性的问题，而且经历过线上验证，无论是从性能、易用性、稳定性上来说，都是工业级产品的标准。可以说在分布式系统中具有不可替代的核心地位，Hadoop、HBase、Storm 和 Solr 等大型分布式系统都已经将 Zookeeper 作为其核心组件，用于分布式协调。即便 Zookeeper 如此优秀，但是 Zookeeper 依然是免费且开源的，全世界成千上万的开发者都关注着它，陪同着一起成长和发展。</p>
+<p>作为一个开发者无论是为了应付面试、晋升还是个人技术成长的需要，都需要对 Zookeeper 有所了解，而学习 Zookeeper 的关键就是理解其核心部分：</p>
+<p><strong>ZAB 协议， 全称（Zookeeper Atomic Broadcast）Zookeeper 原子消息广播协议。</strong></p>
+<p>它与 Paxos 类似，也是一种数据一致性的算法。</p>
+<h3 id="zookeeper应该具备的特性">Zookeeper应该具备的特性</h3>
+<p>在 ZAB 协议的开发设计人员在协议设计之初并没有要求 ZAB 具有很好的扩展性，最初只是为了雅虎公司内部哪些高吞吐量、低延迟、健壮、简单的分布式系统场景设计的。基于 ZAB 协议，Zookeeper 实现了一种主备模式的系统架构来保持集群中各副本之间数据的一致性，简单架构图如下：</p>
+<p>Zookeeper 用一个单一的主进程来接收并处理客户端的所有事物请求，并采用 ZAB 的原子广播协议将服务器数据状态以事物 Proposal 的形式广播到所有的副本进程中去。这样的模式就保证了，在同一时刻只有一个主进程来广播服务器的状态更变，因此能够很好地处理客户端大量的并发请求，这在 ZAB 协议中叫：消息广播。</p>
+<p>除此之外，在分布式环境中事物的执行顺序也会存在一定的先后关系，比如：事务 C 的写入需要依赖事务 B 的写入，而事务 B 写入需要依赖事务 A 写入。这种前后依赖的顺序也对 ZAB 协议提出了一个要求：ZAB 协议需要保证如果一个状态的变更被处理了，那么所有其依赖的状态变更都已经被提前处理了。也就是需要顺序执行。</p>
+<p>另外除了能正常广播消息、消息的顺序执行，主进程也可能随时会因为断电、机器宕机等异常情况无法提供服务，因此，ZAB 协议还需要做到在当前主进程出现上述异常情况的时候依然能够正常工作，这在 ZAB 协议中叫：崩溃恢复。</p>
+<p>所以整个 ZAB 协议需要具备的核心特性已经被描述出来了，处理事务的请求的方式可以简单理解为：</p>
+<blockquote>
+<p>所有的事务请求必须由一个全局唯一的服务器来协调处理，这样的服务器叫：Leader 服务器。其他的服务器被称为 Follower 服务器。Leader 服务器将客户端事务请求转化成一个事务 Prososal（提议），并将改 Proposal 分发给集群中所有的 Follower 服务器。之后 Leader 服务器接收了正确的反馈后，那么 Leader 就会再次向所有的 Follower 服务器分发 Commit 消息，要求将前一个 Proposal 提交。</p>
+</blockquote>
+<p>这就简单阐述了<strong>ZAB 协议中消息广播模式的部分内容</strong>。</p>
+<h3 id="zab协议的两种模式">ZAB协议的两种模式</h3>
+<p>ZAB 协议的包括两种模式：<strong>崩溃恢复</strong>、<strong>消息广播</strong>。</p>
+<p>既然有两种模式，那 Zookeeper 集群什么时候进入奔溃恢复模式？什么时候进入消息广播模式呢？</p>
+<p>在进入<strong>奔溃恢复</strong>模式时 Zookeeper 集群会进行 Leader 选举，一般有两种情况会发生选举：</p>
+<ul>
+<li>
+<p>当服务器启动时期会进行 Leader 选举。</p>
+</li>
+<li>
+<p>当服务器运行期 Leader 服务器的出现网络中断、奔溃退出、重启等异常情况，或者当集群中半数的服务器与该 Leader 服务器无法通信时，进入崩溃恢复模式，开始 Leader 选举。</p>
+</li>
+</ul>
+<p>选举出 Leader 服务器后，会进入<strong>消息广播模式</strong>，开始接收处理客户端的请求，前文已经描述，这里不再赘述。</p>
+<h3 id="相关名词概念">相关名词概念</h3>
+<p>在深入讲解 ZAB 协议的两个模式之前，先解释 Zookeeper 的几个相关概念，方便理解 ZAB 协议：</p>
+<h4 id="三种角色">三种角色</h4>
+<p>在前面提到 Zookeeper 的集群中的服务器有 Leader 和 Follower ，但实际在 ZAB 协议中 Zookeeper 有三种角色，分别是 Leader、Folower、Observer，它们的分工各有不同：</p>
+<ul>
+<li><strong>Leader</strong> ：负责整个Zookeeper 集群工作机制中的核心，主要工作有一下两个：
+<ul>
+<li>事务请求的唯一调度和处理者，保证集群事务处理的顺序性</li>
+<li>集群内部各服务器的调度者</li>
+</ul>
+</li>
+<li><strong>Follower</strong> ：它是 Leader 的追随者，其主要工作有三个：
+<ul>
+<li>处理客户端的非实物请求，转发事务请求给 Leader 服务器</li>
+<li>参与事务请求 Proposal 的投票</li>
+<li>参与 Leader 选举投票</li>
+</ul>
+</li>
+<li><strong>Observer</strong> ：是 zookeeper 自 3.3.0 开始引入的一个角色，它不参与事务请求 Proposal 的投票，也不参与 Leader 选举投票，只提供非事务的服务（查询），通常在不影响集群事务处理能力的前提下提升集群的非事务处理能力。</li>
+</ul>
+<h4 id="三种状态">三种状态</h4>
+<p>在知道了 Zookeeper 中有三种角色后，不经提问： Zookeeper 是如何知道自己目前是什么角色的呢？</p>
+<p>在 ZAB 协议中定义：通过自身的状态来区分自己的角色的，在运行期间各个进程可能出现以下三种状态之一：</p>
+<ul>
+<li><strong>LOOKING</strong>：处在这个状态时，会进入 Leader 选举状态</li>
+<li><strong>FOLLOWER</strong>：Follower 服务器和 Leader 服务器保持同步时的状态</li>
+<li><strong>LEADING</strong>：Leader 服务器作为主进程领导者的状态</li>
+</ul>
+<p>在组成 ZAB 协议的所有进程启动的时候，初始化状态都是 LOOKING 状态，此时进程组中不存在 Leader，选举之后才有，在进行选举成功后，就进入消息广播模式，此时 Zookeeper 集群中的角色状态就不再是 LOOKING 状态。</p>
+<h4 id="zxid">ZXID</h4>
+<p>前文我们知道 zookeeper 消息有严格的因果关系，因此必须将每一个事务请求按照先后顺序来进行排序与处理。那 Zookeeper 是如何保持请求处理的顺序的呢？其中非常关键的点就是 ZXID。</p>
+<p>那 ZXID 究竟是怎么发挥作用的呢？</p>
+<p>Leader 服务器在接收到事务请求后，会为每个事务请求生成对应的 Proposal 来进行广播，并且在广播事务 Proposal 之前，Leader 服务器会首先为这个事务 Proposal 分配一个全局单调递增的唯一 ID ，我们称之为事务 ID（即 ZXID）。</p>
+<p>ZXID 的设计也很有特点，是一个全局有序的 64 位的数字，可以分为两个部分：</p>
+<ul>
+<li>高 32 位是： epoch（纪元），代表着周期，每当选举产生一个新的 Leader 服务器时就会取出其本地日志中最大事务的 ZXID ，解析出  epoch（纪元）值操作加 1作为新的 epoch ，并将低 32 位置零。</li>
+<li>低 32 位是： counter（计数器），它是一个简单的单调递增的计数器，针对客户端的每个事务请求都会进行加 1 操作；</li>
+</ul>
+<p>这里低 32 位 counter（计数器）单调递增还好理解，高 32 位 epoch（纪元）每次选举加 1 也许有些同学就有疑问了，为什么 epoch（纪元）每次选需要举加 1 ，它在整个 ZAB 协议中有什么作用？</p>
+<p>我们知道每当选举产生一个新的 Leader 服务器时生成一个新的  epoch（纪元）值，而在前文我们知道，服务运行过程中触发选举 Leader 的条件是：<strong>Leader 服务器的出现网络中断、奔溃退出、重启等异常情况，或者当集群中半数的服务器与该 Leader 服务器无法通信时</strong>。</p>
+<p>这说明整个 Zookeeper 集群此时处于一个异常的情况下，而在发生异常前，消息广播进行到哪一步骤我们根本不知道，集群中的其他 Follower 节点从这种崩溃恢复状态重新选举出 Leader 后，如果老 Leader 又恢复了连接进入集群。此时老 Leader 的 epoch 肯定会小于新 Leader 的 epoch，这时就将老 Leader 变成 Follower，对新的 Leader 进行数据同步。即便这时老 Leader 对其他的 Follower 节点发送了请求，Follower 节点也会比较 ZXID 的值，因为高 32 位加 1 了， Follower 的 epoch（纪元）大于老 Leader 的 epoch（纪元），所以 Follower 会忽略这个请求。</p>
+<p>这像改朝换代一样，前朝的剑不能斩本朝的官。</p>
+<h3 id="消息广播模式">消息广播模式</h3>
+<p>知道了这些名词，和上文提到的零散的知识点，其实崩溃恢复模式和消息广播模式的过程大家大致有所了解了。</p>
+<p>先看看消息广播模式吧！</p>
+<p>消息广播的模式的过程简图如下所示：</p>
+<img src="https://upload-images.jianshu.io/upload_images/2710833-927c4264c545c4e7.png" alt="image.png">
+<p>整个过程类似一个二阶段提交的过程，但却有所不同，ZAB 协议简化了二阶段提交模型，在超过半数的 Follower 服务器已经反馈 ACK 之后就开始提交事务 Prososal 了，无需等待所有服务器响应。</p>
+<p>结合上图，看看消息广播的具体细节：</p>
+<ul>
+<li>Leader 服务器接收到请求后在进行广播事务 Proposal 之前会为这个事务分配一个 ZXID，再进行广播。</li>
+<li>Leader 服务器会为每个 Follower 服务器都各自分配一个单独的队列，然后将需要广播的事务 Proposal 依次放入这些队列中去，并根据 FIFO 策略进行消息的发送。</li>
+<li>每个Follower 服务器在接收到后都会将其以事务日志的形式写入到本地磁盘中，并且在成功写入后返回 Leader 服务器一个 ACK 响应。</li>
+<li>当有超过半数的服务器 ACK 响应后，Leader 就会广播一个 Commit 消息给所有的 Follower 服务器，Follower 接收到后就完成对事务的提交操作。</li>
+</ul>
+<p>在画一张详细点的流程图，更直观：</p>
+<img src="https://upload-images.jianshu.io/upload_images/2710833-e53b8b881792203a.png" alt="image.png">
+<p>这就完成了整个消息广播了！</p>
+<h3 id="崩溃恢复模式">崩溃恢复模式</h3>
+<p>前文已经反复提过崩溃恢复模式了，其实就是重新选举出新的 Leader 服务器，选举完成后 Follower 服务器在再去同步 Leader 的数据。</p>
+<p>运行中的服务再次进行重新选举，一定是出现某种异常，我们知道在出现异常情况之前 Leader 的消息广播可能会处在任何一个阶段，有可能客户端的请求只是在 Leader 服务器上提出并未被提交，也可能请求已经被 Leader 服务器提交。</p>
+<p>ZAB 协议对于不同阶段的出现的数据不一致的情况做了兼容，保证：</p>
+<ul>
+<li>已经在 Leader 服务器上<strong>提交</strong>的事务，最终会被所有服务器都提交</li>
+<li>只在 Leader 服务器上<strong>提出</strong>的事务，要丢弃</li>
+</ul>
+<p>针对以上的两个要求，在进行 Leader 选举时，之需要选举出集群中 ZXID 最大的事务 Proposal 即可，这样就可以省去 Leader 服务器检查 Proposal 的提交和丢弃工作了。因为 Leader 服务器的事务是最大的，一切以 Leader 服务器的数据为标准即可。</p>
+<p>ZXID 在集群中其实并不是唯一的，所以也有可能出现多 Follower 服务器 ZXID 相同的情况，这时候就需要比较 Zookeeper 的 SID 值。什么是 SID？SID 是一个数字，和 zookeeper 的 myid 一致，myid 就不要解释了，安装过 Zookeeper 的都知道，每台服务器都需要配置一个这样的文件，里面只有一个数字，用来标识这台服务器。因为每台机器的 myid 配置都不一样，所以集群选举的时不会出现相等的情况。</p>
+<p>选举时，比较大小的源码如下：</p>
+<img src="https://upload-images.jianshu.io/upload_images/2710833-bbcba5240c2a1db0.png" alt="image.png">
+<p>前面已经说过，出现选举 Leader 可能会出现两种情况：</p>
+<ul>
+<li>服务启动时期，发起选举</li>
+<li>服务运行期间，出现异常，发起选举</li>
+</ul>
+<p>但无论是启动期还是运行期进行 Leader 选举，其选举过程都差不太多，我简单画个流程图：</p>
+<img src="https://upload-images.jianshu.io/upload_images/2710833-d87f4a39511a8630.png" alt="image.png">
+<p>结合上图，奔溃恢复模式下 Leader 选举的过程细节如下：</p>
+<ul>
+<li>检测节点处于 LOOKING 阶段，开发选举 Leader</li>
+<li>发起投票时有两种情况：
+<ul>
+<li>在服务启动的初始阶段，每个服务器都会投票给自己以（myid，zxid）的信息形式发送，那初始阶段没有 zxid 值，就会发送（myid，0）</li>
+<li>在服务器运行期间，每个服务器上的 zxid 都有值，且 zxid 都不相同，所以就正常发送（myid，zxid）</li>
+</ul>
+</li>
+<li>各节点收到信息后将收到的（myid，zxid）和自己的比较，比较的过程前面已经说过，这里不再赘述</li>
+<li>然后判断是否有半数的机器投票选出 Leader，如果否，在进入新一轮投票，直到选出</li>
+<li>选出 Leader 后，其他节点就变成 Follower 角色，并向 Leader 发送自己服务器的最大 zxid ，Leader 服务器收到后会和自己本地的提议缓存队列进行比较，判断使用那种策略进行同步（后面详细说明同步的四种策略）</li>
+<li>当同步完成，集群就可以正常的处理请求了，就进入消息广播模式了。</li>
+</ul>
+<p>这就是崩溃恢复模式下选举 Leader 的过程了！</p>
+<p>下面再简单介绍下数据同步的四种策略，这四种同步策略保证了Zookeeper 集群中的数据一致性，也解决了前文提出的两个问题，兼容了各种数据不一致的场景。</p>
+<h4 id="数据同步的四种策略">数据同步的四种策略</h4>
+<p>在数据同步之前，Leader 服务器会进行数据同步的初始化，首先会从 Zookeeper 的内存数据库中提取出事务前期对应的提议缓存队列，同时会初始化三个 ZXID 的值：</p>
+<ul>
+<li>peerLastZxid：这是 Follower 的最后处理 ZXID</li>
+<li>minCommittedLog：Leader 服务器的提议缓存队列中 最小的 ZXID</li>
+<li>maxCommittedLog：Leader 服务器的提议缓存队列中 最大的 ZXID</li>
+</ul>
+<p>根据这三个参数，就可以确定四种同步方式，分别为：</p>
+<ul>
+<li>直接差异化同步
+<ul>
+<li>场景：当 minCommittedLog &lt; peerLastZxid &lt; maxCommittedLog 时</li>
+</ul>
+</li>
+<li>先回滚在差异化同步
+<ul>
+<li>场景：假如集群有 A、B、C 三台机器，此时 A 是 Leader 但是 A 挂了，在挂之前 A 生成了一个提议假设是：03，然后集群有重新选举 B 为新的 Leader，此时生成的的提议缓存队列为：01~02，B 和 C 进行同步之后，生成新的纪元，ZXID 从 10 开始计数，集群进入广播模式处理了部分请求，假设现在 ZXID 执行到 15 这个值，此时 A 恢复了加入集群，这时候就比较 A 最后提交的 ZXID：peerLastZxid 与 minCommittedLog、maxCommittedLog 的关系。此时虽然符合直接差异化同步：minCommittedLog &lt; peerLastZxid &lt; maxCommittedLog 这样的关系，但是提议缓存队列中却没有这个 ZXID ，这时候就需要先回滚，在进行同步。</li>
+</ul>
+</li>
+<li>仅回滚同步
+<ul>
+<li>场景：这里和先回滚在差异化同步类似，直接回滚就可以。</li>
+</ul>
+</li>
+<li>全量同步
+<ul>
+<li>场景：peerLastZxid &lt; minCommittedLog，当远远落后 Leader 的数据时，直接全量同步。</li>
+</ul>
+</li>
+</ul>
+<p>这就是四种同步策略，这几种同步方式也解决了上文提出的问题：</p>
+<ul>
+<li><strong>只在 Leader 服务器上提出的事务，要丢弃</strong>（这个问题会在同步时，会进行回滚，使得只在 Leader 服务器上提出的事务丢弃）</li>
+</ul>
+<p>这些就是整个 ZAB 协议中崩溃恢复的内容。</p>
+<h3 id="zab协议和paxos算法的区别">ZAB协议和Paxos算法的区别</h3>
+<p>ZAB协议看起来和Paxos有着相同之处，但它并不是Paxos的典型实现，其实还是有一些区别，ZAB协议中额外添加了一个同步的阶段，两者设计目标也不太一样，ZAB协议主要用于构建一个高可用的分布式数据主备系统，而Paxos算法则是用于构建一个分布式一致性的状态机。</p>
+<h3 id="总结">总结</h3>
+<p>Zookeeper 作为出色的分布式协调服务，目前读 QPS 达到 12w，出色的性能也让开发者更加青睐，其 ZAB 协议的核心分为两个部分：崩溃恢复、消息广播。</p>
+<p>典型的应用场景有：</p>
+<ul>
+<li>数据发布/订阅、负载均衡</li>
+<li>命名服务</li>
+<li>分布式协调通知</li>
+<li>集群管理</li>
+<li>Master选举</li>
+<li>分布式锁</li>
+<li>分布式队列</li>
+<li>用 Zookeeper 避免脑裂</li>
+</ul>
+<p>除此之外在大数据领域也有应用，例如：</p>
+<ul>
+<li>Hadoop</li>
+<li>HBase</li>
+<li>Kafka</li>
+</ul>
+<p>在阿里巴巴集团内部实践的 Zookeeper 的产品也有很多，如：</p>
+<ul>
+<li>消息中间件：Metamorphosis</li>
+<li>RPC 服务框架：Dubbo</li>
+<li>基于 MySQL Binlog 的增量订阅和消费组件：Cancel</li>
+<li>分布式数据库同步系统：Otter</li>
+<li>实时计算引擎：JStorm</li>
+</ul>
+<p>欢迎关注我的个人微信公众号：java之旅</p>
+
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2020-10-21 13:40</span>&nbsp;
+<a href="https://www.cnblogs.com/chinaxieshuai/">chinaxieshuai</a>&nbsp;
+阅读(<span id="post_view_count">17</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=13851853" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(13851853);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="https://common.cnblogs.com/highlight/10.3.1/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 569638, cb_blogApp = 'chinaxieshuai', cb_blogUserGuid = 'd3145e2a-700e-4bd7-e054-08d7804a609d';
+    var cb_entryId = 13851853, cb_entryCreatedDate = '2020-10-21 13:40', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id='div-gpt-ad-1592365906576-0' style='width: 300px; height: 250px;'></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id='div-gpt-ad-1592366332455-0' style='width: 468px; height: 60px;'></div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+   </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright &copy; 2020 chinaxieshuai
+<br /><span id="poweredby">Powered by .NET 5.0.0-rc.2.20475.5 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+</body>
+</html>
